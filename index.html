@@ -1,0 +1,132 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta charset="UTF-8">
+    <title>근무콩</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <button id="menuBtn">☰</button>
+    <button id="themeBtn">🌙 다크모드</button>
+    <div id="homeScreen">
+    <div class="splash-bean">🌱</div>
+    <h1>근무콩</h1>
+    <p>나만의 교대근무 달력</p>
+</div>
+
+<div class="shift-settings" id="shiftSettings" hidden>
+    <h3>⚙️ 내 근무 설정</h3>
+
+    <label for="baseDateInput">기준 날짜</label>
+    <input type="date" id="baseDateInput" value="2026-10-22">
+
+    <label for="shiftInput">근무 종류</label>
+    <select id="shiftInput">
+        <option value="주간">주간</option>
+        <option value="야간">야간</option>
+        <option value="비번" selected>비번</option>
+    </select>
+
+    <label for="shiftDayInput">몇 일차?</label>
+    <select id="shiftDayInput">
+        <option value="1">1일차</option>
+        <option value="2">2일차</option>
+        <option value="3" selected>3일차</option>
+    </select>
+
+    <button id="saveShiftBtn">설정 저장</button>
+    <button id="showChangesBtn">📋 근무 변경 내역</button>
+    <button id="bulkChangeBtn">📅 여러 날짜 변경</button>
+</div>
+
+    <div id="calendarArea" hidden>
+        <div class="calendar-nav">
+            <button id="prevBtn">❮</button>
+            <h2 id="monthTitle"></h2>
+            <button id="nextBtn">❯</button>
+        </div>
+
+        <div id="calendar"></div>
+
+        <div id="todayCard">
+            <div class="today-date">
+    <div id="todayDayNumber"></div>
+    <div id="todayMonthWeek"></div>
+</div>
+            <div>
+                <p>오늘의 근무</p>
+                <h2 id="todayShift"></h2>
+                <p id="todayMessage"></p>
+            </div>
+        </div>
+    </div>
+
+
+
+<!-- 날짜별 근무 변경 팝업 -->
+<div id="shiftPopup" hidden>
+    <div class="popup-content">
+        <h2 id="popupDate">날짜</h2>
+        <p>이날의 근무를 변경할까요?</p>
+
+        <label for="customShift">근무 선택</label>
+        <select id="customShift">
+            <option value="주간">☀️ 주간</option>
+            <option value="야간">🌙 야간</option>
+            <option value="비번">🍀 비번</option>
+            <option value="연차">🌴 연차</option>
+            <option value="당직">🕒 당직</option>
+            <option value="휴무">🏠 휴무</option>
+        </select>
+
+        <div class="popup-buttons">
+            <button id="saveCustomShift">저장</button>
+            <button id="resetCustomShift">기본 근무로 복구</button>
+            <button id="closePopup">닫기</button>
+        </div>
+    </div>
+</div>
+
+<!-- 근무 변경 내역 창 -->
+<div id="changesPopup" hidden>
+    <div class="popup-content">
+        <h2>📋 근무 변경 내역</h2>
+        <div id="changesList"></div>
+        <button id="closeChangesBtn">닫기</button>
+    </div>
+</div>
+
+<!-- 여러 날짜 변경 창 -->
+<div id="bulkPopup" hidden>
+    <div class="popup-content">
+        <h2>📅 여러 날짜 변경</h2>
+        <p>기간을 선택해 한 번에 변경해요.</p>
+
+        <label for="bulkStart">시작 날짜</label>
+        <input type="date" id="bulkStart">
+
+        <label for="bulkEnd">종료 날짜</label>
+        <input type="date" id="bulkEnd">
+
+        <label for="bulkShift">변경할 근무</label>
+        <select id="bulkShift">
+            <option value="주간">☀️ 주간</option>
+            <option value="야간">🌙 야간</option>
+            <option value="비번">🍀 비번</option>
+            <option value="연차">🌴 연차</option>
+            <option value="당직">🕒 당직</option>
+            <option value="휴무">🏠 휴무</option>
+        </select>
+
+        <div class="popup-buttons">
+            <button id="saveBulkChange">변경하기</button>
+            <button id="closeBulkPopup">닫기</button>
+        </div>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

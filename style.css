@@ -1,0 +1,878 @@
+
+body {
+    background-color: #F4FAF6;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding-top: 100px;
+}
+
+h1 {
+    color: #4C9474;
+    font-size: 40px;
+}
+
+p {
+    color: #777777;
+    font-size: 18px;
+}
+
+button {
+    background-color: #A8DCC2;
+    color: #245C45;
+    border: none;
+    border-radius: 15px;
+    padding: 15px 30px;
+    font-size: 16px;
+    cursor: pointer;
+}
+#calendar {
+    max-width: 700px;
+    margin: 30px auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 15px 5px;
+    border: 1px solid #DCEBE2;
+}
+
+th {
+    background-color: #D8EFE2;
+}
+
+td {
+    background-color: white;
+}
+
+/* 주간 근무 */
+td.day {
+    background-color: #DCEBFF;
+    color: #2359A5;
+}
+
+/* 야간 근무 */
+td.night {
+    background-color: #EDE2FF;
+    color: #7142AA;
+}
+
+/* 비번 */
+td.off {
+    background-color: #DDF5E7;
+    color: #287A52;
+}
+
+td div {
+    font-size: 12px;
+    margin-top: 8px;
+    font-weight: bold;
+}
+.calendar-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 700px;
+    margin: 25px auto 0;
+}
+
+.calendar-nav h2 {
+    color: #345B48;
+    font-size: 22px;
+    margin: 0;
+}
+
+.calendar-nav button {
+    border-radius: 50%;
+    width: 42px;
+    height: 42px;
+    padding: 0;
+    font-size: 20px;
+}
+
+/* 달력 날짜 칸 */
+td {
+    height: 65px;
+    vertical-align: middle;
+}
+
+/* 휴대폰 화면에서는 자동으로 작아지기 */
+@media (max-width: 600px) {
+    #calendar,
+    .calendar-nav {
+        max-width: 100%;
+    }
+
+    td {
+        height: 45px;
+        padding: 8px 2px;
+    }
+
+    td div {
+        font-size: 11px;
+    }
+}
+/* 오늘 날짜 강조 */
+td.today {
+    outline: 3px solid #4C9474;
+    outline-offset: -3px;
+    font-weight: bold;
+}
+
+#todayCard {
+    max-width: 650px;
+    margin: 25px auto;
+    padding: 25px;
+    background-color: #DDF5E7;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 25px;
+    text-align: left;
+}
+
+.bean {
+    font-size: 55px;
+}
+
+#todayCard h2 {
+    color: #245C45;
+    margin: 5px 0;
+}
+
+#todayCard p {
+    margin: 5px 0;
+}
+.shift-settings {
+    max-width: 650px;
+    margin: 25px auto;
+    padding: 20px;
+    background: #E3F1E9;
+    border-radius: 20px;
+}
+
+.shift-settings input,
+.shift-settings select {
+    padding: 10px;
+    margin: 8px;
+    border: 1px solid #A8DCC2;
+    border-radius: 8px;
+}
+
+/* 다크모드 버튼 */
+#themeBtn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 10;
+}
+
+/* 다크모드 배경 */
+body.dark {
+    background-color: #1D2523;
+    color: #F1F5F2;
+}
+
+body.dark h1,
+body.dark .calendar-nav h2 {
+    color: #C5E8D4;
+}
+
+/* 달력 날짜 */
+body.dark th {
+    background-color: #34463F;
+    color: #FFFFFF;
+}
+
+body.dark td.day {
+    background-color: #243B57;
+    color: #B6D6FF;
+}
+
+body.dark td.night {
+    background-color: #413255;
+    color: #E0C6FF;
+}
+
+body.dark td.off {
+    background-color: #25483A;
+    color: #B7F0CF;
+}
+
+/* 설정 창과 오늘의 근무 카드 */
+body.dark .shift-settings,
+body.dark #todayCard {
+    background-color: #304239;
+}
+
+body.dark #todayCard h2,
+body.dark #todayCard p {
+    color: #D8F5E5;
+}
+
+/* 빈 날짜 칸 */
+body.dark td:not(.day):not(.night):not(.off) {
+    background-color: #27322E;
+}
+
+/* 휴대폰 화면 최적화 */
+* {
+    box-sizing: border-box;
+}
+
+@media (max-width: 600px) {
+    body {
+        margin: 0;
+        padding: 85px 12px 25px;
+    }
+
+    h1 {
+        font-size: 30px;
+    }
+
+    #themeBtn {
+        top: 12px;
+        right: 12px;
+        padding: 10px 14px;
+        font-size: 13px;
+    }
+
+    .shift-settings {
+        padding: 15px;
+        margin: 20px auto;
+    }
+
+    .shift-settings input,
+    .shift-settings select {
+        max-width: 100%;
+        margin: 5px;
+    }
+
+    #calendar,
+    .calendar-nav,
+    #todayCard {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .calendar-nav h2 {
+        font-size: 19px;
+    }
+
+    table {
+        table-layout: fixed;
+    }
+
+    th, td {
+        padding: 8px 1px;
+        font-size: 13px;
+    }
+
+    td {
+        height: 48px;
+    }
+
+    td div {
+        font-size: 10px;
+        margin-top: 5px;
+    }
+
+    #todayCard {
+        padding: 16px;
+        gap: 12px;
+    }
+
+    .bean {
+        font-size: 40px;
+    }
+}
+/* 첫 화면 */
+#homeScreen {
+    min-height: 70vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+
+/* hidden 속성이 실제로 화면을 숨기도록 */
+[hidden] {
+    display: none !important;
+}
+
+/* 왼쪽 위 메뉴 버튼 */
+#menuBtn {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    z-index: 100;
+    border: none;
+    border-radius: 12px;
+    background-color: #DCEFE2;
+    color: #3E7556;
+    font-size: 23px;
+    padding: 8px 14px;
+    cursor: pointer;
+}
+
+/* 근무 설정 팝업 */
+#shiftSettings {
+    position: fixed;
+    top: 70px;
+    left: 15px;
+    width: min(320px, calc(100vw - 30px));
+    max-height: calc(100vh - 90px);
+    overflow-y: auto;
+    z-index: 99;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* 숨김 처리 */
+[hidden] {
+    display: none !important;
+}
+
+/* 앱 시작 화면 */
+#homeScreen {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: #E8F6EC;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.splash-bean {
+    font-size: 75px;
+    animation: beanBounce 1s ease-in-out infinite;
+}
+
+@keyframes beanBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+}
+
+body.dark #homeScreen {
+    background: #1D2523;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+/* 일요일: 빨강 */
+th.sunday,
+.date-number.sunday,
+body.dark th.sunday,
+body.dark .date-number.sunday {
+    color: #E34F58;
+}
+
+/* 토요일: 파랑 */
+th.saturday,
+.date-number.saturday,
+body.dark th.saturday,
+body.dark .date-number.saturday {
+    color: #3984E6;
+}
+
+/* 날짜 숫자 강조 */
+.date-number {
+    font-weight: bold;
+}
+
+/* 오늘의 날짜 */
+.today-date {
+    min-width: 95px;
+    text-align: center;
+    flex-shrink: 0;
+    border-right: 1px solid #A8DCC2;
+    padding-right: 15px;
+}
+
+#todayDayNumber {
+    font-size: 52px;
+    font-weight: bold;
+    line-height: 1.1;
+    color: #287A52;
+}
+
+#todayMonthWeek {
+    font-size: 13px;
+    margin-top: 6px;
+    color: #507C61;
+}
+
+/* 다크모드 */
+body.dark #todayDayNumber {
+    color: #B7F0CF;
+}
+
+body.dark #todayMonthWeek {
+    color: #D8F5E5;
+}
+
+/* 작은 휴대폰 */
+@media (max-width: 400px) {
+    .today-date {
+        min-width: 75px;
+        padding-right: 10px;
+    }
+
+    #todayDayNumber {
+        font-size: 42px;
+    }
+
+    #todayMonthWeek {
+        font-size: 11px;
+    }
+
+    #todayCard h2 {
+        font-size: 18px;
+    }
+
+    #todayCard p {
+        font-size: 13px;
+    }
+}
+
+/* 날짜별 근무 변경 팝업 */
+#shiftPopup {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 300;
+    padding: 20px;
+}
+
+.popup-content {
+    width: 100%;
+    max-width: 350px;
+    background: #F4FAF6;
+    padding: 25px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.popup-content h2 {
+    color: #287A52;
+}
+
+.popup-content select {
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #A8DCC2;
+    margin: 10px;
+}
+
+.popup-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.popup-buttons button {
+    padding: 12px;
+}
+
+/* 다크모드 팝업 */
+body.dark .popup-content {
+    background: #304239;
+    color: #F1F5F2;
+}
+
+body.dark .popup-content h2 {
+    color: #B7F0CF;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+/* 연차: 노랑 */
+td.leave {
+    background-color: #FFF3C4;
+    color: #9B7300;
+}
+
+/* 당직: 주황 */
+td.duty {
+    background-color: #FFE1C7;
+    color: #B65C20;
+}
+
+/* 휴무: 회색 */
+td.holiday {
+    background-color: #E9ECEF;
+    color: #59636D;
+}
+
+/* 다크모드 색상 */
+body.dark td.leave {
+    background-color: #51482B;
+    color: #FFE49A;
+}
+
+body.dark td.duty {
+    background-color: #54392D;
+    color: #FFC49B;
+}
+
+body.dark td.holiday {
+    background-color: #394247;
+    color: #D2DAE0;
+}
+
+/* 근무 변경 내역 팝업 */
+#changesPopup {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 350;
+}
+
+#changesPopup .popup-content {
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+#changesList {
+    margin: 20px 0;
+    text-align: left;
+}
+
+.change-item {
+    padding: 12px 5px;
+    border-bottom: 1px solid #A8DCC2;
+}
+
+.change-item strong {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.change-item span {
+    font-size: 14px;
+}
+
+body.dark .change-item {
+    border-color: #587365;
+}
+
+body.dark .change-item span {
+    color: #D8F5E5;
+}
+
+/* 근무 변경 내역: 화면 중앙 팝업 */
+#changesPopup {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.55);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    z-index: 999;
+}
+
+/* 팝업 본체 */
+#changesPopup .popup-content {
+    width: 100%;
+    max-width: 500px;
+    max-height: 80vh;
+    overflow-y: auto;
+    padding: 30px;
+    border-radius: 22px;
+    background: #F4FAF6;
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.25);
+}
+
+/* 다크모드 */
+body.dark #changesPopup .popup-content {
+    background: #304239;
+    color: #F1F5F2;
+}
+
+/* 모바일 화면 */
+@media (max-width: 600px) {
+    #changesPopup .popup-content {
+        max-width: 100%;
+        padding: 20px;
+    }
+}
+
+/* 변경 내역 원상복구 버튼 */
+.change-reset-btn {
+    display: block;
+    margin-top: 10px;
+    padding: 8px 14px;
+    border-radius: 10px;
+    background-color: #F8DFDA;
+    color: #A5443A;
+    font-size: 13px;
+}
+
+.change-reset-btn:hover {
+    background-color: #F3C6BE;
+}
+
+body.dark .change-reset-btn {
+    background-color: #62413E;
+    color: #FFD4CD;
+}
+
+/* 여러 날짜 변경 팝업 */
+#bulkPopup {
+    position: fixed;
+    inset: 0;
+    z-index: 400;
+    background: rgba(0, 0, 0, 0.55);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+#bulkPopup .popup-content {
+    width: 100%;
+    max-width: 420px;
+    max-height: 85vh;
+    overflow-y: auto;
+}
+
+#bulkPopup label {
+    display: block;
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+#bulkPopup input,
+#bulkPopup select {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border: 1px solid #A8DCC2;
+    border-radius: 10px;
+    font-size: 15px;
+}
+
+body.dark #bulkPopup .popup-content {
+    background: #304239;
+    color: #F1F5F2;
+}
+
+/* 공휴일·기념일 표시 */
+.special-day {
+    display: block;
+    font-size: 10px;
+    margin-top: 4px;
+    line-height: 1.3;
+    word-break: keep-all;
+}
+
+.special-day.holiday {
+    color: #E34F58;
+    font-weight: bold;
+}
+
+.special-day.event {
+    color: #B58042;
+}
+
+body.dark .special-day.holiday {
+    color: #FF9299;
+}
+
+body.dark .special-day.event {
+    color: #E8BE86;
+}
+
+/* 달력 칸 정리 */
+#calendar td[data-date] {
+    position: relative;
+    height: 82px;
+    padding: 23px 2px 5px;
+    text-align: center;
+    vertical-align: middle;
+    overflow: hidden;
+}
+
+/* 날짜: 오른쪽 위 */
+#calendar .date-number {
+    position: absolute;
+    top: 5px;
+    right: 7px;
+    font-size: 11px;
+    line-height: 1;
+}
+
+/* 근무: 가운데 */
+#calendar td[data-date] > div {
+    font-size: 11px;
+    margin: 0;
+    line-height: 1.3;
+    font-weight: bold;
+}
+
+/* 기념일: 아래쪽 */
+#calendar .special-day {
+    display: block;
+    font-size: 9px;
+    line-height: 1.2;
+    margin-top: 5px;
+    letter-spacing: -0.4px;
+    overflow-wrap: anywhere;
+}
+
+/* 공휴일 날짜 빨간색 */
+#calendar .date-number.public-holiday {
+    color: #E34F58;
+}
+
+/* 모바일에서는 더 작게 */
+@media (max-width: 600px) {
+    #calendar td[data-date] {
+        height: 68px;
+        padding: 20px 1px 4px;
+    }
+
+    #calendar .date-number {
+        top: 5px;
+        right: 5px;
+        font-size: 10px;
+    }
+
+    #calendar td[data-date] > div {
+        font-size: 10px;
+    }
+
+    #calendar .special-day {
+        font-size: 8px;
+        margin-top: 4px;
+        letter-spacing: -0.5px;
+    }
+}
+
+/* 근무콩 달력 칸 레이아웃 */
+#calendar td[data-date] {
+    position: relative;
+    height: 82px;
+    padding: 22px 2px 6px;
+    text-align: center;
+    vertical-align: middle;
+    overflow: hidden;
+}
+
+/* 날짜 숫자는 오른쪽 위 */
+#calendar .date-number {
+    position: absolute;
+    top: 5px;
+    right: 6px;
+    font-size: 11px;
+    line-height: 1;
+}
+
+/* 근무 표시 */
+#calendar td[data-date] > div {
+    font-size: 11px;
+    margin: 0;
+    line-height: 1.3;
+}
+
+/* 기념일 표시 */
+#calendar .special-day {
+    display: block;
+    font-size: 9px;
+    line-height: 1.2;
+    margin-top: 4px;
+    overflow-wrap: anywhere;
+}
+
+/* 공휴일 날짜 빨간색 */
+#calendar .date-number.public-holiday {
+    color: #E34F58;
+}
+
+/* 휴대폰 화면 */
+@media (max-width: 600px) {
+    #calendar td[data-date] {
+        height: 70px;
+        padding: 20px 1px 5px;
+    }
+
+    #calendar .date-number {
+        font-size: 10px;
+        right: 4px;
+    }
+
+    #calendar td[data-date] > div {
+        font-size: 10px;
+    }
+
+    #calendar .special-day {
+        font-size: 8px;
+    }
+}
+
+/* 달력 좌우 스와이프 허용 */
+#calendar {
+    touch-action: pan-y;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+/* 세 달을 나란히 놓고 끌어서 넘기는 달력 */
+#calendar {
+    overflow: hidden;
+    touch-action: pan-y;
+    cursor: grab;
+}
+#calendar:active { cursor: grabbing; }
+#calendar .calendar-track {
+    display: flex;
+    width: 300%;
+    will-change: transform;
+}
+#calendar .calendar-page {
+    width: 33.333333%;
+    flex: 0 0 33.333333%;
+    min-width: 0;
+}
+#calendar .calendar-page table {
+    width: 100%;
+    table-layout: fixed;
+}
+
+/* 아이폰 상단 안전 영역 적용 */
+#menuBtn {
+    top: calc(env(safe-area-inset-top, 0px) + 15px);
+}
+
+#themeBtn {
+    top: calc(env(safe-area-inset-top, 0px) + 15px);
+}
+
+/* 메뉴 펼쳤을 때도 안전 영역 적용 */
+#shiftSettings {
+    top: calc(env(safe-area-inset-top, 0px) + 70px);
+}
