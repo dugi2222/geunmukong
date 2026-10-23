@@ -4,6 +4,14 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta charset="UTF-8">
+    <meta name="theme-color" content="#e8f7eb">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="근무콩">
+    <meta name="description" content="나만의 교대근무 달력, 근무콩">
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+    <link rel="apple-touch-icon" href="icon-180.png">
     <title>근무콩</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -17,26 +25,79 @@
 </div>
 
 <div class="shift-settings" id="shiftSettings" hidden>
-    <h3>⚙️ 내 근무 설정</h3>
+    <button type="button" id="toggleThemeSettings" class="settings-toggle" aria-expanded="false" aria-controls="themeSettingsFields">🎭 캐릭터 테마 · 근무 색상 ▾</button>
+    <div id="themeSettingsFields" hidden>
+    <section class="mascot-settings" aria-label="캐릭터 테마 선택">
+      <label for="mascotTheme">🎭 캐릭터 테마</label>
+      <select id="mascotTheme">
+        <option value="bean">🌱 근무콩</option>
+        <option value="dog">🐶 근무멍</option>
+        <option value="cat">🐱 근무냥</option>
+      </select>
+      <p class="settings-hint">캐릭터마다 달력과 근무 색상이 달라져요. 선택은 자동 저장돼요.</p>
+    </section>
+    <section class="shift-color-settings" aria-label="근무 색상 직접 설정">
+      <div class="color-settings-heading">🎨 근무 색상 설정</div>
+      <p class="settings-hint">현재 캐릭터의 주간·야간·휴무 색상을 바꿀 수 있어요.</p>
+      <div class="shift-color-grid">
+        <label>☀️ 주간 <input type="color" id="shiftDayColor" aria-label="주간 색상"></label>
+        <label>🌙 야간 <input type="color" id="shiftNightColor" aria-label="야간 색상"></label>
+        <label>🏠 휴무 <input type="color" id="shiftOffColor" aria-label="휴무 색상"></label>
+      </div>
+      <button type="button" id="resetShiftColors" class="reset-shift-colors">↺ 기본 색상으로 되돌리기</button>
+    </section>
+    </div>
+    <button type="button" id="toggleBaseSettings" class="settings-toggle" aria-expanded="false" aria-controls="baseSettingsFields">⚙️ 내 근무 설정 ▾</button>
+    <div id="baseSettingsFields" hidden>
 
     <label for="baseDateInput">기준 날짜</label>
     <input type="date" id="baseDateInput" value="2026-10-22">
 
-    <label for="shiftInput">근무 종류</label>
-    <select id="shiftInput">
-        <option value="주간">주간</option>
-        <option value="야간">야간</option>
-        <option value="비번" selected>비번</option>
+    <label for="workMode">근무 방식</label>
+    <select id="workMode">
+        <option value="shift">🔄 교대근무</option>
+        <option value="weekday">📅 평일근무 (월~금 출근, 주말 휴무)</option>
+    </select>
+    <p class="settings-hint" id="weekdayHint" hidden>월~금은 주간, 토·일은 휴무로 표시해요. 연차나 개별 근무 변경은 그대로 적용돼요.</p>
+    <div id="rotationSettings">
+    <label for="teamCount">근무 조</label>
+    <select id="teamCount">
+        <option value="2">2조</option><option value="3" selected>3조</option>
+        <option value="4">4조</option><option value="5">5조</option>
+        <option value="other">기타 / 직접 설정</option>
     </select>
 
-    <label for="shiftDayInput">몇 일차?</label>
-    <select id="shiftDayInput">
-        <option value="1">1일차</option>
-        <option value="2">2일차</option>
-        <option value="3" selected>3일차</option>
+    <label for="shiftType">교대 방식</label>
+    <select id="shiftType">
+        <option value="2" selected>2교대</option><option value="3">3교대</option>
+        <option value="other">기타 / 직접 설정</option>
     </select>
 
+    <label for="patternPreset">근무 패턴</label>
+    <select id="patternPreset"></select>
+    <p class="settings-hint">회사마다 패턴이 달라요. 목록에 없다면 직접 만들 수 있어요.</p>
+
+    <div id="customPatternPanel" hidden>
+        <label>근무 순서 만들기</label>
+        <div id="patternChips" class="pattern-chips"></div>
+        <div class="pattern-actions">
+            <button type="button" data-add-shift="주간">☀️ 주간 +</button>
+            <button type="button" data-add-shift="야간">🌙 야간 +</button>
+            <button type="button" data-add-shift="비번">🍀 비번 +</button>
+            <button type="button" data-add-shift="오후">🌇 오후 +</button>
+            <button type="button" data-add-shift="휴무">🏠 휴무 +</button>
+        </div>
+        <button type="button" id="removePatternShift" class="secondary-setting-btn">마지막 순서 지우기</button>
+        <button type="button" id="clearPattern" class="secondary-setting-btn">모두 지우기</button>
+    </div>
+
+    <label for="referenceIndex">기준 날짜의 근무 순서</label>
+    <select id="referenceIndex"></select>
+    <p class="settings-hint">같은 근무가 여러 날 연속이라도 정확한 순번을 골라주세요.</p>
+
+    </div>
     <button id="saveShiftBtn">설정 저장</button>
+    </div>
     <button id="showChangesBtn">📋 근무 변경 내역</button>
     <button id="bulkChangeBtn">📅 여러 날짜 변경</button>
 </div>
@@ -47,7 +108,6 @@
             <h2 id="monthTitle"></h2>
             <button id="nextBtn">❯</button>
         </div>
-
         <div id="calendar"></div>
 
         <div id="todayCard">
@@ -81,6 +141,17 @@
             <option value="휴무">🏠 휴무</option>
         </select>
 
+        <section class="day-notes-panel" aria-label="날짜별 일정과 메모">
+          <h3>📝 일정 · 메모</h3>
+          <div id="dayNotesList" class="day-notes-list"></div>
+          <label for="dayNoteEmoji">표시 이모지</label>
+          <select id="dayNoteEmoji"><option value="">없음</option><option>⭐</option><option>❤️</option><option>🎂</option><option>🍻</option><option>✈️</option><option>📌</option><option>🏃</option><option>🎉</option></select>
+          <label for="dayNoteTitle">일정 제목 (선택)</label>
+          <input id="dayNoteTitle" type="text" maxlength="60" placeholder="예: 친구 만나기">
+          <label for="dayNoteText">메모 (선택)</label>
+          <textarea id="dayNoteText" maxlength="1000" rows="2" placeholder="기억할 내용을 적어줘"></textarea>
+          <div class="day-note-actions"><button type="button" id="saveDayNote">일정 추가</button><button type="button" id="cancelDayNoteEdit" hidden>수정 취소</button></div>
+        </section>
         <div class="popup-buttons">
             <button id="saveCustomShift">저장</button>
             <button id="resetCustomShift">기본 근무로 복구</button>
@@ -102,13 +173,12 @@
 <div id="bulkPopup" hidden>
     <div class="popup-content">
         <h2>📅 여러 날짜 변경</h2>
-        <p>기간을 선택해 한 번에 변경해요.</p>
-
-        <label for="bulkStart">시작 날짜</label>
-        <input type="date" id="bulkStart">
-
-        <label for="bulkEnd">종료 날짜</label>
-        <input type="date" id="bulkEnd">
+        <div class="bulk-calendar-nav"><button type="button" id="bulkPrevMonth" aria-label="이전 달">‹</button><strong id="bulkMonthTitle"></strong><button type="button" id="bulkNextMonth" aria-label="다음 달">›</button></div>
+        <div id="bulkDateGrid" class="bulk-date-grid" aria-label="기간 선택 달력"></div>
+        <div class="bulk-range-summary" aria-live="polite"><span id="bulkRangeStart">시작일: 미선택</span><span id="bulkRangeEnd">종료일: 미선택</span></div>
+        <button type="button" id="bulkResetRange" class="bulk-reset-range">↻ 날짜 다시 선택</button>
+        <input type="hidden" id="bulkStart">
+        <input type="hidden" id="bulkEnd">
 
         <label for="bulkShift">변경할 근무</label>
         <select id="bulkShift">
@@ -128,5 +198,12 @@
 </div>
 
 <script src="script.js"></script>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js').catch(err => console.warn('오프라인 등록 실패:', err));
+    });
+  }
+</script>
 </body>
 </html>
