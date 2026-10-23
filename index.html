@@ -13,7 +13,7 @@
     <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
     <link rel="apple-touch-icon" href="icon-180.png">
     <title>근무콩</title>
-    <link rel="stylesheet" href="style.css?v=notes-fix1">
+    <link rel="stylesheet" href="style.css?v=step8-tabs1">
 </head>
 <body>
     <button id="menuBtn">☰</button>
@@ -123,7 +123,21 @@
         </div>
     </div>
 
-
+    <section id="workStatsPage" class="app-tab-page" hidden aria-label="근무 기록">
+      <div class="coming-soon"><div class="soon-icon">📊</div><h2>근무 기록</h2><p>연차와 근무 통계를 준비하고 있어요 🌱</p></div>
+    </section>
+    <section id="friendsPage" class="app-tab-page" hidden aria-label="친구">
+      <div class="coming-soon"><div class="soon-icon">👥</div><h2>친구</h2><p>일정 공유와 친구 목록을 준비하고 있어요 🌱</p></div>
+    </section>
+    <section id="communityPage" class="app-tab-page" hidden aria-label="소통">
+      <div class="coming-soon"><div class="soon-icon">💬</div><h2>소통</h2><p>건의사항과 근무콩 광장을 준비하고 있어요 🌱</p><small>아직 작성한 의견이 개발자에게 전송되지는 않아요.</small></div>
+    </section>
+    <nav id="bottomTabs" class="bottom-tabs" aria-label="하단 메뉴" hidden>
+      <button type="button" class="bottom-tab active" data-tab="calendar" aria-current="page"><span aria-hidden="true">📅</span><small>달력</small></button>
+      <button type="button" class="bottom-tab" data-tab="stats"><span aria-hidden="true">📊</span><small>근무 기록</small></button>
+      <button type="button" class="bottom-tab" data-tab="friends"><span aria-hidden="true">👥</span><small>친구</small></button>
+      <button type="button" class="bottom-tab" data-tab="community"><span aria-hidden="true">💬</span><small>소통</small></button>
+    </nav>
 
 <!-- 날짜별 근무 변경 팝업 -->
 <div id="shiftPopup" hidden>
@@ -198,7 +212,7 @@
     </div>
 </div>
 
-<script src="script.js?v=notes-fix1"></script>
+<script src="script.js?v=step8-tabs1"></script>
 <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {

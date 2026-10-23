@@ -451,6 +451,7 @@ menuBtn.addEventListener("click", function() {
 setTimeout(function() {
     document.getElementById("homeScreen").hidden = true;
     document.getElementById("calendarArea").hidden = false;
+    document.getElementById("bottomTabs").hidden = false;
     renderCalendar();
 }, 1500);
 
@@ -933,3 +934,19 @@ calendar.addEventListener("pointercancel", function(e) {
       : "🎭 캐릭터 테마 · 근무 색상 ▴";
   });
 })();
+
+// 8단계: 화면 전환만 준비. 기존 근무 설정/메모 데이터는 건드리지 않습니다.
+const tabPages = { calendar: document.getElementById('calendarArea'), stats: document.getElementById('workStatsPage'), friends: document.getElementById('friendsPage'), community: document.getElementById('communityPage') };
+document.getElementById('bottomTabs').addEventListener('click', event => {
+  const button = event.target.closest('button[data-tab]');
+  if (!button) return;
+  const tab = button.dataset.tab;
+  if (!Object.hasOwn(tabPages, tab)) return;
+  for (const [key, page] of Object.entries(tabPages)) page.hidden = key !== tab;
+  document.querySelectorAll('#bottomTabs .bottom-tab').forEach(el => {
+    const selected = el === button;
+    el.classList.toggle('active', selected);
+    if (selected) el.setAttribute('aria-current', 'page'); else el.removeAttribute('aria-current');
+  });
+  shiftSettings.hidden = true;
+});
