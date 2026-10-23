@@ -120,7 +120,7 @@ function buildMonthHTML(viewDate) {
         const weekend = i % 7 === 0 ? "sunday" : i % 7 === 6 ? "saturday" : "";
         const notes = getNotes(key);
         const noteEmoji = notes.find(note => note.emoji)?.emoji || "";
-        const noteTitle = notes.find(note => note.title)?.title || "";
+        const noteTitle = notes.find(note => note.title)?.title || notes.find(note => note.text)?.text?.split("\n")[0] || "";
         const noteIndicator = inMonth && notes.length ? `<span class="note-emoji">${escapeNoteHTML(noteEmoji || "📝")}</span>${noteTitle ? `<small class="note-preview">${escapeNoteHTML(noteTitle)}</small>` : ""}` : "";
         // 다른 달 날짜는 연하게만 표시하고, 클릭해서 근무를 바꾸지 않도록 합니다.
         html += `<td ${inMonth ? `data-date="${key}"` : ""} class="${inMonth ? color : "adjacent-month"} ${isToday ? "today" : ""}">
@@ -466,6 +466,7 @@ calendar.addEventListener("click", function(event) {
     if (!cell) return;
 
     const selectedDate = cell.dataset.date;
+    activeNoteDate = selectedDate;
 
     popupDate.textContent = selectedDate + " 근무 변경";
     const [y, m, d] = selectedDate.split("-").map(Number);
@@ -473,6 +474,7 @@ calendar.addEventListener("click", function(event) {
     editingNoteIndex = -1;
     clearNoteEditor();
     renderDayNotes(selectedDate);
+    document.getElementById("noteSaveStatus").textContent = "";
     shiftPopup.hidden = false;
 });
 
@@ -484,7 +486,8 @@ function clearNoteEditor() {
     document.getElementById("saveDayNote").textContent = "일정 추가";
     document.getElementById("cancelDayNoteEdit").hidden = true;
 }
-function selectedNoteDate() { return popupDate.textContent.split(" ")[0]; }
+let activeNoteDate = "";
+function selectedNoteDate() { return activeNoteDate; }
 function renderDayNotes(dateKey) {
     const list = document.getElementById("dayNotesList");
     const notes = getNotes(dateKey);
@@ -515,18 +518,45 @@ function renderDayNotes(dateKey) {
         actions.append(edit, remove); item.append(content, actions); list.appendChild(item);
     });
 }
-document.getElementById("saveDayNote").addEventListener("click", () => {
+function saveNoteFromEditor({ requireContent = false } = {}) {
     const dateKey = selectedNoteDate();
-    const note = { emoji: document.getElementById("dayNoteEmoji").value,
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(dateKey)) { alert("날짜를 다시 선택해 줘!"); return false; }
+    const note = {
+        emoji: document.getElementById("dayNoteEmoji").value,
         title: document.getElementById("dayNoteTitle").value.trim(),
-        text: document.getElementById("dayNoteText").value.trim() };
-    if (!note.emoji && !note.title && !note.text) { alert("이모지, 제목, 메모 중 하나는 입력해 줘!"); return; }
+        text: document.getElementById("dayNoteText").value.trim()
+    };
+    if (!note.emoji && !note.title && !note.text) {
+        if (requireContent) alert("이모지, 제목, 메모 중 하나는 입력해 줘!");
+        return !requireContent;
+    }
     const next = getNotes(dateKey).slice();
     if (editingNoteIndex >= 0 && editingNoteIndex < next.length) next[editingNoteIndex] = note;
     else next.push(note);
+    const previous = dayNotes[dateKey];
     dayNotes[dateKey] = next;
-    if (!persistDayNotes()) return;
-    editingNoteIndex = -1; clearNoteEditor(); renderDayNotes(dateKey); renderCalendar();
+    if (!persistDayNotes()) {
+        if (previous === undefined) delete dayNotes[dateKey]; else dayNotes[dateKey] = previous;
+        return false;
+    }
+    try {
+        const verified = JSON.parse(localStorage.getItem("dayNotes") || "{}");
+        if (!Array.isArray(verified[dateKey]) || verified[dateKey].length !== next.length) throw new Error("저장 확인 실패");
+    } catch (_) {
+        alert("메모 저장을 확인하지 못했어. 브라우저 저장 공간을 확인해 줘!");
+        return false;
+    }
+    editingNoteIndex = -1;
+    clearNoteEditor();
+    renderDayNotes(dateKey);
+    renderCalendar();
+    return true;
+}
+document.getElementById("saveDayNote").addEventListener("click", () => {
+    if (saveNoteFromEditor({requireContent:true})) {
+        const status = document.getElementById("noteSaveStatus");
+        status.textContent = "✓ 일정이 저장됐어! 달력에도 표시했어.";
+    }
 });
 document.getElementById("cancelDayNoteEdit").addEventListener("click", () => { editingNoteIndex = -1; clearNoteEditor(); });
 
@@ -541,7 +571,9 @@ document.getElementById("closePopup").addEventListener("click", function() {
 
 // 저장 버튼
 document.getElementById("saveCustomShift").addEventListener("click", function() {
-    const selectedDate = popupDate.textContent.split(" ")[0];
+    // 아래쪽 저장 버튼도 작성 중인 메모를 함께 저장합니다.
+    if (!saveNoteFromEditor()) return;
+    const selectedDate = selectedNoteDate();
     const selectedShift = document.getElementById("customShift").value;
 
     customShifts[selectedDate] = selectedShift;
@@ -558,7 +590,7 @@ document.getElementById("saveCustomShift").addEventListener("click", function() 
 
 // 기본 근무로 복구 버튼
 document.getElementById("resetCustomShift").addEventListener("click", function() {
-    const selectedDate = popupDate.textContent.split(" ")[0];
+    const selectedDate = selectedNoteDate();
 
     delete customShifts[selectedDate];
 

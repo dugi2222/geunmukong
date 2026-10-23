@@ -1108,3 +1108,6 @@ body[data-mascot-theme="dog"] .today-date, body[data-mascot-theme="cat"] .today-
 body.dark .day-notes-panel { border-color: #567363; }
 body.dark .day-notes-panel input, body.dark .day-notes-panel textarea, body.dark .day-notes-panel select { background: #24372d; color: #f1f5f2; border-color: #607d69; }
 body.dark .day-note-item { border-color: #567363; }
+
+.note-save-status { min-height: 18px; font-size: 12px; color: #28734c; margin-top: 8px; }
+body.dark .note-save-status { color: #9ae6b6; }

@@ -13,7 +13,7 @@
     <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
     <link rel="apple-touch-icon" href="icon-180.png">
     <title>근무콩</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=notes-fix1">
 </head>
 <body>
     <button id="menuBtn">☰</button>
@@ -150,10 +150,11 @@
           <input id="dayNoteTitle" type="text" maxlength="60" placeholder="예: 친구 만나기">
           <label for="dayNoteText">메모 (선택)</label>
           <textarea id="dayNoteText" maxlength="1000" rows="2" placeholder="기억할 내용을 적어줘"></textarea>
+          <div id="noteSaveStatus" role="status" aria-live="polite" class="note-save-status"></div>
           <div class="day-note-actions"><button type="button" id="saveDayNote">일정 추가</button><button type="button" id="cancelDayNoteEdit" hidden>수정 취소</button></div>
         </section>
         <div class="popup-buttons">
-            <button id="saveCustomShift">저장</button>
+            <button id="saveCustomShift">전체 저장 · 닫기</button>
             <button id="resetCustomShift">기본 근무로 복구</button>
             <button id="closePopup">닫기</button>
         </div>
@@ -197,7 +198,7 @@
     </div>
 </div>
 
-<script src="script.js"></script>
+<script src="script.js?v=notes-fix1"></script>
 <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
