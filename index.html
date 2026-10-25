@@ -13,7 +13,7 @@
     <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
     <link rel="apple-touch-icon" href="icon-180.png">
     <title>근무콩</title>
-    <link rel="stylesheet" href="style.css?v=step8-tabs1">
+    <link rel="stylesheet" href="css/style.css?v=clean1">
 </head>
 <body>
     <button id="menuBtn">☰</button>
@@ -47,7 +47,86 @@
       <button type="button" id="resetShiftColors" class="reset-shift-colors">↺ 기본 색상으로 되돌리기</button>
     </section>
     </div>
-    <button type="button" id="toggleBaseSettings" class="settings-toggle" aria-expanded="false" aria-controls="baseSettingsFields">⚙️ 내 근무 설정 ▾</button>
+    <section class="backup-tools" aria-label="데이터 백업과 복원">
+      <button type="button" id="toggleBackupTools" class="settings-toggle" aria-expanded="false" aria-controls="backupToolsBody">💾 데이터 백업 · 복원 ▾</button>
+      <div id="backupToolsBody" hidden>
+        <p class="settings-hint">근무표, 메모, 연차, 캐릭터 사진과 설정을 파일로 보관해요. 파일은 외부 서버로 전송되지 않아요.</p>
+        <div class="backup-actions"><button type="button" id="downloadBackup">⬇️ 백업 파일 저장</button><button type="button" id="restoreBackup">⬆️ 백업 파일 불러오기</button></div>
+        <input type="file" id="backupFileInput" accept=".json,application/json" hidden>
+        <p class="settings-hint" id="backupStatus" role="status" aria-live="polite">복원하면 현재 기기의 근무콩 데이터가 백업 내용으로 교체돼요.</p>
+      </div>
+    </section>
+    <button id="showChangesBtn">📋 근무 변경 내역</button>
+    <button id="bulkChangeBtn">📅 여러 날짜 변경</button>
+</div>
+
+    <div id="calendarArea" hidden>
+        <div class="calendar-nav">
+            <button id="prevBtn">❮</button>
+            <h2 id="monthTitle"></h2>
+            <button id="nextBtn">❯</button>
+        </div>
+        <div id="calendar"></div>
+
+        <div id="todayCard">
+            <div class="today-date">
+    <div id="todayDayNumber"></div>
+    <div id="todayMonthWeek"></div>
+</div>
+            <div>
+                <p>오늘의 근무</p>
+                <h2 id="todayShift"></h2>
+                <p id="todayMessage"></p>
+            </div>
+        </div>
+    </div>
+
+    <section id="workStatsPage" class="app-tab-page" hidden aria-label="근무 기록">
+      <div class="dashboard">
+        <h2>나의 근무 기록</h2>
+        <section class="tenure-section" aria-label="근무일 수">
+          <div class="tenure-label">근무일 수</div>
+          <div class="tenure-bar" role="progressbar" aria-label="근무 기간 진행률" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100"><div id="tenureFill"></div></div>
+          <div class="tenure-numbers"><span id="tenureDays">0일</span><span id="tenureRemaining"></span></div>
+        </section>
+        <div class="dashboard-lower">
+          <div class="dashboard-character">
+            <div id="dashboardMascot" class="dashboard-mascot" role="img" aria-label="선택한 캐릭터">🌱</div>
+            <button type="button" id="characterChange" class="character-change">캐릭터 변경</button>
+          </div>
+          <div class="dashboard-side">
+            <div id="dashboardMenu" class="dashboard-menu">
+              <button type="button" data-panel="leave">연차 관리</button>
+              <button type="button" data-panel="hire">입사 정보</button>
+              <button type="button" data-panel="settings">내 근무 설정</button>
+            </div>
+            <div id="dashboardPanel" class="dashboard-panel" hidden>
+              <div class="panel-head"><button type="button" id="dashboardBack" aria-label="메뉴로 돌아가기">‹</button><strong id="dashboardPanelTitle"></strong></div>
+              <div id="dashboardLeave" class="panel-body" hidden>
+                <div class="leave-overview" aria-label="연차 현황">
+                  <div class="leave-overview-title">나의 연차 <span id="leavePeriodDates" class="leave-period-inline"></span></div>
+                  <div id="leaveSummary" class="leave-summary-clean" aria-live="polite"></div>
+                </div>
+                <label class="stats-field leave-period-picker">조회 기간 <select id="leaveYear"></select></label>
+                <div id="leaveDates" class="leave-dates leave-history-clean"></div>
+                <details class="leave-advanced" id="leaveAdvanced">
+                  <summary>⚙️ 연차 설정 <span>갱신일 · 총연차 · 차감량</span></summary>
+                  <div class="leave-advanced-body">
+                    <label class="stats-field">연차 갱신일 (매년) <span class="leave-reset-fields"><select id="leaveResetMonth" aria-label="갱신 월"></select><select id="leaveResetDay" aria-label="갱신 일"></select></span></label>
+                    <label class="stats-field">총연차 (일) <input id="leaveAllowance" type="number" min="0" max="365" step="0.5" placeholder="직접 입력"></label>
+                    <div class="leave-cycle"><strong>근무별 기본 차감량</strong><label>☀️ 주간 <input id="leaveRateDay" type="number" min="0" max="3" step="0.5"></label><label>🌙 야간 <input id="leaveRateNight" type="number" min="0" max="3" step="0.5"></label><label>🌿 비번 <input id="leaveRateOff" type="number" min="0" max="3" step="0.5"></label></div>
+                    <p class="stats-help">기본 차감량을 바꿔도 이미 등록한 연차는 유지돼요.</p>
+                  </div>
+                </details>
+              </div>
+              <div id="dashboardHire" class="panel-body" hidden>
+                <label class="stats-field">입사일 <input type="date" id="statsHireDate"></label>
+                <label class="stats-field">퇴사 예정일 (선택) <input type="date" id="statsExitDate"></label>
+                <button type="button" id="saveHireDate" class="stats-save">저장</button>
+                <p class="stats-help">퇴사 예정일을 비워두면 체력바가 가득 차요.</p>
+              </div>
+              <div id="dashboardSettings" class="panel-body" hidden>
+                <button type="button" id="toggleBaseSettings" class="settings-toggle" aria-expanded="false" aria-controls="baseSettingsFields">⚙️ 내 근무 설정 ▾</button>
     <div id="baseSettingsFields" hidden>
 
     <label for="baseDateInput">기준 날짜</label>
@@ -98,33 +177,22 @@
     </div>
     <button id="saveShiftBtn">설정 저장</button>
     </div>
-    <button id="showChangesBtn">📋 근무 변경 내역</button>
-    <button id="bulkChangeBtn">📅 여러 날짜 변경</button>
-</div>
-
-    <div id="calendarArea" hidden>
-        <div class="calendar-nav">
-            <button id="prevBtn">❮</button>
-            <h2 id="monthTitle"></h2>
-            <button id="nextBtn">❯</button>
-        </div>
-        <div id="calendar"></div>
-
-        <div id="todayCard">
-            <div class="today-date">
-    <div id="todayDayNumber"></div>
-    <div id="todayMonthWeek"></div>
-</div>
-            <div>
-                <p>오늘의 근무</p>
-                <h2 id="todayShift"></h2>
-                <p id="todayMessage"></p>
+              </div>
+              <div id="dashboardCharacter" class="panel-body" hidden>
+                <p class="stats-help">근무 기록 화면에 표시할 캐릭터를 골라주세요.</p>
+                <div class="character-choices">
+                  <button type="button" data-character="bean">🌱<small>근무콩</small></button>
+                  <button type="button" data-character="dog">🐶<small>근무멍</small></button>
+                  <button type="button" data-character="cat">🐱<small>근무냥</small></button>
+                  <button type="button" data-character="photo">📷<small>내 사진</small></button>
+                </div>
+                <label class="photo-picker">사진 선택 <input type="file" id="characterPhoto" accept="image/*"></label>
+                <p class="stats-help">사진은 이 기기에만 저장돼요. 달력 테마와 별개로 선택할 수 있어요.</p>
+              </div>
             </div>
+          </div>
         </div>
-    </div>
-
-    <section id="workStatsPage" class="app-tab-page" hidden aria-label="근무 기록">
-      <div class="coming-soon"><div class="soon-icon">📊</div><h2>근무 기록</h2><p>연차와 근무 통계를 준비하고 있어요 🌱</p></div>
+      </div>
     </section>
     <section id="friendsPage" class="app-tab-page" hidden aria-label="친구">
       <div class="coming-soon"><div class="soon-icon">👥</div><h2>친구</h2><p>일정 공유와 친구 목록을 준비하고 있어요 🌱</p></div>
@@ -138,6 +206,20 @@
       <button type="button" class="bottom-tab" data-tab="friends"><span aria-hidden="true">👥</span><small>친구</small></button>
       <button type="button" class="bottom-tab" data-tab="community"><span aria-hidden="true">💬</span><small>소통</small></button>
     </nav>
+
+
+<!-- 신규 사용자 전용 시작 설정: 기존 사용자에게는 표시하지 않습니다. -->
+<section id="firstRunSetup" class="first-run-setup" hidden aria-label="첫 근무 설정" role="dialog" aria-modal="true">
+  <div class="first-run-card">
+    <div class="first-run-icon">🌱</div>
+    <h2>근무콩 시작하기</h2>
+    <p>처음 한 번만 설정하면 내 근무표가 자동으로 만들어져요.</p>
+    <label for="hireDateInput">📅 입사일</label>
+    <input type="date" id="hireDateInput" required>
+    <div id="firstRunSettingsSlot"></div>
+    <p class="first-run-footnote">근무 패턴과 기준 날짜는 나중에도 수정할 수 있어요.</p>
+  </div>
+</section>
 
 <!-- 날짜별 근무 변경 팝업 -->
 <div id="shiftPopup" hidden>
@@ -155,6 +237,7 @@
             <option value="휴무">🏠 휴무</option>
         </select>
 
+        <div id="leaveDeductionBox" class="leave-deduction" hidden><label for="leaveDeduction">🌴 연차 차감량 (일)</label><input id="leaveDeduction" type="number" min="0" max="3" step="0.5"><small id="leaveDeductionHint"></small></div>
         <section class="day-notes-panel" aria-label="날짜별 일정과 메모">
           <h3>📝 일정 · 메모</h3>
           <div id="dayNotesList" class="day-notes-list"></div>
@@ -205,14 +288,22 @@
             <option value="휴무">🏠 휴무</option>
         </select>
 
-        <div class="popup-buttons">
+        <div id="bulkLeaveDeductionBox" class="leave-deduction" hidden><label for="bulkLeaveDeduction">🌴 날짜별 연차 차감량 (일)</label><input id="bulkLeaveDeduction" type="number" min="0" max="3" step="0.5"><small>선택한 모든 날짜에 동일하게 적용해요.</small></div><div class="popup-buttons">
             <button id="saveBulkChange">변경하기</button>
             <button id="closeBulkPopup">닫기</button>
         </div>
     </div>
 </div>
 
-<script src="script.js?v=step8-tabs1"></script>
+<script src="calendar-data.js?v=clean1"></script>
+<script src="js/shifts.js?v=clean1"></script>
+<script src="js/holidays.js?v=clean1"></script>
+<script src="js/calendar.js?v=clean1"></script>
+<script src="js/themes.js?v=clean1"></script>
+<script src="js/schedule-editing.js?v=clean1"></script>
+<script src="js/navigation.js?v=clean1"></script>
+<script src="js/records.js?v=clean1"></script>
+<script src="js/backup.js?v=clean1"></script>
 <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
