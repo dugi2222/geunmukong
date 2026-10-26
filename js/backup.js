@@ -1,6 +1,6 @@
 // Step 16: offline, versioned data export/import. Only app-owned keys are included.
 (() => {
-  const exactKeys = new Set(['customShifts','shiftPattern','baseDate','shiftIndex','dayNotes','darkMode','mascotTheme','mascotShiftColors','leaveDeductions','leaveDeductionsMigrated','hireDate','exitDate','leaveResetDate','dashboardCharacter','dashboardPhoto']);
+  const exactKeys = new Set(['customShifts','shiftPattern','baseDate','shiftIndex','dayNotes','darkMode','mascotTheme','mascotShiftColors','leaveDeductions','leaveDeductionsMigrated','hireDate','exitDate','leaveResetDate','dashboardCharacter','dashboardPhoto','geunmukongNotificationSettings','geunmukongNotificationLastSent']);
   const appKey = key => exactKeys.has(key) || key.startsWith('leaveRate:') || key.startsWith('leaveAllowance:') || key.startsWith('leaveAllowanceCycle:') || key.startsWith('leaveTotal:');
   // Future per-period allowance keys are covered explicitly below.
   const extraKey = key => /^leave(?:Allowance|Total|Days|Year|Period)[_:]/.test(key);

@@ -89,6 +89,7 @@ function renderLeaveInfo(){
  if(!leaveYearSelect.value)leaveYearSelect.value=String(currentYear);
  const year=Number(leaveYearSelect.value),start=leaveCycleStart(year),end=new Date(leaveCycleStart(year+1).getTime()-86400000);
  document.getElementById('leavePeriodDates').textContent=dateLabel(start)+' ~ '+dateLabel(end);
+ document.getElementById('leaveHistoryPeriod').textContent=dateLabel(start)+' ~ '+dateLabel(end);
  const reset=leaveReset();
  // 1월 1일 기준의 기존 연도별 연차 총량은 그대로 사용해요.
  const key=(reset.month===1&&reset.day===1)?'leaveAllowance:'+year:'leaveAllowanceCycle:'+String(reset.month).padStart(2,'0')+'-'+String(reset.day).padStart(2,'0')+':'+year;
@@ -149,3 +150,27 @@ function renderWorkStats(){renderTenure();renderDashboardCharacter();}
 renderWorkStats();
 
 
+
+/* 연차 UI: 설정 팝업과 오른쪽 조회 서랍. 데이터 계산 로직은 변경하지 않음. */
+(() => {
+ const modal=document.getElementById('leaveSettingsModal');
+ const drawer=document.getElementById('leaveHistoryDrawer');
+ const backdrop=document.getElementById('leaveHistoryBackdrop');
+ const gear=document.getElementById('openLeaveSettings');
+ const historyBtn=document.getElementById('openLeaveHistory');
+ const closeSettings=document.getElementById('closeLeaveSettings');
+ const closeHistory=document.getElementById('closeLeaveHistory');
+ let lastFocus=null;
+ function lockScroll(){document.body.classList.toggle('leave-ui-open',!modal.hidden||drawer.classList.contains('is-open'));}
+ function showSettings(){lastFocus=document.activeElement;renderLeaveInfo();modal.hidden=false;lockScroll();closeSettings.focus();}
+ function hideSettings(){if(modal.hidden)return;modal.hidden=true;lockScroll();if(lastFocus?.isConnected)lastFocus.focus();}
+ function showHistory(){lastFocus=document.activeElement;renderLeaveInfo();backdrop.hidden=false;drawer.inert=false;drawer.setAttribute('aria-hidden','false');requestAnimationFrame(()=>drawer.classList.add('is-open'));lockScroll();closeHistory.focus();}
+ function hideHistory(){if(!drawer.classList.contains('is-open'))return;drawer.classList.remove('is-open');drawer.setAttribute('aria-hidden','true');drawer.inert=true;backdrop.hidden=true;lockScroll();if(lastFocus?.isConnected)lastFocus.focus();}
+ gear.addEventListener('click',showSettings);
+ closeSettings.addEventListener('click',hideSettings);
+ modal.addEventListener('click',e=>{if(e.target===modal)hideSettings();});
+ historyBtn.addEventListener('click',showHistory);
+ closeHistory.addEventListener('click',hideHistory);
+ backdrop.addEventListener('click',hideHistory);
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(!modal.hidden)hideSettings();else hideHistory();}});
+})();

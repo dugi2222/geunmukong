@@ -1354,3 +1354,69 @@ body.dark #calendar .special-day.labor { color:#ffb2b2; }
 .backup-actions button{flex:1 1 140px;border:1px solid var(--border-color, #b5c7bd);border-radius:12px;padding:11px 8px;background:var(--card-bg, #f1f7f3);color:inherit;font:inherit;cursor:pointer}
 body.dark .backup-actions button{background:#30343b;border-color:#50565f;color:#f3f4f6}
 #backupStatus{overflow-wrap:anywhere}
+
+/* v1.0.2: JS Pointer Events 스와이프 보존 및 화면 세로 흔들림 방지.
+   근무 기록/연차 관리와 팝업은 기존처럼 필요한 경우 스크롤 가능. */
+#calendarArea {
+  overflow-y: hidden;
+  overscroll-behavior: none;
+  touch-action: pan-x;
+}
+#calendarArea .calendar-nav,
+#calendarArea #todayCard { touch-action: manipulation; }
+#calendarArea #calendar { touch-action: none !important; }
+#calendarArea #calendar .calendar-track,
+#calendarArea #calendar .calendar-page,
+#calendarArea #calendar td { touch-action: none; }
+/* 낮은 화면에서도 6주 달력과 오늘의 근무 카드가 함께 보이도록 조절 */
+@media (max-height: 760px) {
+  #calendarArea .calendar-nav { min-height: 40px; margin-bottom: 3px; }
+  #calendarArea #calendar .calendar-page tbody tr,
+  #calendarArea #calendar .calendar-page td { height: clamp(37px, calc((100dvh - 275px) / 6), 61px); }
+  #calendarArea #calendar td[data-date] { height: clamp(37px, calc((100dvh - 275px) / 6), 61px); padding-top: 16px; }
+  #calendarArea #todayCard { margin-top: 5px; padding: 9px 12px; }
+  #calendarArea #todayDayNumber { font-size: 36px; }
+}
+/* 접근성 확대나 매우 작은 화면에서는 내용이 잘리지 않도록 스크롤 허용 */
+@media (max-height: 540px) {
+  #calendarArea { overflow-y: auto; overscroll-behavior-y: contain; touch-action: pan-y; }
+}
+
+/* 17단계: 근무 알림 설정 */
+.notification-tools { margin: 12px 0; }
+.notification-row { display:flex; align-items:center; justify-content:space-between; gap:10px; margin:12px 0; font-size:14px; }
+.notification-row input[type="checkbox"] { width:18px; height:18px; flex-shrink:0; }
+.notification-row input[type="time"] { max-width:135px; min-width:105px; }
+
+/* step 18: 연차 관리 UI. 기존 달력 터치 및 스크롤 규칙은 유지. */
+.leave-overview-title{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px}
+.leave-gear{border:1px solid rgba(128,128,128,.22);background:transparent;color:inherit;border-radius:10px;padding:6px 9px;font-size:18px;line-height:1;flex-shrink:0}
+.leave-period-inline{display:block;font-size:11px;opacity:.72;margin:0 0 12px;text-align:left}
+.leave-history-trigger{display:flex;align-items:center;justify-content:space-between;width:100%;margin-top:12px;padding:13px 14px;border:1px solid rgba(128,128,128,.18);border-radius:12px;background:var(--surface,#fff);color:inherit;font-weight:700;font-size:13px;text-align:left}
+.leave-history-trigger span{font-size:24px;line-height:1}
+.leave-ui-overlay{position:fixed;inset:0;z-index:1100;background:rgba(0,0,0,.56);display:flex;align-items:center;justify-content:center;padding:18px}
+.leave-settings-dialog{width:min(460px,100%);max-height:min(82dvh,740px);overflow-y:auto;overscroll-behavior:contain;border-radius:18px;background:#f4faf6;color:#245c45;box-shadow:0 12px 45px #0004;text-align:left}
+.leave-ui-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 18px;border-bottom:1px solid rgba(128,128,128,.18)}
+.leave-ui-head h2{font-size:17px;margin:0;color:inherit}
+.leave-ui-head button{padding:6px 10px;border-radius:10px;font-size:18px;line-height:1;background:rgba(128,128,128,.12);color:inherit}
+.leave-settings-dialog .leave-advanced-body{padding:18px;gap:18px}
+.leave-drawer-backdrop{position:fixed;inset:0;z-index:1101;background:rgba(0,0,0,.36)}
+.leave-history-drawer{position:fixed;z-index:1102;top:0;right:0;bottom:0;width:min(390px,92vw);background:#f4faf6;color:#245c45;box-shadow:-12px 0 35px #0003;transform:translateX(105%);transition:transform .3s ease;overflow-y:auto;overscroll-behavior:contain;text-align:left;padding-bottom:calc(20px + env(safe-area-inset-bottom))}
+.leave-history-drawer.is-open{transform:translateX(0)}
+.leave-history-drawer .leave-period-picker{display:flex;flex-direction:column;gap:8px;margin:18px}
+.leave-history-drawer .leave-period-picker select{max-width:100%;padding:9px}
+.leave-drawer-period{font-size:12px;opacity:.75;margin:0 18px 12px}
+.leave-history-drawer .leave-history-clean{margin:0 18px}
+body.leave-ui-open{overflow:hidden}
+body.dark .leave-settings-dialog,body.dark .leave-history-drawer{background:#304239;color:#f1f5f2}
+body.dark .leave-history-trigger{background:#304239;color:#f1f5f2}
+@media(prefers-reduced-motion:reduce){.leave-history-drawer{transition:none}}
+
+/* step19: independent shift and note reminder controls */
+.notification-tools{margin:12px 0 8px;padding:0 2px}
+.notification-tools .settings-toggle{width:100%}
+#notificationToolsBody{padding:12px 5px 5px}
+.notification-row select,.notification-row input[type=time]{border:1px solid #a8dcc2;border-radius:8px;padding:7px;max-width:150px}
+.note-alarm-editor{border:1px solid rgba(128,128,128,.2);border-radius:12px;padding:8px 12px;margin:12px 0;text-align:left}
+.note-alarm-editor small{font-size:11px;opacity:.8}
+.note-alarm-editor .notification-row{margin:7px 0}

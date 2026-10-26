@@ -50,6 +50,9 @@ function clearNoteEditor() {
     document.getElementById("dayNoteEmoji").value = "";
     document.getElementById("dayNoteTitle").value = "";
     document.getElementById("dayNoteText").value = "";
+    document.getElementById("dayNoteAlarmEnabled").checked = false;
+    document.getElementById("dayNoteAlarmTime").value = "09:00";
+    document.getElementById("dayNoteAlarmTimeRow").hidden = true;
     document.getElementById("saveDayNote").textContent = "일정 추가";
     document.getElementById("cancelDayNoteEdit").hidden = true;
 }
@@ -64,6 +67,7 @@ function renderDayNotes(dateKey) {
         const item = document.createElement("div"); item.className = "day-note-item";
         const content = document.createElement("div"); content.className = "day-note-content";
         const title = document.createElement("strong"); title.textContent = `${note.emoji || "📝"} ${note.title || "메모"}`; content.appendChild(title);
+        if (note.alarmTime) { const alarm = document.createElement("small"); alarm.textContent = `🔔 ${note.alarmTime}`; content.appendChild(alarm); }
         if (note.text) { const body = document.createElement("p"); body.textContent = note.text; content.appendChild(body); }
         const actions = document.createElement("div"); actions.className = "day-note-item-actions";
         const edit = document.createElement("button"); edit.type = "button"; edit.textContent = "수정";
@@ -72,6 +76,9 @@ function renderDayNotes(dateKey) {
             document.getElementById("dayNoteEmoji").value = note.emoji || "";
             document.getElementById("dayNoteTitle").value = note.title || "";
             document.getElementById("dayNoteText").value = note.text || "";
+            document.getElementById("dayNoteAlarmEnabled").checked = Boolean(note.alarmTime);
+            document.getElementById("dayNoteAlarmTime").value = note.alarmTime || "09:00";
+            document.getElementById("dayNoteAlarmTimeRow").hidden = !note.alarmTime;
             document.getElementById("saveDayNote").textContent = "수정 저장";
             document.getElementById("cancelDayNoteEdit").hidden = false;
         });
@@ -91,8 +98,10 @@ function saveNoteFromEditor({ requireContent = false } = {}) {
     const note = {
         emoji: document.getElementById("dayNoteEmoji").value,
         title: document.getElementById("dayNoteTitle").value.trim(),
-        text: document.getElementById("dayNoteText").value.trim()
+        text: document.getElementById("dayNoteText").value.trim(),
+        alarmTime: document.getElementById("dayNoteAlarmEnabled").checked ? document.getElementById("dayNoteAlarmTime").value : null
     };
+    if (note.alarmTime && !/^([01]\d|2[0-3]):[0-5]\d$/.test(note.alarmTime)) { alert("알림 시간을 확인해 줘!"); return false; }
     if (!note.emoji && !note.title && !note.text) {
         if (requireContent) alert("이모지, 제목, 메모 중 하나는 입력해 줘!");
         return !requireContent;
@@ -119,6 +128,9 @@ function saveNoteFromEditor({ requireContent = false } = {}) {
     renderCalendar();
     return true;
 }
+document.getElementById("dayNoteAlarmEnabled").addEventListener("change", event => {
+    document.getElementById("dayNoteAlarmTimeRow").hidden = !event.target.checked;
+});
 document.getElementById("saveDayNote").addEventListener("click", () => {
     if (saveNoteFromEditor({requireContent:true})) {
         const status = document.getElementById("noteSaveStatus");
@@ -452,8 +464,7 @@ calendar.addEventListener("pointerdown", function(e) {
     dragDeltaX = 0;
     const track = calendar.querySelector(".calendar-track");
     if (track) track.style.transition = "none";
-    // Keep receiving the gesture even when the finger leaves a date cell.
-    try { calendar.setPointerCapture(e.pointerId); } catch (_) {}
+    // Tap must retain its original date-cell click target. Capture only after a real swipe.
 });
 
 calendar.addEventListener("pointermove", function(e) {
@@ -467,7 +478,7 @@ calendar.addEventListener("pointermove", function(e) {
             return;
         }
         dragHorizontal = true;
-        // Pointer capture is established at pointerdown for touch and mouse.
+        try { calendar.setPointerCapture(e.pointerId); } catch (_) {}
     }
     dragDeltaX = Math.max(-calendar.clientWidth, Math.min(calendar.clientWidth, dx));
     const track = calendar.querySelector(".calendar-track");

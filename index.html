@@ -13,7 +13,7 @@
     <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
     <link rel="apple-touch-icon" href="icon-180.png">
     <title>근무콩</title>
-    <link rel="stylesheet" href="css/style.css?v=clean1">
+    <link rel="stylesheet" href="css/style.css?v=step19">
 </head>
 <body>
     <button id="menuBtn">☰</button>
@@ -54,6 +54,18 @@
         <div class="backup-actions"><button type="button" id="downloadBackup">⬇️ 백업 파일 저장</button><button type="button" id="restoreBackup">⬆️ 백업 파일 불러오기</button></div>
         <input type="file" id="backupFileInput" accept=".json,application/json" hidden>
         <p class="settings-hint" id="backupStatus" role="status" aria-live="polite">복원하면 현재 기기의 근무콩 데이터가 백업 내용으로 교체돼요.</p>
+      </div>
+    </section>
+    <section class="notification-tools" aria-label="근무 및 일정 알림">
+      <button type="button" id="toggleNotificationTools" class="settings-toggle" aria-expanded="false" aria-controls="notificationToolsBody">🔔 근무 · 일정 알림 ▾</button>
+      <div id="notificationToolsBody" hidden>
+        <p class="settings-hint">주간·야간 알림 시간을 각각 설정해요. 앱이 열려 있을 때만 정해진 시각에 알림을 확인할 수 있어요.</p>
+        <label class="notification-row">근무 알림 사용 <input type="checkbox" id="notificationEnabled"></label>
+        <label class="notification-row">☀️ 주간 알림 시간 <input type="time" id="notificationDayTime" value="07:00"></label>
+        <label class="notification-row">🌙 야간 알림 시간 <input type="time" id="notificationNightTime" value="18:00"></label>
+        <label class="notification-row">알림 대상 <select id="notificationTarget"><option value="today">오늘 근무</option><option value="tomorrow">내일 근무 (하루 전)</option></select></label>
+        <div class="backup-actions"><button type="button" id="notificationPermission">알림 권한 요청</button><button type="button" id="notificationTest">🔔 테스트 알림</button></div>
+        <p class="settings-hint" id="notificationStatus" role="status" aria-live="polite"></p>
       </div>
     </section>
     <button id="showChangesBtn">📋 근무 변경 내역</button>
@@ -104,20 +116,11 @@
               <div class="panel-head"><button type="button" id="dashboardBack" aria-label="메뉴로 돌아가기">‹</button><strong id="dashboardPanelTitle"></strong></div>
               <div id="dashboardLeave" class="panel-body" hidden>
                 <div class="leave-overview" aria-label="연차 현황">
-                  <div class="leave-overview-title">나의 연차 <span id="leavePeriodDates" class="leave-period-inline"></span></div>
+                  <div class="leave-overview-title"><span>나의 연차</span><button type="button" id="openLeaveSettings" class="leave-gear" aria-label="연차 설정 열기" title="연차 설정">⚙️</button></div>
+                  <span id="leavePeriodDates" class="leave-period-inline"></span>
                   <div id="leaveSummary" class="leave-summary-clean" aria-live="polite"></div>
                 </div>
-                <label class="stats-field leave-period-picker">조회 기간 <select id="leaveYear"></select></label>
-                <div id="leaveDates" class="leave-dates leave-history-clean"></div>
-                <details class="leave-advanced" id="leaveAdvanced">
-                  <summary>⚙️ 연차 설정 <span>갱신일 · 총연차 · 차감량</span></summary>
-                  <div class="leave-advanced-body">
-                    <label class="stats-field">연차 갱신일 (매년) <span class="leave-reset-fields"><select id="leaveResetMonth" aria-label="갱신 월"></select><select id="leaveResetDay" aria-label="갱신 일"></select></span></label>
-                    <label class="stats-field">총연차 (일) <input id="leaveAllowance" type="number" min="0" max="365" step="0.5" placeholder="직접 입력"></label>
-                    <div class="leave-cycle"><strong>근무별 기본 차감량</strong><label>☀️ 주간 <input id="leaveRateDay" type="number" min="0" max="3" step="0.5"></label><label>🌙 야간 <input id="leaveRateNight" type="number" min="0" max="3" step="0.5"></label><label>🌿 비번 <input id="leaveRateOff" type="number" min="0" max="3" step="0.5"></label></div>
-                    <p class="stats-help">기본 차감량을 바꿔도 이미 등록한 연차는 유지돼요.</p>
-                  </div>
-                </details>
+                <button type="button" id="openLeaveHistory" class="leave-history-trigger" aria-haspopup="dialog" aria-controls="leaveHistoryDrawer">📋 연차 사용 조회 <span aria-hidden="true">›</span></button>
               </div>
               <div id="dashboardHire" class="panel-body" hidden>
                 <label class="stats-field">입사일 <input type="date" id="statsHireDate"></label>
@@ -200,6 +203,27 @@
     <section id="communityPage" class="app-tab-page" hidden aria-label="소통">
       <div class="coming-soon"><div class="soon-icon">💬</div><h2>소통</h2><p>건의사항과 근무콩 광장을 준비하고 있어요 🌱</p><small>아직 작성한 의견이 개발자에게 전송되지는 않아요.</small></div>
     </section>
+    <!-- 연차 설정: 전체 화면 팝업 -->
+    <div id="leaveSettingsModal" class="leave-ui-overlay" hidden>
+      <section class="leave-settings-dialog" role="dialog" aria-modal="true" aria-labelledby="leaveSettingsTitle">
+        <div class="leave-ui-head"><h2 id="leaveSettingsTitle">⚙️ 연차 설정</h2><button type="button" id="closeLeaveSettings" aria-label="연차 설정 닫기">✕</button></div>
+        <div class="leave-advanced-body">
+
+                    <label class="stats-field">연차 갱신일 (매년) <span class="leave-reset-fields"><select id="leaveResetMonth" aria-label="갱신 월"></select><select id="leaveResetDay" aria-label="갱신 일"></select></span></label>
+                    <label class="stats-field">총연차 (일) <input id="leaveAllowance" type="number" min="0" max="365" step="0.5" placeholder="직접 입력"></label>
+                    <div class="leave-cycle"><strong>근무별 기본 차감량</strong><label>☀️ 주간 <input id="leaveRateDay" type="number" min="0" max="3" step="0.5"></label><label>🌙 야간 <input id="leaveRateNight" type="number" min="0" max="3" step="0.5"></label><label>🌿 비번 <input id="leaveRateOff" type="number" min="0" max="3" step="0.5"></label></div>
+                    <p class="stats-help">기본 차감량을 바꿔도 이미 등록한 연차는 유지돼요.</p>
+                          </div>
+      </section>
+    </div>
+    <!-- 연차 사용 조회: 오른쪽에서 열리는 패널 -->
+    <div id="leaveHistoryBackdrop" class="leave-drawer-backdrop" hidden></div>
+    <aside id="leaveHistoryDrawer" class="leave-history-drawer" role="dialog" aria-modal="true" aria-labelledby="leaveHistoryTitle" aria-hidden="true" inert>
+      <div class="leave-ui-head"><h2 id="leaveHistoryTitle">📋 연차 사용 조회</h2><button type="button" id="closeLeaveHistory" aria-label="연차 사용 조회 닫기">✕</button></div>
+      <label class="stats-field leave-period-picker">조회 기간 <select id="leaveYear"></select></label>
+      <div id="leaveHistoryPeriod" class="leave-drawer-period"></div>
+      <div id="leaveDates" class="leave-dates leave-history-clean"></div>
+    </aside>
     <nav id="bottomTabs" class="bottom-tabs" aria-label="하단 메뉴" hidden>
       <button type="button" class="bottom-tab active" data-tab="calendar" aria-current="page"><span aria-hidden="true">📅</span><small>달력</small></button>
       <button type="button" class="bottom-tab" data-tab="stats"><span aria-hidden="true">📊</span><small>근무 기록</small></button>
@@ -247,6 +271,7 @@
           <input id="dayNoteTitle" type="text" maxlength="60" placeholder="예: 친구 만나기">
           <label for="dayNoteText">메모 (선택)</label>
           <textarea id="dayNoteText" maxlength="1000" rows="2" placeholder="기억할 내용을 적어줘"></textarea>
+          <div class="note-alarm-editor"><label class="notification-row">🔔 이 일정 알림 <input type="checkbox" id="dayNoteAlarmEnabled"></label><label class="notification-row" id="dayNoteAlarmTimeRow" hidden>알림 시각 <input type="time" id="dayNoteAlarmTime" value="09:00"></label><small>선택한 날짜의 지정 시각에 앱이 열려 있을 때 알림을 표시해요.</small></div>
           <div id="noteSaveStatus" role="status" aria-live="polite" class="note-save-status"></div>
           <div class="day-note-actions"><button type="button" id="saveDayNote">일정 추가</button><button type="button" id="cancelDayNoteEdit" hidden>수정 취소</button></div>
         </section>
@@ -296,14 +321,15 @@
 </div>
 
 <script src="calendar-data.js?v=clean1"></script>
-<script src="js/shifts.js?v=clean1"></script>
-<script src="js/holidays.js?v=clean1"></script>
-<script src="js/calendar.js?v=clean1"></script>
-<script src="js/themes.js?v=clean1"></script>
-<script src="js/schedule-editing.js?v=clean1"></script>
-<script src="js/navigation.js?v=clean1"></script>
-<script src="js/records.js?v=clean1"></script>
-<script src="js/backup.js?v=clean1"></script>
+<script src="js/shifts.js?v=step19"></script>
+<script src="js/holidays.js?v=step19"></script>
+<script src="js/calendar.js?v=step19"></script>
+<script src="js/themes.js?v=step19"></script>
+<script src="js/schedule-editing.js?v=step19"></script>
+<script src="js/navigation.js?v=step19"></script>
+<script src="js/records.js?v=step19"></script>
+<script src="js/backup.js?v=step19"></script>
+<script src="js/notifications.js?v=step19"></script>
 <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
