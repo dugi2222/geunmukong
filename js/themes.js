@@ -28,20 +28,26 @@ updateThemeButton();
 // 5-1: 캐릭터 테마 선택과 로컬 저장. 기존 근무표 데이터와 독립적으로 관리합니다.
 const mascotThemeSelect = document.getElementById("mascotTheme");
 const mascotThemeNames = {
-    bean: { icon: "🌱", name: "근무콩" },
+    bean: { icon: "🐢", name: "근무북" },
     dog: { icon: "🐶", name: "근무멍" },
-    cat: { icon: "🐱", name: "근무냥" }
+    cat: { icon: "🐱", name: "근무냥" },
+    seal: { icon: "🦭", name: "근무엉" },
+    panda: { icon: "🐼", name: "근무다" }
 };
 // 5-3: 캐릭터별 근무 색상은 별도로 저장합니다. 다른 사용자 설정은 변경하지 않습니다.
 const shiftColorDefaults = {
-    bean: {day:"#dceBff",night:"#ede2ff",off:"#ddf5e7"},
+    bean: {day:"#DCEBFF",night:"#EDE2FF",off:"#DDF5E7"},
     dog: {day:"#fff0b5",night:"#d9e3f7",off:"#ffe0df"},
-    cat: {day:"#fce5df",night:"#e8ddfa",off:"#d9f1ed"}
+    cat: {day:"#fce5df",night:"#e8ddfa",off:"#F5EBD4"},
+    seal: {day:"#d9efff",night:"#dbe4ff",off:"#d9f3f3"},
+    panda: {day:"#ececec",night:"#d4d4d4",off:"#f7f7f7"}
 };
 const shiftColorDarkDefaults = {
-    bean:{day:"#243b57",night:"#413255",off:"#25483a"},
+    bean:{day:"#243B57",night:"#413255",off:"#25483A"},
     dog:{day:"#584b2c",night:"#273b5c",off:"#58383a"},
-    cat:{day:"#593b3d",night:"#443459",off:"#284b4a"}
+    cat:{day:"#593b3d",night:"#443459",off:"#554B38"},
+    seal:{day:"#29465d",night:"#303f63",off:"#28515b"},
+    panda:{day:"#424242",night:"#555555",off:"#303030"}
 };
 const colorInputs = {
     day: document.getElementById("shiftDayColor"),
@@ -60,7 +66,7 @@ function currentColors(theme) {
     return Object.fromEntries(["day","night","off"].map(k => [k,validHex(custom[k]) ? custom[k] : defaults[k]]));
 }
 function refreshShiftColors() {
-    const theme = document.body.dataset.mascotTheme || "bean";
+    const theme = document.body.dataset.mascotTheme || "dog";
     const colors = currentColors(theme);
     for (const key of ["day","night","off"]) {
         document.body.style.setProperty(`--custom-shift-${key}`,colors[key]);
@@ -72,20 +78,20 @@ function persistShiftColors() {
 }
 for (const [key,input] of Object.entries(colorInputs)) {
     input.addEventListener("input", () => {
-        const theme = document.body.dataset.mascotTheme || "bean";
+        const theme = document.body.dataset.mascotTheme || "dog";
         savedShiftColors[theme] = {...currentColors(theme),[key]:input.value};
         refreshShiftColors();
         persistShiftColors();
     });
 }
 document.getElementById("resetShiftColors").addEventListener("click", () => {
-    const theme = document.body.dataset.mascotTheme || "bean";
+    const theme = document.body.dataset.mascotTheme || "dog";
     delete savedShiftColors[theme];
     refreshShiftColors();
     persistShiftColors();
 });
 function applyMascotTheme(theme) {
-    const safeTheme = Object.hasOwn(mascotThemeNames, theme) ? theme : "bean";
+    const safeTheme = Object.hasOwn(mascotThemeNames, theme) ? theme : "dog";
     document.body.dataset.mascotTheme = safeTheme;
     mascotThemeSelect.value = safeTheme;
     refreshShiftColors();
@@ -95,8 +101,15 @@ function applyMascotTheme(theme) {
     const splashTitle = document.querySelector("#homeScreen h1");
     if (splashTitle) splashTitle.textContent = mascot.name;
 }
-let savedMascotTheme = "bean";
-try { savedMascotTheme = localStorage.getItem("mascotTheme") || "bean"; } catch (_) {}
+let savedMascotTheme = "dog";
+try { savedMascotTheme = localStorage.getItem("mascotTheme") || "dog"; } catch (_) {}
+try {
+    if (!localStorage.getItem("mascotMainMigrationV1")) {
+        if (savedMascotTheme === "bean") savedMascotTheme = "dog";
+        localStorage.setItem("mascotTheme", savedMascotTheme);
+        localStorage.setItem("mascotMainMigrationV1", "done");
+    }
+} catch (_) {}
 applyMascotTheme(savedMascotTheme);
 mascotThemeSelect.addEventListener("change", function() {
     applyMascotTheme(this.value);

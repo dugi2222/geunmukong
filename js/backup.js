@@ -17,7 +17,7 @@
       const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json;charset=utf-8'});
       const url=URL.createObjectURL(blob),a=document.createElement('a');
       const d=new Date(),date=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-      a.href=url;a.download=`근무콩_백업_${date}.json`;document.body.appendChild(a);a.click();a.remove();
+      a.href=url;a.download=`근무멍_백업_${date}.json`;document.body.appendChild(a);a.click();a.remove();
       setTimeout(()=>URL.revokeObjectURL(url),60000);
       status.textContent='백업 파일을 만들었어요. 파일 앱이나 클라우드에 안전하게 보관해 주세요.';
     }catch(e){status.textContent='백업 파일을 만들지 못했어요. 저장 공간과 브라우저 설정을 확인해 주세요.';}
@@ -29,19 +29,19 @@
     let payload;
     try{payload=JSON.parse(await file.text());}catch(_){alert('파일을 읽을 수 없어요. JSON 백업 파일인지 확인해 주세요.');return;}
     if(!payload||payload.app!=='geunmukong'||payload.formatVersion!==1||!payload.data||typeof payload.data!=='object'||Array.isArray(payload.data)){
-      alert('근무콩에서 만든 지원되는 백업 파일이 아니에요.');return;
+      alert('근무멍에서 만든 지원되는 백업 파일이 아니에요.');return;
     }
     const entries=Object.entries(payload.data);
     if(entries.some(([key,value])=>!owned(key)||typeof value!=='string')||!('shiftPattern' in payload.data||'baseDate' in payload.data)){
       alert('백업 데이터 형식이 올바르지 않아요.');return;
     }
     const when=typeof payload.exportedAt==='string'?payload.exportedAt.slice(0,10):'날짜 정보 없음';
-    if(!confirm(`백업 날짜: ${when}\n복원하면 이 기기의 기존 근무콩 설정, 메모, 연차 기록과 사진이 백업 내용으로 교체돼요.\n\n현재 데이터를 먼저 백업하는 것을 권장해요. 계속할까요?`))return;
+    if(!confirm(`백업 날짜: ${when}\n복원하면 이 기기의 기존 근무멍 설정, 메모, 연차 기록과 사진이 백업 내용으로 교체돼요.\n\n현재 데이터를 먼저 백업하는 것을 권장해요. 계속할까요?`))return;
     const before=snapshot();
     try{
       Object.keys(before).forEach(key=>localStorage.removeItem(key));
       entries.forEach(([key,value])=>localStorage.setItem(key,value));
-      status.textContent='복원 완료! 근무콩을 다시 불러옵니다.';
+      status.textContent='복원 완료! 근무멍을 다시 불러옵니다.';
       window.location.reload();
     }catch(error){
       try{Object.keys(snapshot()).forEach(key=>localStorage.removeItem(key));Object.entries(before).forEach(([key,value])=>localStorage.setItem(key,value));}

@@ -1016,30 +1016,30 @@ body[data-mascot-theme="cat"] {
   --accent:#8b6fb0; --accent-ink:#634782; --surface:#f1e9fa;
   --shift-day:#fce5df; --shift-day-ink:#9a5147;
   --shift-night:#e8ddfa; --shift-night-ink:#674596;
-  --shift-off:#d9f1ed; --shift-off-ink:#276e68;
+  --shift-off:#F5EBD4; --shift-off-ink:#725A38;
   background-color:#fcf9ff;
 }
-body[data-mascot-theme="dog"],body[data-mascot-theme="cat"] {
+body[data-mascot-theme="dog"],body[data-mascot-theme="cat"],body[data-mascot-theme="seal"],body[data-mascot-theme="panda"] {
   color:var(--accent-ink);
 }
 body[data-mascot-theme="dog"] h1,body[data-mascot-theme="cat"] h1,
 body[data-mascot-theme="dog"] .calendar-nav h2,body[data-mascot-theme="cat"] .calendar-nav h2,
-body[data-mascot-theme="dog"] .popup-content h2,body[data-mascot-theme="cat"] .popup-content h2 {color:var(--accent-ink)}
-body[data-mascot-theme="dog"] button,body[data-mascot-theme="cat"] button {background:var(--surface);color:var(--accent-ink)}
+body[data-mascot-theme="dog"] .popup-content h2,body[data-mascot-theme="cat"] .popup-content h2,body[data-mascot-theme="seal"] .popup-content h2,body[data-mascot-theme="panda"] .popup-content h2 {color:var(--accent-ink)}
+body[data-mascot-theme="dog"] button,body[data-mascot-theme="cat"] button,body[data-mascot-theme="seal"] button,body[data-mascot-theme="panda"] button {background:var(--surface);color:var(--accent-ink)}
 body[data-mascot-theme="dog"] #menuBtn,body[data-mascot-theme="cat"] #menuBtn,
-body[data-mascot-theme="dog"] #themeBtn,body[data-mascot-theme="cat"] #themeBtn {background:var(--surface);color:var(--accent-ink)}
-body[data-mascot-theme="dog"] th,body[data-mascot-theme="cat"] th {background:var(--surface);color:var(--accent-ink)}
+body[data-mascot-theme="dog"] #themeBtn,body[data-mascot-theme="cat"] #themeBtn,body[data-mascot-theme="seal"] #themeBtn,body[data-mascot-theme="panda"] #themeBtn {background:var(--surface);color:var(--accent-ink)}
+body[data-mascot-theme="dog"] th,body[data-mascot-theme="cat"] th,body[data-mascot-theme="seal"] th,body[data-mascot-theme="panda"] th {background:var(--surface);color:var(--accent-ink)}
 body[data-mascot-theme="dog"] #todayCard,body[data-mascot-theme="cat"] #todayCard,
 body[data-mascot-theme="dog"] .shift-settings,body[data-mascot-theme="cat"] .shift-settings,
-body[data-mascot-theme="dog"] .popup-content,body[data-mascot-theme="cat"] .popup-content {background:var(--surface)}
-body[data-mascot-theme="dog"] #todayCard h2,body[data-mascot-theme="cat"] #todayCard h2 {color:var(--accent-ink)}
-body[data-mascot-theme="dog"] .mascot-settings,body[data-mascot-theme="cat"] .mascot-settings {background:rgba(255,255,255,.38)}
-body[data-mascot-theme="dog"] #shiftSettings .settings-toggle,body[data-mascot-theme="cat"] #shiftSettings .settings-toggle {background:var(--accent);color:#fff}
-body[data-mascot-theme="dog"] td.day,body[data-mascot-theme="cat"] td.day {background:var(--shift-day);color:var(--shift-day-ink)}
-body[data-mascot-theme="dog"] td.night,body[data-mascot-theme="cat"] td.night {background:var(--shift-night);color:var(--shift-night-ink)}
-body[data-mascot-theme="dog"] td.off,body[data-mascot-theme="cat"] td.off {background:var(--shift-off);color:var(--shift-off-ink)}
-body[data-mascot-theme="dog"] td.today,body[data-mascot-theme="cat"] td.today {outline-color:var(--accent)}
-body[data-mascot-theme="dog"] #homeScreen,body[data-mascot-theme="cat"] #homeScreen {background:var(--surface)}
+body[data-mascot-theme="dog"] .popup-content,body[data-mascot-theme="cat"] .popup-content,body[data-mascot-theme="seal"] .popup-content,body[data-mascot-theme="panda"] .popup-content {background:var(--surface)}
+body[data-mascot-theme="dog"] #todayCard h2,body[data-mascot-theme="cat"] #todayCard h2,body[data-mascot-theme="seal"] #todayCard h2,body[data-mascot-theme="panda"] #todayCard h2 {color:var(--accent-ink)}
+body[data-mascot-theme="dog"] .mascot-settings,body[data-mascot-theme="cat"] .mascot-settings,body[data-mascot-theme="seal"] .mascot-settings,body[data-mascot-theme="panda"] .mascot-settings {background:rgba(255,255,255,.38)}
+body[data-mascot-theme="dog"] #shiftSettings .settings-toggle,body[data-mascot-theme="cat"] #shiftSettings .settings-toggle,body[data-mascot-theme="seal"] #shiftSettings .settings-toggle,body[data-mascot-theme="panda"] #shiftSettings .settings-toggle {background:var(--accent);color:#fff}
+body[data-mascot-theme="dog"] td.day,body[data-mascot-theme="cat"] td.day,body[data-mascot-theme="seal"] td.day,body[data-mascot-theme="panda"] td.day {background:var(--shift-day);color:var(--shift-day-ink)}
+body[data-mascot-theme="dog"] td.night,body[data-mascot-theme="cat"] td.night,body[data-mascot-theme="seal"] td.night,body[data-mascot-theme="panda"] td.night {background:var(--shift-night);color:var(--shift-night-ink)}
+body[data-mascot-theme="dog"] td.off,body[data-mascot-theme="cat"] td.off,body[data-mascot-theme="seal"] td.off,body[data-mascot-theme="panda"] td.off {background:var(--shift-off);color:var(--shift-off-ink)}
+body[data-mascot-theme="dog"] td.today,body[data-mascot-theme="cat"] td.today,body[data-mascot-theme="seal"] td.today,body[data-mascot-theme="panda"] td.today {outline-color:var(--accent)}
+body[data-mascot-theme="dog"] #homeScreen,body[data-mascot-theme="cat"] #homeScreen,body[data-mascot-theme="seal"] #homeScreen,body[data-mascot-theme="panda"] #homeScreen {background:var(--surface)}
 body.dark[data-mascot-theme="dog"] {
   --accent:#e1b45d;--accent-ink:#ffe4aa;--surface:#39352e;
   --shift-day:#584b2c;--shift-day-ink:#ffe2a1;
@@ -1051,12 +1051,12 @@ body.dark[data-mascot-theme="cat"] {
   --accent:#bba0e1;--accent-ink:#e6d5ff;--surface:#393044;
   --shift-day:#593b3d;--shift-day-ink:#ffd2c8;
   --shift-night:#443459;--shift-night-ink:#e6d3ff;
-  --shift-off:#284b4a;--shift-off-ink:#bdf1e9;
+  --shift-off:#554B38;--shift-off-ink:#F5EBD4;
   background-color:#26222d;color:#eee7f5;
 }
 body.dark[data-mascot-theme="dog"] #shiftSettings .settings-toggle,
 body.dark[data-mascot-theme="cat"] #shiftSettings .settings-toggle {background:var(--accent);color:#201d25}
-body.dark[data-mascot-theme="dog"] #todayCard p,body.dark[data-mascot-theme="cat"] #todayCard p {color:var(--accent-ink)}
+body.dark[data-mascot-theme="dog"] #todayCard p,body.dark[data-mascot-theme="cat"] #todayCard p,body.dark[data-mascot-theme="seal"] #todayCard p,body.dark[data-mascot-theme="panda"] #todayCard p {color:var(--accent-ink)}
 body.dark[data-mascot-theme="dog"] #calendar td.adjacent-month,
 body.dark[data-mascot-theme="cat"] #calendar td.adjacent-month {background:#2c2b31;color:#99939d}
 body.dark[data-mascot-theme="dog"] .mascot-settings,
@@ -1071,16 +1071,16 @@ body.dark[data-mascot-theme="cat"] .mascot-settings {background:rgba(255,255,255
 .shift-color-grid input[type="color"] { width:100%; height:38px; border:1px solid rgba(110,130,110,.25); border-radius:9px; padding:3px; cursor:pointer; background:transparent; box-sizing:border-box; }
 .reset-shift-colors { display:block; width:100%; margin-top:10px; padding:9px; border-radius:9px; cursor:pointer; }
 body.dark .shift-color-settings { background:rgba(170,210,180,.09); }
-body[data-mascot-theme="dog"] .shift-color-settings, body[data-mascot-theme="cat"] .shift-color-settings { background:rgba(255,255,255,.38); }
-body.dark[data-mascot-theme="dog"] .shift-color-settings, body.dark[data-mascot-theme="cat"] .shift-color-settings { background:rgba(255,255,255,.06); }
+body[data-mascot-theme="dog"] .shift-color-settings, body[data-mascot-theme="cat"] .shift-color-settings,body[data-mascot-theme="seal"] .shift-color-settings, body[data-mascot-theme="panda"] .shift-color-settings { background:rgba(255,255,255,.38); }
+body.dark[data-mascot-theme="dog"] .shift-color-settings, body.dark[data-mascot-theme="cat"] .shift-color-settings,body.dark[data-mascot-theme="seal"] .shift-color-settings, body.dark[data-mascot-theme="panda"] .shift-color-settings { background:rgba(255,255,255,.06); }
 /* 테마의 다른 요소는 유지하고 근무 칸 배경색만 사용자 설정으로 덮어씁니다. */
 body #calendar td.day { background-color:var(--custom-shift-day); }
 body #calendar td.night { background-color:var(--custom-shift-night); }
 body #calendar td.off { background-color:var(--custom-shift-off); }
 /* 하단 날짜는 근무콩/근무멍/근무냥의 강조색을 따릅니다. */
-body[data-mascot-theme="dog"] #todayDayNumber, body[data-mascot-theme="cat"] #todayDayNumber { color:var(--accent-ink); }
-body[data-mascot-theme="dog"] #todayMonthWeek, body[data-mascot-theme="cat"] #todayMonthWeek { color:var(--accent-ink); }
-body[data-mascot-theme="dog"] .today-date, body[data-mascot-theme="cat"] .today-date { border-right-color:var(--accent); }
+body[data-mascot-theme="dog"] #todayDayNumber, body[data-mascot-theme="cat"] #todayDayNumber,body[data-mascot-theme="seal"] #todayDayNumber, body[data-mascot-theme="panda"] #todayDayNumber { color:var(--accent-ink); }
+body[data-mascot-theme="dog"] #todayMonthWeek, body[data-mascot-theme="cat"] #todayMonthWeek,body[data-mascot-theme="seal"] #todayMonthWeek, body[data-mascot-theme="panda"] #todayMonthWeek { color:var(--accent-ink); }
+body[data-mascot-theme="dog"] .today-date, body[data-mascot-theme="cat"] .today-date,body[data-mascot-theme="seal"] .today-date, body[data-mascot-theme="panda"] .today-date { border-right-color:var(--accent); }
 
 /* 접힌 테마 설정은 다른 스타일보다 우선하여 숨김 */
 #themeSettingsFields[hidden] { display: none !important; }
@@ -1420,3 +1420,344 @@ body.dark .leave-history-trigger{background:#304239;color:#f1f5f2}
 .note-alarm-editor{border:1px solid rgba(128,128,128,.2);border-radius:12px;padding:8px 12px;margin:12px 0;text-align:left}
 .note-alarm-editor small{font-size:11px;opacity:.8}
 .note-alarm-editor .notification-row{margin:7px 0}
+
+/* 20단계: 근무 설정 전용 오른쪽 슬라이드 패널 */
+.work-settings-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.48);z-index:1800}
+.work-settings-drawer{position:fixed;right:0;top:0;bottom:0;width:min(520px,95vw);box-sizing:border-box;background:var(--surface,#fff);color:inherit;z-index:1801;display:flex;flex-direction:column;box-shadow:-12px 0 32px rgba(0,0,0,.2);animation:workDrawerEnter .24s ease-out}
+.work-settings-drawer[hidden],.work-settings-backdrop[hidden]{display:none!important}
+@keyframes workDrawerEnter{from{transform:translateX(100%)}to{transform:translateX(0)}}
+.work-drawer-head{display:flex;justify-content:space-between;align-items:center;padding:18px 18px 12px;border-bottom:1px solid #aaa5;flex-shrink:0}
+.work-drawer-head h2{margin:0;font-size:19px}
+.work-drawer-head button{border:0;background:transparent;color:inherit;font-size:23px;min-width:44px;min-height:44px;cursor:pointer}
+.work-drawer-body{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:16px 20px 30px}
+.work-drawer-body #baseSettingsFields{display:block!important;max-height:none!important;overflow:visible!important;padding:0!important;border:0!important}
+.work-drawer-body #baseSettingsFields label{display:block;font-size:14px;margin:14px 0 5px}
+.work-drawer-body #baseSettingsFields input,.work-drawer-body #baseSettingsFields select{box-sizing:border-box;width:100%;max-width:100%;min-height:42px;padding:8px;margin:5px 0 10px;font-size:15px}
+.work-drawer-body #saveShiftBtn{display:none!important}
+.work-drawer-body .pattern-actions{display:flex;flex-wrap:wrap;gap:6px}
+.work-drawer-body .pattern-actions button{font-size:13px;min-height:36px}
+.work-drawer-footer{flex-shrink:0;display:flex;flex-direction:column;gap:8px;padding:12px 18px max(14px,env(safe-area-inset-bottom));border-top:1px solid #aaa5;background:var(--surface,#fff)}
+#workSettingsStatus{font-size:12px;text-align:center}
+#workSettingsSave{width:100%;min-height:52px;border:0;border-radius:12px;background:var(--accent,#4c9b70);color:#fff;font-size:16px;font-weight:800;cursor:pointer}
+#workSettingsSave:disabled{opacity:.55;cursor:default}
+body.work-drawer-open{overflow:hidden}
+body.dark .work-settings-drawer,body.dark .work-drawer-footer{background:#27272c;color:#f5f5f5}
+
+/* Step 22: 근무엉(소다 블루), 근무다(무채색) 팔레트. 다크 모드는 별도 유지. */
+body[data-mascot-theme="seal"] {
+  --accent:#408bb9;--accent-ink:#235f83;--surface:#e4f4ff;
+  --shift-day:#d9efff;--shift-day-ink:#225e89;
+  --shift-night:#dbe4ff;--shift-night-ink:#394f89;
+  --shift-off:#d9f3f3;--shift-off-ink:#246d71;
+  background-color:#f2faff;
+}
+body[data-mascot-theme="panda"] {
+  --accent:#555555;--accent-ink:#292929;--surface:#eeeeee;
+  --shift-day:#ececec;--shift-day-ink:#343434;
+  --shift-night:#d4d4d4;--shift-night-ink:#252525;
+  --shift-off:#f7f7f7;--shift-off-ink:#555555;
+  background-color:#fafafa;
+}
+body.dark[data-mascot-theme="seal"] {
+  --accent:#84bfe8;--accent-ink:#d0eaff;--surface:#273b4b;
+  --shift-day:#29465d;--shift-day-ink:#d4ecff;
+  --shift-night:#303f63;--shift-night-ink:#dce5ff;
+  --shift-off:#28515b;--shift-off-ink:#c4f1f4;
+  background-color:#192a38;color:#e8f4ff;
+}
+body.dark[data-mascot-theme="panda"] {
+  --accent:#bcbcbc;--accent-ink:#f3f3f3;--surface:#333333;
+  --shift-day:#424242;--shift-day-ink:#f2f2f2;
+  --shift-night:#555555;--shift-night-ink:#ffffff;
+  --shift-off:#303030;--shift-off-ink:#dddddd;
+  background-color:#1b1b1b;color:#eeeeee;
+}
+body[data-mascot-theme="seal"] {--record-heading:#245b80;--record-subheading:#527f9e;--record-muted:#718fa4;--record-track:#dcecf7;--record-track-border:#b2d2e7;--record-fill-start:#9ad4f5;--record-fill-end:#4d9dce}
+body[data-mascot-theme="panda"] {--record-heading:#303030;--record-subheading:#575757;--record-muted:#777777;--record-track:#e6e6e6;--record-track-border:#cccccc;--record-fill-start:#aaaaaa;--record-fill-end:#606060}
+body.dark[data-mascot-theme="seal"] {--record-heading:#e2f2ff;--record-subheading:#b4d7f0;--record-muted:#8bb1ce;--record-track:#30485b;--record-track-border:#50738c;--record-fill-start:#81c3ec;--record-fill-end:#448ebc}
+body.dark[data-mascot-theme="panda"] {--record-heading:#f5f5f5;--record-subheading:#cecece;--record-muted:#aaaaaa;--record-track:#3a3a3a;--record-track-border:#666666;--record-fill-start:#bcbcbc;--record-fill-end:#777777}
+
+/* Step 22.1: 신규 테마의 남아 있는 기본 초록색 제거 */
+body[data-mascot-theme="seal"] #todayCard,
+body[data-mascot-theme="panda"] #todayCard {
+  background:var(--surface);
+  color:var(--accent-ink);
+}
+body.dark[data-mascot-theme="seal"] #todayCard,
+body.dark[data-mascot-theme="panda"] #todayCard {
+  background:var(--surface);
+  color:var(--accent-ink);
+}
+body.dark[data-mascot-theme="seal"] #todayCard h2,
+body.dark[data-mascot-theme="seal"] #todayCard p,
+body.dark[data-mascot-theme="panda"] #todayCard h2,
+body.dark[data-mascot-theme="panda"] #todayCard p {color:var(--accent-ink)}
+
+/* 연차 설정/조회는 기본 근무콩 초록 팔레트를 강제하지 않는다. */
+body[data-mascot-theme="seal"] .leave-settings-dialog,
+body[data-mascot-theme="seal"] .leave-history-drawer,
+body[data-mascot-theme="panda"] .leave-settings-dialog,
+body[data-mascot-theme="panda"] .leave-history-drawer {
+  background:var(--surface);
+  color:var(--accent-ink);
+}
+body.dark[data-mascot-theme="seal"] .leave-settings-dialog,
+body.dark[data-mascot-theme="seal"] .leave-history-drawer,
+body.dark[data-mascot-theme="panda"] .leave-settings-dialog,
+body.dark[data-mascot-theme="panda"] .leave-history-drawer {
+  background:var(--surface);
+  color:var(--accent-ink);
+}
+body.dark[data-mascot-theme="seal"] .leave-history-trigger,
+body.dark[data-mascot-theme="panda"] .leave-history-trigger {background:var(--surface);color:var(--accent-ink)}
+body.dark[data-mascot-theme="seal"] .leave-history-drawer .leave-history-clean,
+body.dark[data-mascot-theme="panda"] .leave-history-drawer .leave-history-clean {background:rgba(255,255,255,.035);color:inherit}
+
+/* 기존 초록색 팝업/설정 배경도 두 신규 다크 테마에 맞게 변경 */
+body.dark[data-mascot-theme="seal"] .popup-content,
+body.dark[data-mascot-theme="seal"] #changesPopup .popup-content,
+body.dark[data-mascot-theme="seal"] #bulkPopup .popup-content,
+body.dark[data-mascot-theme="seal"] .shift-settings,
+body.dark[data-mascot-theme="panda"] .popup-content,
+body.dark[data-mascot-theme="panda"] #changesPopup .popup-content,
+body.dark[data-mascot-theme="panda"] #bulkPopup .popup-content,
+body.dark[data-mascot-theme="panda"] .shift-settings {background:var(--surface);color:var(--accent-ink)}
+body.dark[data-mascot-theme="seal"] .popup-content h2,
+body.dark[data-mascot-theme="panda"] .popup-content h2 {color:var(--accent-ink)}
+
+/* Step 22.2: dark-mode leave drawer + empty calendar cells follow selected mascot palette. */
+body.dark[data-mascot-theme="seal"] #calendar td:not(.day):not(.night):not(.off):not(.leave):not(.duty):not(.holiday):not(.afternoon),
+body.dark[data-mascot-theme="seal"] #calendar td.adjacent-month {
+  background-color:#233645;
+  color:#9dbcd1;
+}
+body.dark[data-mascot-theme="panda"] #calendar td:not(.day):not(.night):not(.off):not(.leave):not(.duty):not(.holiday):not(.afternoon),
+body.dark[data-mascot-theme="panda"] #calendar td.adjacent-month {
+  background-color:#292929;
+  color:#aaaaaa;
+}
+body.dark[data-mascot-theme="seal"] #calendar td.adjacent-month .date-number {color:#93b4ca}
+body.dark[data-mascot-theme="panda"] #calendar td.adjacent-month .date-number {color:#a0a0a0}
+
+/* The leave history drawer is mounted directly under body, so apply dark palette there explicitly. */
+body.dark[data-mascot-theme="seal"] #leaveHistoryDrawer,
+body.dark[data-mascot-theme="seal"] #leaveSettingsDialog {
+  background-color:#273b4b;
+  color:#e8f4ff;
+}
+body.dark[data-mascot-theme="panda"] #leaveHistoryDrawer,
+body.dark[data-mascot-theme="panda"] #leaveSettingsDialog {
+  background-color:#333333;
+  color:#eeeeee;
+}
+body.dark[data-mascot-theme="seal"] #leaveHistoryDrawer select,
+body.dark[data-mascot-theme="seal"] #leaveHistoryDrawer option,
+body.dark[data-mascot-theme="seal"] #leaveHistoryDrawer .leave-history-clean {background-color:#233645;color:#e8f4ff}
+body.dark[data-mascot-theme="panda"] #leaveHistoryDrawer select,
+body.dark[data-mascot-theme="panda"] #leaveHistoryDrawer option,
+body.dark[data-mascot-theme="panda"] #leaveHistoryDrawer .leave-history-clean {background-color:#292929;color:#eeeeee}
+/* Preserve bean's green identity, but make other existing dark mascots theme-neutral. */
+body.dark[data-mascot-theme="dog"] #leaveHistoryDrawer,
+body.dark[data-mascot-theme="dog"] .leave-settings-dialog {background:#39352e;color:#f4e8d4}
+body.dark[data-mascot-theme="cat"] #leaveHistoryDrawer,
+body.dark[data-mascot-theme="cat"] .leave-settings-dialog {background:#393044;color:#eee7f5}
+
+/* Step 22 color fix 3: year/month heading follows the selected mascot palette. */
+body[data-mascot-theme="seal"] .calendar-nav #monthTitle,
+body[data-mascot-theme="panda"] .calendar-nav #monthTitle {
+  color: var(--accent-ink);
+}
+
+/* Step 22 color fix 4: top menu and its settings use the selected mascot palette. */
+body[data-mascot-theme="seal"] #menuBtn,
+body[data-mascot-theme="panda"] #menuBtn,
+body[data-mascot-theme="seal"] #shiftSettings,
+body[data-mascot-theme="panda"] #shiftSettings {
+  background-color:var(--surface);
+  color:var(--accent-ink);
+}
+body[data-mascot-theme="seal"] #shiftSettings .settings-toggle,
+body[data-mascot-theme="panda"] #shiftSettings .settings-toggle,
+body[data-mascot-theme="seal"] #shiftSettings button,
+body[data-mascot-theme="panda"] #shiftSettings button {
+  background-color:var(--surface);
+  color:var(--accent-ink);
+}
+body[data-mascot-theme="seal"] #shiftSettings input,
+body[data-mascot-theme="seal"] #shiftSettings select,
+body[data-mascot-theme="panda"] #shiftSettings input,
+body[data-mascot-theme="panda"] #shiftSettings select {
+  border-color:var(--accent);
+  accent-color:var(--accent);
+}
+body.dark[data-mascot-theme="seal"] #shiftSettings,
+body.dark[data-mascot-theme="panda"] #shiftSettings {
+  background-color:var(--surface);
+  color:var(--accent-ink);
+}
+
+/* Step 23: theme-aware dashboard buttons and local friend comparison preview */
+.dashboard-menu button{border-color:var(--accent,#8da998);background:var(--surface,#fff);color:var(--accent-ink,inherit);border-radius:12px}
+body.dark .dashboard-menu button{border-color:var(--accent,#8da998);background:var(--surface,#303036);color:var(--accent-ink,#f5f5f5)}
+.friends-shell{max-width:780px;margin:auto;padding:16px 14px 110px;color:var(--accent-ink,inherit);overflow-y:auto}
+.friends-shell h2{font-size:22px;margin:8px 0 14px}.friends-shell h3{font-size:16px;margin:0 0 10px}
+.friends-card{border:1px solid var(--accent,#aab);border-radius:16px;background:var(--surface,#fff);padding:16px;margin:14px 0;text-align:left}
+.friends-note{font-size:12px;line-height:1.6;opacity:.8;margin:8px 0 12px}
+.friends-card label{display:block;font-size:13px;margin:10px 0}.friends-card label input:not([type=checkbox]),.friends-card select{box-sizing:border-box;width:100%;padding:10px;border:1px solid #9997;border-radius:9px;background:var(--surface,#fff);color:inherit;font-size:14px;margin-top:5px}
+.friends-primary{width:100%;border:0;border-radius:11px;padding:13px;background:var(--accent,#4a8);color:var(--accent-ink,#fff);font-weight:700}
+.friend-row{display:flex;align-items:center;gap:10px;border-bottom:1px solid #9993;padding:12px 0}.friend-row input{width:20px;height:20px;accent-color:var(--accent,#4a8)}
+.friend-info{flex:1;min-width:0}.friend-info strong,.friend-info small{display:block;overflow-wrap:anywhere}.friend-info small{font-size:11px;opacity:.75;margin-top:4px}.friend-remove{border:1px solid #9997;border-radius:8px;background:transparent;color:inherit;padding:8px}
+.friends-check{display:flex!important;align-items:center;gap:8px}.friends-check input{accent-color:var(--accent,#4a8)}
+.friend-match-summary{font-size:14px;font-weight:700}.friend-match-grid{display:grid;gap:8px}.friend-match-day{display:flex;align-items:center;gap:12px;padding:10px;border-radius:10px;background:color-mix(in srgb,var(--accent,#9b9) 15%,transparent)}.friend-match-day strong{min-width:44px}.friend-match-day small{font-size:11px;line-height:1.4}
+
+/* Step 23 palette revision: fixed across all mascot themes. */
+body #calendar td.leave { background-color:#FFE1C7; color:#B65C20; }
+body #calendar td.duty { background-color:#90A4AE; color:#1E3039; }
+body #calendar td.holiday { background-color:#F28C9B; color:#48232D; }
+body.dark #calendar td.leave { background-color:#54392D; color:#FFC49B; }
+body.dark #calendar td.duty { background-color:#344B57; color:#D9EAF1; }
+body.dark #calendar td.holiday { background-color:#78404F; color:#FFE1E7; }
+
+/* 23단계 친구 탭: 친구 목록 중심 UI */
+.friends-home{color:var(--text,#263238);max-width:700px}
+.friends-topbar{display:flex;align-items:center;justify-content:space-between;margin:5px 0 20px}
+.friends-topbar h2{margin:2px 0!important;font-size:27px!important}
+.friends-topbar h2 span{font-size:16px;opacity:.6}
+.friends-eyebrow{font-size:10px;letter-spacing:2px;opacity:.5}
+.friend-add-icon{width:45px;height:45px;border-radius:15px;border:1px solid var(--accent,#88a);background:var(--surface,#fff);color:var(--accent,#4a8);font-size:27px;cursor:pointer}
+.friend-my-profile{display:flex;align-items:center;gap:13px;padding:16px;border-radius:18px;background:var(--surface,#fff);border:1px solid #8883;margin-bottom:25px}
+.friend-avatar{flex:none;width:46px;height:46px;border-radius:17px;display:grid;place-items:center;font-size:25px;background:var(--accent-soft,#e9edf0);border:1px solid #8882}
+.friend-avatar.mine{width:53px;height:53px;font-size:30px}
+.friend-profile-copy,.friend-info{display:flex;flex-direction:column;gap:4px;min-width:0;flex:1}
+.friend-profile-copy small,.friend-info small{opacity:.6;font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.friend-preview-badge{font-size:10px;padding:5px 8px;border-radius:20px;background:#9992;white-space:nowrap}
+.friend-list-heading{display:flex;align-items:baseline;justify-content:space-between;margin:0 2px 10px}
+.friend-list-heading h3{font-size:17px!important;margin:0!important}
+.friend-list-heading small{font-size:11px;opacity:.6}
+.friend-list-clean{background:var(--surface,#fff);border:1px solid #8883;border-radius:17px;overflow:hidden}
+.friend-profile-row{padding:13px!important;gap:9px!important}
+.friend-profile-row:last-child{border-bottom:0}
+.friend-profile-row .friend-info strong{font-size:14px}
+.friend-shift-chip{font-size:11px;border-radius:20px;padding:5px 8px;background:#8882;white-space:nowrap}
+.friend-profile-row input[type=checkbox]{width:17px;height:17px}
+.friend-profile-row .friend-remove{font-size:11px;padding:6px 7px}
+.friends-empty{text-align:center;padding:37px 12px;color:inherit}
+.friends-empty-emoji{font-size:40px;margin-bottom:10px}
+.friends-empty strong{font-size:14px}.friends-empty p{font-size:12px;opacity:.65;margin:7px 0}
+.friend-compare-cta{display:flex;align-items:center;gap:14px;width:100%;text-align:left;margin-top:18px;padding:16px;border:1px solid var(--accent,#999);border-radius:17px;background:var(--surface,#fff);color:inherit;cursor:pointer}
+.friend-compare-cta>span:first-child{font-size:25px}.friend-compare-cta>span:nth-child(2){flex:1;display:flex;flex-direction:column;gap:4px}.friend-compare-cta small{font-size:11px;opacity:.65}.friend-compare-cta>span:last-child{font-size:25px;opacity:.6}
+.friends-disclaimer{font-size:11px;line-height:1.7;opacity:.6;padding:8px 5px}
+.friend-sheet-overlay[hidden],.friend-sheet-content[hidden]{display:none!important}
+.friend-sheet-overlay{position:fixed;inset:0;z-index:9999;background:#0008;display:flex;justify-content:flex-end}
+.friend-sheet{width:min(440px,94vw);height:100%;background:var(--surface,#fff);color:var(--text,#222);display:flex;flex-direction:column;box-shadow:-8px 0 35px #0003}
+.friend-sheet-head{display:flex;justify-content:space-between;align-items:center;padding:18px 20px;border-bottom:1px solid #8883}
+.friend-sheet-head h3{margin:0;font-size:18px}.friend-sheet-head button{border:0;background:transparent;color:inherit;font-size:20px;padding:8px}
+.friend-sheet-scroll{overflow-y:auto;padding:16px 20px 40px;flex:1}
+.friend-sheet-content label{display:block;font-size:13px;margin:12px 0}
+.friend-sheet-content label input:not([type=checkbox]),.friend-sheet-content label select{box-sizing:border-box;width:100%;padding:11px;border-radius:10px;border:1px solid #8885;background:var(--surface,#fff);color:inherit;margin-top:5px}
+.friend-sheet-content .friends-check{display:flex;align-items:center}
+body.friend-sheet-open{overflow:hidden}
+
+/* 친구 화면 패널 구분: 친구 추가는 중앙 모달, 쉬는 날 비교는 슬림한 우측 패널 */
+.friend-sheet-overlay.friend-add-modal{align-items:center;justify-content:center;padding:20px 14px;box-sizing:border-box}
+.friend-add-modal .friend-sheet{width:min(390px,100%);height:auto;max-height:min(82dvh,760px);border-radius:20px;overflow:hidden;box-shadow:0 14px 48px #0005}
+.friend-add-modal .friend-sheet-scroll{flex:0 1 auto;min-height:0;padding:10px 20px 22px;overflow-y:auto;overscroll-behavior:contain}
+.friend-add-modal .friend-sheet-head{flex-shrink:0;padding:13px 18px}
+.friend-sheet-head{min-height:50px;box-sizing:border-box;gap:12px}
+.friend-sheet-head h3{display:block!important;min-width:0;flex:1;font-size:17px!important;white-space:normal!important;overflow:visible!important;line-height:1.4!important;text-align:left!important;letter-spacing:0!important}
+.friend-sheet-head button{flex-shrink:0;min-width:38px;min-height:38px}
+.friend-sheet-overlay.friend-compare-drawer{justify-content:flex-end}
+.friend-compare-drawer .friend-sheet{width:min(350px,83vw);height:100%;height:100dvh}
+.friend-compare-drawer .friend-sheet-scroll{min-height:0;overscroll-behavior:contain}
+@media(max-width:370px){.friend-compare-drawer .friend-sheet{width:85vw}.friend-add-modal .friend-sheet{max-height:85dvh}}
+
+/* Step 23: 시작 로딩 화면 제목도 선택한 캐릭터 테마를 따르도록 */
+body[data-mascot-theme="seal"] #homeScreen h1,
+body[data-mascot-theme="panda"] #homeScreen h1,
+body.dark[data-mascot-theme="seal"] #homeScreen h1,
+body.dark[data-mascot-theme="panda"] #homeScreen h1 {
+  color: var(--accent-ink);
+}
+
+/* Step 23: menu helper text and descriptive labels follow the selected theme. */
+#shiftSettings .settings-hint,
+#shiftSettings .settings-hint[role="status"],
+#shiftSettings .settings-help,
+#shiftSettings .settings-description {
+  color: var(--accent-ink, #456454);
+  opacity: .78;
+}
+body.dark #shiftSettings .settings-hint,
+body.dark #shiftSettings .settings-hint[role="status"],
+body.dark #shiftSettings .settings-help,
+body.dark #shiftSettings .settings-description {
+  color: var(--accent-ink, #e2f6e9);
+  opacity: .83;
+}
+#shiftSettings .pattern-chip {
+  background: var(--surface, #d8ede2);
+  color: var(--accent-ink, #245c45);
+  border: 1px solid var(--accent, #8da998);
+}
+body.dark #shiftSettings .pattern-chip,
+body.dark #shiftSettings .secondary-setting-btn {
+  background: var(--surface, #303036);
+  color: var(--accent-ink, #e2f6e9);
+  border-color: var(--accent, #8da998);
+}
+
+/* Step 23: bean water-pastel palette and cat ivory rest day.
+   Actual cell backgrounds follow --custom-shift-* from js/themes.js. */
+body:not([data-mascot-theme]),body[data-mascot-theme="bean"] {
+  --shift-day:#C7F2E5;--shift-day-ink:#245F51;
+  --shift-night:#B9E5FA;--shift-night-ink:#235B79;
+  --shift-off:#E7D6C2;--shift-off-ink:#654B38;
+}
+body.dark[data-mascot-theme="bean"] {
+  --shift-day:#24574F;--shift-day-ink:#D1F8E9;
+  --shift-night:#244F69;--shift-night-ink:#C8EFFF;
+  --shift-off:#534439;--shift-off-ink:#F2E1CF;
+}
+
+/* Bean palette refinement: soften night/off, match text contrast to each cell. */
+body:not(.dark)[data-mascot-theme="bean"] {
+ --shift-day:#C5E8B7; --shift-day-ink:#2C5633;
+ --shift-night:#EAD7DB; --shift-night-ink:#65424B;
+ --shift-off:#F0E8D9; --shift-off-ink:#665542;
+}
+body.dark[data-mascot-theme="bean"] {
+ --shift-day:#28533B; --shift-day-ink:#DCF4D5;
+ --shift-night:#46363B; --shift-night-ink:#F3DCE3;
+ --shift-off:#413D36; --shift-off-ink:#F1E8D7;
+}
+body[data-mascot-theme="bean"] #calendar td.day {color:var(--shift-day-ink)}
+body[data-mascot-theme="bean"] #calendar td.night {color:var(--shift-night-ink)}
+body[data-mascot-theme="bean"] #calendar td.off {color:var(--shift-off-ink)}
+/* 24단계: 기기 내 소통 게시판 */
+.community-shell{max-width:760px;margin:auto;padding:22px 16px 115px;color:var(--text,#263238)}
+.community-head{display:flex;align-items:center;justify-content:space-between;gap:10px}.community-head h2{font-size:26px;margin:5px 0 15px}.community-head small{font-size:10px;letter-spacing:1.4px;opacity:.55}
+.community-new,.community-compose-actions button:last-child,.community-comment-form button{border:0;background:var(--accent,#8ea);color:var(--accent-ink,#263238);border-radius:12px;padding:11px 14px;font-weight:700}
+.community-local-notice{font-size:12px;line-height:1.65;padding:13px 15px;border-radius:13px;background:color-mix(in srgb,var(--accent,#8ea) 12%,var(--surface,#fff));margin:0 0 18px}
+.community-compose,.community-post{border:1px solid #8883;border-radius:17px;background:var(--surface,#fff);padding:17px;margin:12px 0}
+.community-compose[hidden],.community-comments[hidden]{display:none!important}
+.community-compose label{display:block;font-size:13px;margin:0 0 12px}.community-compose input,.community-compose textarea,.community-compose select,.community-list-head select,.community-comment-form input{width:100%;box-sizing:border-box;border:1px solid #8885;background:var(--surface,#fff);color:inherit;border-radius:10px;padding:10px;font:inherit;margin-top:5px}
+.community-compose-actions{display:flex;justify-content:flex-end;gap:9px}.community-compose-actions button:first-child{border:1px solid #8885;border-radius:10px;background:transparent;color:inherit;padding:10px 16px}
+.community-list-head{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:12px;opacity:.85}.community-list-head label{display:flex;align-items:center;gap:7px}.community-list-head select{width:auto;margin:0}
+.community-post-top{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:11px;opacity:.75}.community-tag{padding:4px 9px;border-radius:30px;background:#9992}.community-post h3{font-size:16px;margin:12px 0}.community-post-body{font-size:13px;line-height:1.65;white-space:pre-wrap;overflow-wrap:anywhere}
+.community-actions{display:flex;gap:9px;border-top:1px solid #8882;padding-top:10px}.community-actions button,.community-comment button{border:0;background:transparent;color:inherit;font-size:12px;padding:6px;cursor:pointer}.community-actions button:last-child{margin-left:auto}
+.community-comments{padding:10px 0}.community-comment{display:flex;justify-content:space-between;gap:8px;font-size:12px;padding:10px;border-bottom:1px solid #8882;overflow-wrap:anywhere}.community-comment-form{display:flex;gap:7px;margin-top:10px}.community-comment-form input{margin:0;min-width:0;flex:1}.community-comment-form button{white-space:nowrap}
+.community-empty{text-align:center;padding:48px 12px;font-size:13px;opacity:.7}
+
+.friend-profile-edit{border:1px solid #8885;border-radius:9px;background:transparent;color:inherit;font-size:11px;padding:7px 9px;white-space:nowrap}
+
+/* 24단계 게시판 탐색: 게시판 선택 > 제목 목록 > 글 상세 */
+.community-shell [hidden]{display:none!important}
+.community-boards{display:grid;grid-template-columns:1fr;gap:11px;margin:18px 0}
+.community-boards button{position:relative;display:grid;grid-template-columns:42px 1fr auto;grid-template-rows:auto auto;align-items:center;gap:3px 10px;width:100%;padding:17px 16px;border:1px solid #8883;border-radius:16px;background:var(--surface,#fff);color:inherit;text-align:left;cursor:pointer}
+.community-boards button>span{grid-row:1/3;font-size:27px}.community-boards strong{font-size:16px}.community-boards small{font-size:12px;opacity:.65}.community-boards em{grid-column:3;grid-row:1/3;font-size:12px;font-style:normal;border-radius:20px;padding:5px 10px;background:#8882}
+.community-view-head{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin:17px 0}.community-view-head h3{margin:0;font-size:18px;flex:1}.community-view-head span{font-size:12px;opacity:.7}
+.community-view-head button,.community-back{background:none;color:inherit;border:0;padding:8px 4px;font-size:13px;cursor:pointer}
+.community-row{display:flex;flex-direction:column;align-items:flex-start;gap:9px;width:100%;padding:17px 15px;border:0;border-bottom:1px solid #8883;background:var(--surface,#fff);color:inherit;text-align:left;cursor:pointer}
+.community-row:first-child{border-radius:14px 14px 0 0}.community-row:last-child{border-radius:0 0 14px 14px}.community-row-title{font-size:15px;font-weight:600;overflow-wrap:anywhere}.community-row-meta{font-size:11px;opacity:.6}
+.community-detail{border:1px solid #8883;border-radius:16px;background:var(--surface,#fff);padding:18px;margin:10px 0 0}.community-detail-title{font-size:20px;line-height:1.4;overflow-wrap:anywhere;margin:15px 0 7px}.community-detail-date{font-size:12px;opacity:.6}.community-detail-body{white-space:pre-wrap;overflow-wrap:anywhere;font-size:14px;line-height:1.8;min-height:100px;margin:22px 0}.community-comment-heading{font-size:14px;margin:20px 0 4px}
+.community-compose h3{margin:0 0 17px;font-size:18px}

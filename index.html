@@ -7,20 +7,20 @@
     <meta name="theme-color" content="#e8f7eb">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="근무콩">
-    <meta name="description" content="나만의 교대근무 달력, 근무콩">
+    <meta name="apple-mobile-web-app-title" content="근무멍">
+    <meta name="description" content="나만의 교대근무 달력, 근무멍">
     <link rel="manifest" href="manifest.webmanifest">
-    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
-    <link rel="apple-touch-icon" href="icon-180.png">
-    <title>근무콩</title>
-    <link rel="stylesheet" href="css/style.css?v=step19">
+    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png?v=dogicon2">
+    <link rel="apple-touch-icon" href="icon-180.png?v=dogicon2">
+    <title>근무멍</title>
+    <link rel="stylesheet" href="css/style.css?v=step24local1">
 </head>
 <body>
     <button id="menuBtn">☰</button>
     <button id="themeBtn">🌙 다크모드</button>
     <div id="homeScreen">
-    <div class="splash-bean">🌱</div>
-    <h1>근무콩</h1>
+    <div class="splash-bean">🐶</div>
+    <h1>근무멍</h1>
     <p>나만의 교대근무 달력</p>
 </div>
 
@@ -30,9 +30,11 @@
     <section class="mascot-settings" aria-label="캐릭터 테마 선택">
       <label for="mascotTheme">🎭 캐릭터 테마</label>
       <select id="mascotTheme">
-        <option value="bean">🌱 근무콩</option>
         <option value="dog">🐶 근무멍</option>
         <option value="cat">🐱 근무냥</option>
+        <option value="panda">🐼 근무다</option>
+        <option value="seal">🦭 근무엉</option>
+        <option value="bean">🐢 근무북</option>
       </select>
       <p class="settings-hint">캐릭터마다 달력과 근무 색상이 달라져요. 선택은 자동 저장돼요.</p>
     </section>
@@ -53,7 +55,7 @@
         <p class="settings-hint">근무표, 메모, 연차, 캐릭터 사진과 설정을 파일로 보관해요. 파일은 외부 서버로 전송되지 않아요.</p>
         <div class="backup-actions"><button type="button" id="downloadBackup">⬇️ 백업 파일 저장</button><button type="button" id="restoreBackup">⬆️ 백업 파일 불러오기</button></div>
         <input type="file" id="backupFileInput" accept=".json,application/json" hidden>
-        <p class="settings-hint" id="backupStatus" role="status" aria-live="polite">복원하면 현재 기기의 근무콩 데이터가 백업 내용으로 교체돼요.</p>
+        <p class="settings-hint" id="backupStatus" role="status" aria-live="polite">복원하면 현재 기기의 근무멍 데이터가 백업 내용으로 교체돼요.</p>
       </div>
     </section>
     <section class="notification-tools" aria-label="근무 및 일정 알림">
@@ -103,7 +105,7 @@
         </section>
         <div class="dashboard-lower">
           <div class="dashboard-character">
-            <div id="dashboardMascot" class="dashboard-mascot" role="img" aria-label="선택한 캐릭터">🌱</div>
+            <div id="dashboardMascot" class="dashboard-mascot" role="img" aria-label="선택한 캐릭터">🐶</div>
             <button type="button" id="characterChange" class="character-change">캐릭터 변경</button>
           </div>
           <div class="dashboard-side">
@@ -184,9 +186,11 @@
               <div id="dashboardCharacter" class="panel-body" hidden>
                 <p class="stats-help">근무 기록 화면에 표시할 캐릭터를 골라주세요.</p>
                 <div class="character-choices">
-                  <button type="button" data-character="bean">🌱<small>근무콩</small></button>
                   <button type="button" data-character="dog">🐶<small>근무멍</small></button>
                   <button type="button" data-character="cat">🐱<small>근무냥</small></button>
+                  <button type="button" data-character="panda">🐼<small>근무다</small></button>
+                  <button type="button" data-character="seal">🦭<small>근무엉</small></button>
+                  <button type="button" data-character="bean">🐢<small>근무북</small></button>
                   <button type="button" data-character="photo">📷<small>내 사진</small></button>
                 </div>
                 <label class="photo-picker">사진 선택 <input type="file" id="characterPhoto" accept="image/*"></label>
@@ -198,10 +202,69 @@
       </div>
     </section>
     <section id="friendsPage" class="app-tab-page" hidden aria-label="친구">
-      <div class="coming-soon"><div class="soon-icon">👥</div><h2>친구</h2><p>일정 공유와 친구 목록을 준비하고 있어요 🌱</p></div>
+      <div class="friends-shell friends-home">
+        <header class="friends-topbar"><div><small class="friends-eyebrow">GEUNMEONG · FRIENDS</small><h2>친구 <span id="friendCount">0</span></h2></div><button type="button" id="friendOpenAdd" class="friend-add-icon" aria-label="친구 추가">＋</button></header>
+        <section class="friend-my-profile"><div class="friend-avatar mine">🐶</div><div class="friend-profile-copy"><strong id="myFriendName">내 프로필</strong><small id="myFriendCode">내 친구 코드 준비 중</small></div><button type="button" id="friendEditMyProfile" class="friend-profile-edit">편집</button><span class="friend-preview-badge">미리보기</span></section>
+        <div class="friend-list-heading"><h3>내 친구</h3><small>기기에 등록된 친구</small></div>
+        <div id="friendList" class="friend-list-clean"></div>
+        <button type="button" id="friendOpenCompare" class="friend-compare-cta"><span>📅</span><span><strong>같이 쉬는 날 찾기</strong><small>친구들과 겹치는 휴무일 확인</small></span><span aria-hidden="true">›</span></button>
+        <p class="friends-disclaimer">현재 친구 정보는 이 기기에만 저장돼요. 실제 친구 요청과 실시간 근무표 공유는 추후 제공됩니다.</p>
+      </div>
+      <div id="friendOverlay" class="friend-sheet-overlay" hidden>
+        <section class="friend-sheet" role="dialog" aria-modal="true" aria-labelledby="friendSheetTitle">
+          <header class="friend-sheet-head"><h3 id="friendSheetTitle">친구 추가</h3><button type="button" id="friendSheetClose" aria-label="닫기">✕</button></header>
+          <div class="friend-sheet-scroll">
+            <section id="friendProfilePanel" class="friend-sheet-content" hidden>
+              <p class="friends-note">이 프로필은 현재 기기에만 저장돼요. 코드를 공유해도 온라인 친구 요청이 연결되지는 않아요.</p>
+              <label>내 닉네임 <input id="myFriendNickname" maxlength="24" placeholder="닉네임"></label>
+              <button type="button" id="friendSaveMyProfile" class="friends-primary">프로필 저장</button>
+            </section>
+            <section id="friendAddPanel" class="friend-sheet-content">
+              <p class="friends-note">닉네임과 코드를 모두 입력해 이 기기에 친구의 근무표를 등록할 수 있어요.</p>
+              <label>닉네임 <input id="friendNickname" maxlength="24" autocomplete="off" placeholder="친구 닉네임"></label>
+              <label>친구 코드 <input id="friendCode" maxlength="20" autocomplete="off" placeholder="상대에게 받은 코드"></label>
+              <label>근무 패턴 (쉼표로 구분) <input id="friendPattern" placeholder="주간,주간,야간,야간,비번,비번"></label>
+              <label>패턴 시작 날짜 <input id="friendStart" type="date"></label>
+              <label>시작 날짜의 패턴 위치 <select id="friendStartIndex"><option value="0">첫 번째 근무부터</option></select></label>
+              <button id="friendAdd" type="button" class="friends-primary">이 기기에 등록</button>
+              <p id="friendFeedback" role="status" aria-live="polite"></p>
+            </section>
+            <section id="friendComparePanel" class="friend-sheet-content" hidden>
+              <p class="friends-note">친구 목록에서 체크한 친구들과 함께 쉬는 날을 찾아요.</p>
+              <label>조회 월 <input id="friendCompareMonth" type="month"></label>
+              <label class="friends-check"><input type="checkbox" id="friendIncludeLeave" checked> 연차도 쉬는 날로 포함</label>
+              <label class="friends-check"><input type="checkbox" id="friendNightNext"> 야간근무 다음 날은 쉬는 날에서 제외</label>
+              <div id="friendCompareResults" aria-live="polite"></div>
+            </section>
+          </div>
+        </section>
+      </div>
     </section>
     <section id="communityPage" class="app-tab-page" hidden aria-label="소통">
-      <div class="coming-soon"><div class="soon-icon">💬</div><h2>소통</h2><p>건의사항과 근무콩 광장을 준비하고 있어요 🌱</p><small>아직 작성한 의견이 개발자에게 전송되지는 않아요.</small></div>
+      <div class="community-shell">
+        <header class="community-head"><div><small>GEUNMEONG · COMMUNITY</small><h2>💬 소통</h2></div><button id="communityComposeToggle" type="button" class="community-new">＋ 글쓰기</button></header>
+        <p class="community-local-notice">🔒 현재 글과 댓글은 이 기기에만 저장돼요. 다른 사용자에게는 보이지 않습니다.</p>
+        <nav id="communityBoards" class="community-boards" aria-label="게시판 선택">
+          <button type="button" data-board="자유"><span>☕</span><strong>자유게시판</strong><small>일상과 잡담</small><em id="boardCountFree">0</em></button>
+          <button type="button" data-board="근무 이야기"><span>🗓️</span><strong>근무 이야기</strong><small>교대근무 이야기</small><em id="boardCountWork">0</em></button>
+          <button type="button" data-board="건의사항"><span>💡</span><strong>건의사항</strong><small>앱 개선 아이디어</small><em id="boardCountIdeas">0</em></button>
+        </nav>
+        <div id="communityBoardView" hidden>
+          <div class="community-view-head"><button id="communityBackBoards" type="button">‹ 게시판</button><h3 id="communityBoardTitle"></h3><span id="communityPostCount"></span></div>
+          <div id="communityPosts" class="community-posts" aria-live="polite"></div>
+        </div>
+        <div id="communityDetailView" hidden>
+          <button id="communityBackList" type="button" class="community-back">‹ 목록으로</button>
+          <article id="communityDetail" class="community-detail"></article>
+        </div>
+        <form id="communityCompose" class="community-compose" hidden>
+          <h3>✏️ 새 글 작성</h3>
+          <label>게시판 <select id="communityCategory"><option>자유</option><option>근무 이야기</option><option>건의사항</option></select></label>
+          <label>제목 <input id="communityTitle" required maxlength="70" placeholder="제목을 입력해 주세요"></label>
+          <label>내용 <textarea id="communityBody" required maxlength="3000" rows="6" placeholder="내용을 입력해 주세요"></textarea></label>
+          <div class="community-compose-actions"><button type="button" id="communityCancel">취소</button><button type="submit">등록</button></div>
+        </form>
+      </div>
     </section>
     <!-- 연차 설정: 전체 화면 팝업 -->
     <div id="leaveSettingsModal" class="leave-ui-overlay" hidden>
@@ -233,10 +296,17 @@
 
 
 <!-- 신규 사용자 전용 시작 설정: 기존 사용자에게는 표시하지 않습니다. -->
+<div id="workSettingsBackdrop" class="work-settings-backdrop" hidden></div>
+<aside id="workSettingsDrawer" class="work-settings-drawer" role="dialog" aria-modal="true" aria-labelledby="workSettingsTitle" hidden>
+  <header class="work-drawer-head"><h2 id="workSettingsTitle">⚙️ 내 근무 설정</h2><button type="button" id="closeWorkSettings" aria-label="설정 닫기">✕</button></header>
+  <div id="workSettingsDrawerBody" class="work-drawer-body"></div>
+  <footer class="work-drawer-footer"><span id="workSettingsStatus" role="status">✓ 저장됨</span><button type="button" id="workSettingsSave" disabled>✓ 저장됨</button></footer>
+</aside>
+
 <section id="firstRunSetup" class="first-run-setup" hidden aria-label="첫 근무 설정" role="dialog" aria-modal="true">
   <div class="first-run-card">
     <div class="first-run-icon">🌱</div>
-    <h2>근무콩 시작하기</h2>
+    <h2>근무멍 시작하기</h2>
     <p>처음 한 번만 설정하면 내 근무표가 자동으로 만들어져요.</p>
     <label for="hireDateInput">📅 입사일</label>
     <input type="date" id="hireDateInput" required>
@@ -324,12 +394,16 @@
 <script src="js/shifts.js?v=step19"></script>
 <script src="js/holidays.js?v=step19"></script>
 <script src="js/calendar.js?v=step19"></script>
-<script src="js/themes.js?v=step19"></script>
+<script src="js/themes.js?v=step24bukoriginal1"></script>
 <script src="js/schedule-editing.js?v=step19"></script>
 <script src="js/navigation.js?v=step19"></script>
 <script src="js/records.js?v=step19"></script>
 <script src="js/backup.js?v=step19"></script>
 <script src="js/notifications.js?v=step19"></script>
+<script src="js/work-settings-drawer.js?v=step20"></script>
+<script src="js/dismiss-ui.js?v=step21"></script>
+<script src="js/friends.js?v=step2324friends"></script>
+<script src="js/community.js?v=step24boards2"></script>
 <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {

@@ -9,6 +9,7 @@ const dashMenu=document.getElementById('dashboardMenu');
 const dashPanel=document.getElementById('dashboardPanel');
 const panelNames={leave:'연차 관리',hire:'입사 정보',settings:'내 근무 설정',character:'캐릭터 변경'};
 function showDashboardPanel(name){
+  if(name==='settings' && typeof window.openWorkSettingsDrawer==='function'){window.openWorkSettingsDrawer();return;}
   const active=Boolean(panelNames[name]);
   dashMenu.hidden=active;dashPanel.hidden=!active;
   for(const key of Object.keys(panelNames))document.getElementById('dashboard'+key[0].toUpperCase()+key.slice(1)).hidden=key!==name;
@@ -123,13 +124,13 @@ document.getElementById('saveHireDate').addEventListener('click',()=>{
  if(exit)localStorage.setItem('exitDate',statsExitDate.value);else localStorage.removeItem('exitDate');
  renderTenure();showDashboardPanel(null);
 });
-const mascotIcons={bean:'🌱',dog:'🐶',cat:'🐱'};
-function selectedCharacter(){return localStorage.getItem('dashboardCharacter')||document.body.dataset.mascotTheme||'bean';}
+const mascotIcons={bean:'🐢',dog:'🐶',cat:'🐱',seal:'🦭',panda:'🐼'};
+function selectedCharacter(){return localStorage.getItem('dashboardCharacter')||document.body.dataset.mascotTheme||'dog';}
 function renderDashboardCharacter(){
  const el=document.getElementById('dashboardMascot');const choice=selectedCharacter();const photo=localStorage.getItem('dashboardPhoto');
  el.replaceChildren();
  if(choice==='photo'&&photo){const img=document.createElement('img');img.src=photo;img.alt='내 사진';el.appendChild(img);el.setAttribute('aria-label','내 사진');}
- else{const actual=choice==='photo'?'bean':choice;el.textContent=mascotIcons[actual]||'🌱';el.setAttribute('aria-label',({bean:'근무콩',dog:'근무멍',cat:'근무냥'})[actual]||'근무콩');}
+ else{const actual=choice==='photo'?'dog':choice;el.textContent=mascotIcons[actual]||'🐶';el.setAttribute('aria-label',({bean:'근무북',dog:'근무멍',cat:'근무냥',seal:'근무엉',panda:'근무다'})[actual]||'근무멍');}
 }
 function renderCharacterChoices(){const selected=selectedCharacter();document.querySelectorAll('[data-character]').forEach(b=>b.classList.toggle('selected',b.dataset.character===selected));}
 document.querySelectorAll('[data-character]').forEach(b=>b.addEventListener('click',()=>{

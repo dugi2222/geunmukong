@@ -254,7 +254,11 @@ document.getElementById("saveShiftBtn").addEventListener("click", function() {
     renderCalendar();
     updateTodayCard();
     if (typeof renderWorkStats === "function") renderWorkStats();
-    alert(weekdayMode ? "📅 평일근무 설정이 저장됐어요!" : "🌱 근무 패턴이 저장됐어요!");
+    if (window.workSettingsDrawerActive) {
+        window.dispatchEvent(new Event('work-settings-saved'));
+    } else {
+        alert(weekdayMode ? "📅 평일근무 설정이 저장됐어요!" : "🌱 근무 패턴이 저장됐어요!");
+    }
 });
 
 updateTodayCard();

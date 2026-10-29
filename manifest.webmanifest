@@ -1,13 +1,13 @@
 {
-  "name": "근무콩 - 나만의 교대근무 달력",
-  "short_name": "근무콩",
+  "name": "근무멍 - 나만의 교대근무 달력",
+  "short_name": "근무멍",
   "description": "교대근무와 평일근무를 편하게 관리하는 달력",
   "lang": "ko",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#f7fbf8",
-  "theme_color": "#e8f7eb",
+  "background_color": "#fffaf2",
+  "theme_color": "#fff0b5",
   "icons": [
     {
       "src": "icon-192.png",

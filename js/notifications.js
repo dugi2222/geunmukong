@@ -51,7 +51,7 @@
   }
   function shiftAt(d){const k=dateKey(d);return (typeof customShifts!=='undefined'&&customShifts[k])||getShift(d.getFullYear(),d.getMonth(),d.getDate());}
   el('notificationTest').addEventListener('click',async()=>{
-    const ok=await notify('🌱 근무콩 테스트 알림',`오늘의 근무: ${shiftAt(new Date())}`,'geunmukong-test');
+    const ok=await notify('🐶 근무멍 테스트 알림',`오늘의 근무: ${shiftAt(new Date())}`,'geunmukong-test');
     status.textContent=ok?'테스트 알림을 요청했어요.':'알림을 표시하지 못했어요. 권한과 홈 화면 설치 여부를 확인해 주세요.';
   });
   let busy=false;
@@ -70,13 +70,13 @@
       if(settings.enabled){
         const target=new Date(now.getFullYear(),now.getMonth(),now.getDate()+(settings.target==='tomorrow'?1:0));
         const shift=shiftAt(target),scheduled=shift==='주간'?settings.dayTime:shift==='야간'?settings.nightTime:null;
-        if(scheduled===minute)await sendOnce(`shift:${today}:${dateKey(target)}:${shift}:${minute}`,`🌱 ${settings.target==='tomorrow'?'내일':'오늘'} ${shift} 근무`,`${dateKey(target)} · ${shift}`);
+        if(scheduled===minute)await sendOnce(`shift:${today}:${dateKey(target)}:${shift}:${minute}`,`🐶 ${settings.target==='tomorrow'?'내일':'오늘'} ${shift} 근무`,`${dateKey(target)} · ${shift}`);
       }
       let notes={};try{notes=JSON.parse(localStorage.getItem('dayNotes')||'{}')||{};}catch(_){}
       const todayNotes=Array.isArray(notes[today])?notes[today]:[];
       for(let i=0;i<todayNotes.length;i++){
         const note=todayNotes[i];if(note&&note.alarmTime===minute){
-          await sendOnce(`note:${today}:${i}:${minute}`,`📌 ${note.title||'근무콩 일정 알림'}`,note.text||`${today} 일정이 있어요.`);
+          await sendOnce(`note:${today}:${i}:${minute}`,`📌 ${note.title||'근무멍 일정 알림'}`,note.text||`${today} 일정이 있어요.`);
         }
       }
       // Keep sent-state bounded to recent entries.
