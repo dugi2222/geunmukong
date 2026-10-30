@@ -175,3 +175,15 @@ renderWorkStats();
  backdrop.addEventListener('click',hideHistory);
  document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(!modal.hidden)hideSettings();else hideHistory();}});
 })();
+
+// Restore the work-record dashboard menu when leaving a tab.
+document.addEventListener('geunmeong:tab-leave', () => {
+  showDashboardPanel(null);
+  const modal = document.getElementById('leaveSettingsModal');
+  const drawer = document.getElementById('leaveHistoryDrawer');
+  const backdrop = document.getElementById('leaveHistoryBackdrop');
+  if (modal) modal.hidden = true;
+  if (drawer) { drawer.classList.remove('is-open'); drawer.inert = true; drawer.setAttribute('aria-hidden','true'); }
+  if (backdrop) backdrop.hidden = true;
+  document.body.classList.remove('leave-ui-open');
+});

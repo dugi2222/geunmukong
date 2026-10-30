@@ -13,7 +13,7 @@
     <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png?v=dogicon2">
     <link rel="apple-touch-icon" href="icon-180.png?v=dogicon2">
     <title>근무멍</title>
-    <link rel="stylesheet" href="css/style.css?v=step24afternoonpalette1">
+    <link rel="stylesheet" href="css/style.css?v=header-align-v6">
 </head>
 <body>
     <button id="menuBtn">☰</button>
@@ -25,6 +25,7 @@
 </div>
 
 <div class="shift-settings" id="shiftSettings" hidden>
+    <button type="button" id="accountOpenBtn" class="gm-account-open gm-menu-account" aria-haspopup="dialog">👤 로그인 / 회원가입</button>
     <button type="button" id="toggleThemeSettings" class="settings-toggle" aria-expanded="false" aria-controls="themeSettingsFields">🎭 캐릭터 테마 · 근무 색상 ▾</button>
     <div id="themeSettingsFields" hidden>
     <section class="mascot-settings" aria-label="캐릭터 테마 선택">
@@ -391,20 +392,46 @@
     </div>
 </div>
 
+
+<!-- Supabase 계정 인증: 기존 로컬 달력과 별개로 작동 -->
+
+<div id="gmAuthOverlay" class="gm-auth-overlay" hidden>
+  <section class="gm-auth-dialog" role="dialog" aria-modal="true" aria-labelledby="gmAuthTitle">
+    <button type="button" id="gmAuthClose" class="gm-auth-close" aria-label="닫기">✕</button>
+    <div class="gm-auth-brand"><span class="gm-auth-mascot">🐶</span><div><h2 id="gmAuthTitle">근무멍</h2><span>내 일정은 편하게, 연결은 안전하게</span></div></div>
+    <p class="gm-auth-note">로그인 없이도 달력을 사용할 수 있어요.</p>
+    <div id="gmAuthSignedOut">
+      <div class="gm-auth-tabs"><button type="button" id="gmTabLogin" class="selected">로그인</button><button type="button" id="gmTabSignup">회원가입</button></div>
+      <form id="gmAuthForm">
+        <label class="gm-auth-nickname" id="gmNicknameRow" hidden>닉네임 <input id="gmAuthNickname" type="text" minlength="2" maxlength="16" autocomplete="nickname" placeholder="2~16자, 다른 사람에게 보일 이름"></label>
+        <label>이메일 <input id="gmAuthEmail" type="email" autocomplete="email" required placeholder="name@example.com"></label>
+        <label>비밀번호 <input id="gmAuthPassword" type="password" minlength="6" autocomplete="current-password" required placeholder="6자 이상"></label>
+        <button type="submit" id="gmAuthSubmit">로그인</button>
+      </form>
+      <button type="button" id="gmResetPassword" class="gm-auth-link">비밀번호 재설정 메일 보내기</button>
+    </div>
+    <div id="gmAuthSignedIn" hidden><div class="gm-auth-profile">🐾 <strong id="gmAuthCurrentNickname"></strong><small id="gmAuthCurrentEmail"></small></div><button type="button" id="gmAuthLogout">로그아웃</button></div>
+    <p id="gmAuthStatus" class="gm-auth-status" role="status" aria-live="polite"></p>
+  </section>
+</div>
+
 <script src="calendar-data.js?v=clean1"></script>
 <script src="js/shifts.js?v=step19"></script>
 <script src="js/holidays.js?v=step19"></script>
 <script src="js/calendar.js?v=step19"></script>
 <script src="js/themes.js?v=step24bukoriginal1"></script>
 <script src="js/schedule-editing.js?v=step19"></script>
-<script src="js/navigation.js?v=step19"></script>
-<script src="js/records.js?v=step19"></script>
+<script src="js/navigation.js?v=tabreset5"></script>
+<script src="js/records.js?v=tabreset5"></script>
 <script src="js/backup.js?v=step19"></script>
 <script src="js/notifications.js?v=step19"></script>
-<script src="js/work-settings-drawer.js?v=step20"></script>
+<script src="js/work-settings-drawer.js?v=tabreset5"></script>
 <script src="js/dismiss-ui.js?v=step21"></script>
-<script src="js/friends.js?v=step24today2"></script>
-<script src="js/community.js?v=step24today2"></script>
+<script src="js/friends.js?v=tabreset5"></script>
+<script src="js/community.js?v=tabreset5"></script>
+<script src="js/online-friends.js?v=online23a"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="js/auth.js?v=online23a" defer></script>
 <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {

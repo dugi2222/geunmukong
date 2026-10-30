@@ -72,6 +72,7 @@
   document.body.append(chatOverlay);
   const closeChat=()=>{chatOverlay.hidden=true;chatWith=null;document.body.classList.remove('friend-chat-open');};
   document.getElementById('friendChatBack').addEventListener('click',closeChat);
+  document.addEventListener('geunmeong:tab-leave', () => { closeSheet(); closeChat(); });
   chatOverlay.addEventListener('click',e=>{if(e.target===chatOverlay)closeChat();});
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!chatOverlay.hidden)closeChat();});
   const chatList=document.getElementById('friendChatMessages');

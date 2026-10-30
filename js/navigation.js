@@ -5,6 +5,11 @@ document.getElementById('bottomTabs').addEventListener('click', event => {
   if (!button) return;
   const tab = button.dataset.tab;
   if (!Object.hasOwn(tabPages, tab)) return;
+  const current = document.querySelector('#bottomTabs .bottom-tab.active')?.dataset.tab;
+  if (current === tab) return;
+  // Close unsaved settings safely before switching tabs.
+  if (typeof window.closeWorkSettingsDrawer === 'function' && !window.closeWorkSettingsDrawer()) return;
+  document.dispatchEvent(new CustomEvent('geunmeong:tab-leave', { detail: { from: current, to: tab } }));
   for (const [key, page] of Object.entries(tabPages)) page.hidden = key !== tab;
   document.querySelectorAll('#bottomTabs .bottom-tab').forEach(el => {
     const selected = el === button;
@@ -58,3 +63,21 @@ document.getElementById('bottomTabs').addEventListener('click', event => {
 })();
 
 
+
+// Shared transient UI cleanup. Only presentation state is reset.
+document.addEventListener('geunmeong:tab-leave', () => {
+  ['shiftPopup','changesPopup','bulkPopup','gmAuthOverlay'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.hidden = true;
+  });
+  const menu = document.getElementById('shiftSettings');
+  if (menu) menu.hidden = true;
+  ['themeSettingsFields','backupToolsBody','notificationToolsBody','baseSettingsFields'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el && !el.closest('#firstRunSetup')) el.hidden = true;
+  });
+  ['toggleThemeSettings','toggleBackupTools','toggleNotificationTools','toggleBaseSettings'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.setAttribute('aria-expanded','false');
+  });
+});

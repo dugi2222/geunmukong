@@ -38,8 +38,8 @@
     document.getElementById('closeWorkSettings').focus();
   }
   function close(force = false) {
-    if (drawer.hidden) return;
-    if (!force && state() !== snapshot && !confirm('저장하지 않은 변경사항이 있어요. 저장하지 않고 닫을까요?')) return;
+    if (drawer.hidden) return true;
+    if (!force && state() !== snapshot && !confirm('저장하지 않은 변경사항이 있어요. 저장하지 않고 닫을까요?')) return false;
     drawer.hidden = true;
     backdrop.hidden = true;
     document.body.classList.remove('work-drawer-open');
@@ -48,8 +48,10 @@
     else originalParent.appendChild(fields);
     fields.hidden = true;
     document.querySelector('#dashboardMenu [data-panel="settings"]')?.focus();
+    return true;
   }
   window.openWorkSettingsDrawer = open;
+  window.closeWorkSettingsDrawer = close;
   document.getElementById('closeWorkSettings').addEventListener('click', () => close());
   backdrop.addEventListener('click', () => close());
   document.addEventListener('keydown', event => {

@@ -58,5 +58,11 @@
     if(posts.length>200)posts=posts.slice(-200);
     save();e.target.reset();composing=false;board=category;selected=null;render();
   });
+  document.addEventListener('geunmeong:tab-leave', () => {
+    board = null;
+    selected = null;
+    composing = false;
+    render();
+  });
   render();
 })();
