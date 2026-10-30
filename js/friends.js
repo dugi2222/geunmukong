@@ -57,6 +57,38 @@
   });
   function utcDay(date){const [y,m,d]=date.split('-').map(Number);return Date.UTC(y,m-1,d)/86400000;}
   function shiftFor(profile,date){const n=profile.pattern.length, diff=utcDay(date)-utcDay(profile.start);return profile.pattern[((diff+profile.startIndex)%n+n)%n];}
+  // Local demo messaging: never sends data to a server.
+  const demoCode='DEMO-MEONGMEONG';
+  if(!profiles.some(p=>p.code===demoCode)){
+    profiles.push({nickname:'멍멍이',code:demoCode,pattern:['주간','주간','야간','야간','비번','비번'],start:'2026-10-01',startIndex:0,selected:false,demo:true});
+    save();
+  }
+  const messageKey='geunmeongFriendDemoMessagesV1';
+  let chats={};
+  try {const loaded=JSON.parse(localStorage.getItem(messageKey)||'{}');if(loaded&&typeof loaded==='object'&&!Array.isArray(loaded))chats=loaded;}catch(_){}
+  let chatWith=null;
+  const chatOverlay=document.createElement('div');chatOverlay.className='friend-chat-overlay';chatOverlay.hidden=true;
+  chatOverlay.innerHTML=`<section class="friend-chat-dialog" role="dialog" aria-modal="true" aria-label="친구 메시지"><header class="friend-chat-header"><button type="button" id="friendChatBack" class="friend-chat-back">← 친구 목록</button><strong id="friendChatName"></strong><span class="friend-chat-demo-tag">기기 내 테스트</span></header><div id="friendChatMessages" class="friend-chat-messages" aria-live="polite"></div><form id="friendChatForm" class="friend-chat-form"><input id="friendChatInput" type="text" maxlength="300" placeholder="메시지를 입력하세요" autocomplete="off" aria-label="메시지 입력"><button type="submit">보내기</button></form></section>`;
+  document.body.append(chatOverlay);
+  const closeChat=()=>{chatOverlay.hidden=true;chatWith=null;document.body.classList.remove('friend-chat-open');};
+  document.getElementById('friendChatBack').addEventListener('click',closeChat);
+  chatOverlay.addEventListener('click',e=>{if(e.target===chatOverlay)closeChat();});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!chatOverlay.hidden)closeChat();});
+  const chatList=document.getElementById('friendChatMessages');
+  function renderChat(){
+    chatList.replaceChildren();
+    const history=Array.isArray(chats[chatWith])?chats[chatWith]:[];
+    if(!history.length){const hint=document.createElement('p');hint.className='friend-chat-empty';hint.textContent='첫 메시지를 보내보세요! 🐾';chatList.append(hint);}
+    history.forEach(msg=>{const bubble=document.createElement('div');bubble.className='friend-chat-bubble '+(msg.from==='me'?'mine':'theirs');bubble.textContent=msg.text;chatList.append(bubble);});
+    chatList.scrollTop=chatList.scrollHeight;
+  }
+  function openChat(profile){chatWith=profile.code;document.getElementById('friendChatName').textContent=profile.nickname+' 🐶';chatOverlay.hidden=false;document.body.classList.add('friend-chat-open');renderChat();document.getElementById('friendChatInput').focus();}
+  function appendChat(code,from,message){if(!Array.isArray(chats[code]))chats[code]=[];chats[code].push({from,text:message,time:Date.now()});chats[code]=chats[code].slice(-100);localStorage.setItem(messageKey,JSON.stringify(chats));if(chatWith===code)renderChat();}
+  document.getElementById('friendChatForm').addEventListener('submit',e=>{
+    e.preventDefault();const input=document.getElementById('friendChatInput');const message=input.value.trim();if(!message||!chatWith)return;
+    const code=chatWith;appendChat(code,'me',message);input.value='';
+    if(code===demoCode){setTimeout(()=>{if(profiles.some(p=>p.code===demoCode))appendChat(code,'friend','멍멍!');},450);}
+  });
   function render(){
     const list=$('friendList');list.replaceChildren();
     $('friendCount').textContent=String(profiles.length);
@@ -71,12 +103,13 @@
       const avatar=document.createElement('div');avatar.className='friend-avatar';avatar.textContent=['🐶','🐱','🦭','🐼','🐢'][index%5];
       const info=document.createElement('div');info.className='friend-info';
       const name=document.createElement('strong');name.textContent=profile.nickname;
-      const detail=document.createElement('small');detail.textContent=`코드 ${profile.code}`;
+      const detail=document.createElement('small');detail.textContent=profile.demo?'테스트 친구 · 자동 답장':`코드 ${profile.code}`;
       info.append(name,detail);
       const shift=document.createElement('span');shift.className='friend-shift-chip';shift.textContent=shiftFor(profile,todayStr);
       const checkbox=document.createElement('input');checkbox.type='checkbox';checkbox.checked=profile.selected!==false;checkbox.setAttribute('aria-label',`${profile.nickname} 쉬는 날 비교에 포함`);checkbox.addEventListener('change',()=>{profile.selected=checkbox.checked;save();renderComparison();});
       const remove=document.createElement('button');remove.type='button';remove.className='friend-remove';remove.textContent='삭제';remove.setAttribute('aria-label',`${profile.nickname} 삭제`);remove.addEventListener('click',()=>{if(confirm(`${profile.nickname}의 기기 내 기록을 삭제할까요?`)){profiles.splice(index,1);save();render();}});
-      row.append(avatar,info,shift,checkbox,remove);list.append(row);
+      const messageButton=document.createElement('button');messageButton.type='button';messageButton.className='friend-message-button';messageButton.textContent='💬 메시지';messageButton.setAttribute('aria-label',profile.nickname+'에게 메시지');messageButton.addEventListener('click',()=>openChat(profile));
+      row.append(avatar,info,shift,messageButton,checkbox,remove);list.append(row);
     });renderComparison();
   }
   function isRest(shift, includeLeave){return shift==='비번'||shift==='휴무'||(includeLeave&&shift==='연차');}

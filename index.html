@@ -13,7 +13,7 @@
     <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png?v=dogicon2">
     <link rel="apple-touch-icon" href="icon-180.png?v=dogicon2">
     <title>근무멍</title>
-    <link rel="stylesheet" href="css/style.css?v=step24local1">
+    <link rel="stylesheet" href="css/style.css?v=step24afternoonpalette1">
 </head>
 <body>
     <button id="menuBtn">☰</button>
@@ -248,18 +248,20 @@
           <button type="button" data-board="자유"><span>☕</span><strong>자유게시판</strong><small>일상과 잡담</small><em id="boardCountFree">0</em></button>
           <button type="button" data-board="근무 이야기"><span>🗓️</span><strong>근무 이야기</strong><small>교대근무 이야기</small><em id="boardCountWork">0</em></button>
           <button type="button" data-board="건의사항"><span>💡</span><strong>건의사항</strong><small>앱 개선 아이디어</small><em id="boardCountIdeas">0</em></button>
+          <button type="button" data-board="친구 전용"><span>👥</span><strong>친구 전용</strong><small>기기 내 미리보기</small><em id="boardCountFriends">0</em></button>
         </nav>
         <div id="communityBoardView" hidden>
-          <div class="community-view-head"><button id="communityBackBoards" type="button">‹ 게시판</button><h3 id="communityBoardTitle"></h3><span id="communityPostCount"></span></div>
+          <div class="community-view-head"><button id="communityBackBoards" type="button">← 게시판 목록으로</button><h3 id="communityBoardTitle"></h3><span id="communityPostCount"></span></div>
           <div id="communityPosts" class="community-posts" aria-live="polite"></div>
         </div>
         <div id="communityDetailView" hidden>
-          <button id="communityBackList" type="button" class="community-back">‹ 목록으로</button>
+          <button id="communityBackList" type="button" class="community-back">← 글 목록으로</button>
           <article id="communityDetail" class="community-detail"></article>
         </div>
         <form id="communityCompose" class="community-compose" hidden>
           <h3>✏️ 새 글 작성</h3>
-          <label>게시판 <select id="communityCategory"><option>자유</option><option>근무 이야기</option><option>건의사항</option></select></label>
+          <label>게시판 <select id="communityCategory"><option>자유</option><option>근무 이야기</option><option>건의사항</option><option>친구 전용</option></select></label>
+          <label class="community-anon-row">익명으로 작성 <input id="communityAnonymous" type="checkbox"></label>
           <label>제목 <input id="communityTitle" required maxlength="70" placeholder="제목을 입력해 주세요"></label>
           <label>내용 <textarea id="communityBody" required maxlength="3000" rows="6" placeholder="내용을 입력해 주세요"></textarea></label>
           <div class="community-compose-actions"><button type="button" id="communityCancel">취소</button><button type="submit">등록</button></div>
@@ -305,11 +307,10 @@
 
 <section id="firstRunSetup" class="first-run-setup" hidden aria-label="첫 근무 설정" role="dialog" aria-modal="true">
   <div class="first-run-card">
-    <div class="first-run-icon">🌱</div>
+    <div class="first-run-icon">🐶</div>
     <h2>근무멍 시작하기</h2>
     <p>처음 한 번만 설정하면 내 근무표가 자동으로 만들어져요.</p>
-    <label for="hireDateInput">📅 입사일</label>
-    <input type="date" id="hireDateInput" required>
+    <div class="first-run-inline"><label for="hireDateInput">📅 입사일</label><input type="date" id="hireDateInput" required></div>
     <div id="firstRunSettingsSlot"></div>
     <p class="first-run-footnote">근무 패턴과 기준 날짜는 나중에도 수정할 수 있어요.</p>
   </div>
@@ -402,8 +403,8 @@
 <script src="js/notifications.js?v=step19"></script>
 <script src="js/work-settings-drawer.js?v=step20"></script>
 <script src="js/dismiss-ui.js?v=step21"></script>
-<script src="js/friends.js?v=step2324friends"></script>
-<script src="js/community.js?v=step24boards2"></script>
+<script src="js/friends.js?v=step24today2"></script>
+<script src="js/community.js?v=step24today2"></script>
 <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {

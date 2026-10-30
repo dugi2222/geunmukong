@@ -1,5 +1,5 @@
 // v1.1 step 6: update version when changing app files
-const CACHE_NAME = "geunmeong-step24-community-board-layout-v2";
+const CACHE_NAME = "geunmeong-step24-afternoon-palette-v1";
 const APP_SHELL = ['./', './index.html', './css/style.css', './calendar-data.js', './js/shifts.js', './js/holidays.js', './js/calendar.js', './js/themes.js', './js/schedule-editing.js', './js/navigation.js', './js/records.js', './js/backup.js', './js/notifications.js', './js/friends.js', './js/community.js', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-180.png'];
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(APP_SHELL)).then(() => self.skipWaiting()));
