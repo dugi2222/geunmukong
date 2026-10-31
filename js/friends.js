@@ -4,6 +4,11 @@
   const storageKey = 'friendPreviewProfilesV1';
   const allowed = new Set(['주간','야간','비번','휴무','연차','오후','당직']);
   let profiles = [];
+  let onlineFriends = [];
+  const onlineAliasKey='geunmeongOnlineFriendAliasesV1';
+  function onlineAliases(){try{return JSON.parse(localStorage.getItem(onlineAliasKey)||'{}')||{};}catch(_){return {};}}
+  document.addEventListener('geunmeong:online-friends-updated', e=>{onlineFriends=Array.isArray(e.detail?.friends)?e.detail.friends:[];render();});
+  document.addEventListener('geunmeong:auth-changed',e=>{onlineFriends=[];render();});
   try { const data = JSON.parse(localStorage.getItem(storageKey) || '[]'); if(Array.isArray(data)) profiles = data.filter(x => x && typeof x.nickname === 'string' && Array.isArray(x.pattern)); } catch(_) {}
   const overlay=$('friendOverlay');
   let activeFriendSubtab='friends';
@@ -97,12 +102,25 @@
   });
   function render(){
     const list=$('friendList');list.replaceChildren();
-    $('friendCount').textContent=String(profiles.filter(p=>p.demo).length);
-    if(!profiles.length){
+    $('friendCount').textContent=String(onlineFriends.length+profiles.filter(p=>p.demo).length);
+    if(!profiles.length && !onlineFriends.length){
       const empty=document.createElement('div');empty.className='friends-empty';
       empty.innerHTML='<div class="friends-empty-emoji">👥</div><strong>아직 등록된 친구가 없어요</strong><p>오른쪽 위 + 버튼으로 친구를 추가해 보세요.</p>';
       list.append(empty);
     }
+    // Accepted Supabase friends belong in the main Friends list, not only the management panel.
+    const aliases=onlineAliases();
+    onlineFriends.forEach((friend,index)=>{
+      const row=document.createElement('div');row.className='friend-row friend-profile-row gm-online-main-row';
+      const avatar=document.createElement('div');avatar.className='friend-avatar';avatar.textContent=['🐶','🐱','🦭','🐼','🐢'][index%5];
+      const info=document.createElement('div');info.className='friend-info';
+      const name=document.createElement('strong');name.textContent=aliases[friend.code]||friend.nickname;
+      const detail=document.createElement('small');detail.textContent=(aliases[friend.code]?friend.nickname+' · ':'')+'온라인 친구 · 근무표 미공유';
+      info.append(name,detail);
+      const aliasButton=document.createElement('button');aliasButton.type='button';aliasButton.className='gm-alias-btn';aliasButton.textContent='별칭';
+      aliasButton.addEventListener('click',()=>{const value=prompt('친구 별칭 (비우면 원래 닉네임)',aliases[friend.code]||'');if(value===null)return;const next=onlineAliases();if(value.trim())next[friend.code]=value.trim().slice(0,24);else delete next[friend.code];localStorage.setItem(onlineAliasKey,JSON.stringify(next));render();document.dispatchEvent(new CustomEvent('geunmeong:online-friend-alias-changed'));});
+      row.append(avatar,info,aliasButton);list.append(row);
+    });
     const now=new Date(), todayStr=[now.getFullYear(),String(now.getMonth()+1).padStart(2,'0'),String(now.getDate()).padStart(2,'0')].join('-');
     profiles.filter(p=>p.demo).forEach((profile,index)=>{
       const row=document.createElement('div');row.className='friend-row friend-profile-row';

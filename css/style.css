@@ -2068,3 +2068,5 @@ body.dark .friend-chat-bubble.mine{background:#dcd1ef!important;color:#251b36!im
 #gmOnlineAddSlot .gm-online-friends{display:block;}
 #gmOnlineAddSlot .gm-online-note{line-height:1.55;}
 #gmSendFriendForm input{text-transform:uppercase;letter-spacing:.035em;}
+
+.gm-sync-box{margin-top:16px;padding:14px;border:1px solid var(--border-color,#ddd);border-radius:12px;background:rgba(127,127,127,.06)}.gm-sync-box h3{margin:0 0 8px;font-size:16px}.gm-sync-box p{font-size:13px;line-height:1.5}.gm-sync-actions{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}.gm-sync-actions button{flex:1 1 130px;padding:9px 7px;border-radius:9px;border:1px solid #aaa;background:transparent;color:inherit;font-size:12px;cursor:pointer}.gm-sync-box small{font-size:11px;line-height:1.5;display:block;opacity:.8}

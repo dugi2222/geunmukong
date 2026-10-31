@@ -27,6 +27,7 @@
  const aliasKey='geunmeongOnlineFriendAliasesV1';
  let aliases={};try{aliases=JSON.parse(localStorage.getItem(aliasKey)||'{}')||{};}catch(_){aliases={};}
  function saveAliases(){localStorage.setItem(aliasKey,JSON.stringify(aliases));}
+ function loadAliases(){try{aliases=JSON.parse(localStorage.getItem(aliasKey)||'{}')||{};}catch(_){aliases={};}}
  const localHeading=page.querySelector('.friend-list-heading');
  const note=page.querySelector('.friends-disclaimer');
  const status=(msg,bad=false)=>{ $('gmFriendStatus').textContent=msg; $('gmFriendStatus').classList.toggle('error',bad); };
@@ -47,6 +48,7 @@
   }
  }
  async function refresh(silent=false){
+  loadAliases();
   if(!user){status('로그인 후 친구 코드를 이용할 수 있어요.',true);return;}
   const current=++requestSerial;
   if(!silent)status('친구 목록 불러오는 중...');
@@ -63,7 +65,7 @@
    if(!silent)status('');
   }catch(e){if(current===requestSerial)status('온라인 친구 오류: '+e.message+' (상대방도 로그인 후 친구 탭을 한 번 열었는지 확인해 주세요.)',true);}
  }
- function updateAuth(next){user=next;requestSerial++;page.querySelector('.friend-my-profile').hidden=!!user;
+ function updateAuth(next){user=next;requestSerial++;loadAliases();page.querySelector('.friend-my-profile').hidden=!!user;
   if(localHeading)localHeading.querySelector('small').textContent=user?'이 기기에 저장된 친구 (온라인과 별개)':'기기에 등록된 친구';
   if(note)note.textContent=user?'아래 친구와 휴무 비교는 기기에 저장된 데이터로만 작동해요. 온라인 친구의 근무표는 아직 연결되지 않았어요.':'로그인하면 온라인 친구 요청·수락 기능을 이용할 수 있어요. 기기 내 친구는 그대로 이용할 수 있어요.';
   if(user)refresh();else { $('gmOnlineCode').textContent='로그인 필요';status('로그인하면 온라인 친구 기능을 이용할 수 있어요.'); }
@@ -72,6 +74,7 @@
  $('gmSendFriendForm').addEventListener('submit',e=>{e.preventDefault();const code=$('gmTargetCode').value.trim().toUpperCase();if(!/^GM-[A-F0-9]{10}$/.test(code)){status('GM-으로 시작하는 10자리 친구 코드를 입력해 주세요.',true);return;}perform('gm_friend_send',{code_input:code},'친구 요청을 보냈어요!');});
  $('gmSaveNickname').addEventListener('click',()=>perform('gm_friend_set_nickname',{new_nickname:$('gmOnlineNickname').value.trim()},'닉네임을 수정했어요.'));
  $('gmCopyCode').addEventListener('click',async()=>{try{await navigator.clipboard.writeText($('gmOnlineCode').textContent);status('친구 코드를 복사했어요.');}catch(_){status('복사가 안 되면 코드를 길게 눌러 복사해 주세요.',true);}});
+ document.addEventListener('geunmeong:online-friend-alias-changed',()=>{if(user)refresh(true);});
  document.addEventListener('geunmeong:auth-changed',e=>updateAuth(e.detail?.user||null));
  document.querySelector('[data-tab="friends"]').addEventListener('click',()=>{if(user)refresh();});
  // 이미 로그인한 상태에서 페이지를 연 경우에도 복원합니다.
