@@ -6,6 +6,18 @@
   let profiles = [];
   try { const data = JSON.parse(localStorage.getItem(storageKey) || '[]'); if(Array.isArray(data)) profiles = data.filter(x => x && typeof x.nickname === 'string' && Array.isArray(x.pattern)); } catch(_) {}
   const overlay=$('friendOverlay');
+  let activeFriendSubtab='friends';
+  function showFriendSubtab(tab){
+    activeFriendSubtab=tab;
+    $('gmFriendsContent').hidden=tab!=='friends';$('gmChatsContent').hidden=tab!=='chats';
+    $('gmFriendsSubtab').classList.toggle('active',tab==='friends');$('gmChatsSubtab').classList.toggle('active',tab==='chats');
+    $('gmFriendsSubtab').setAttribute('aria-selected',String(tab==='friends'));$('gmChatsSubtab').setAttribute('aria-selected',String(tab==='chats'));
+    if(tab==='chats')renderChatRooms();
+  }
+  $('gmFriendsSubtab').addEventListener('click',()=>showFriendSubtab('friends'));
+  $('gmChatsSubtab').addEventListener('click',()=>showFriendSubtab('chats'));
+  document.addEventListener('geunmeong:tab-leave',()=>showFriendSubtab('friends'));
+
   const myProfileKey='geunmeongMyFriendProfileV1';
   let myProfile;
   try { myProfile=JSON.parse(localStorage.getItem(myProfileKey)||'null'); }catch(_){}
@@ -56,13 +68,16 @@
     $('friendNickname').value='';$('friendCode').value='';
   });
   function utcDay(date){const [y,m,d]=date.split('-').map(Number);return Date.UTC(y,m-1,d)/86400000;}
-  function shiftFor(profile,date){const n=profile.pattern.length, diff=utcDay(date)-utcDay(profile.start);return profile.pattern[((diff+profile.startIndex)%n+n)%n];}
+  function shiftFor(profile,date){if(profile.code===demoCode){const day=new Date(date+'T12:00:00Z').getUTCDay();return day===0||day===6?'휴무':'주간';}const n=profile.pattern.length, diff=utcDay(date)-utcDay(profile.start);return profile.pattern[((diff+profile.startIndex)%n+n)%n];}
   // Local demo messaging: never sends data to a server.
   const demoCode='DEMO-MEONGMEONG';
   if(!profiles.some(p=>p.code===demoCode)){
-    profiles.push({nickname:'멍멍이',code:demoCode,pattern:['주간','주간','야간','야간','비번','비번'],start:'2026-10-01',startIndex:0,selected:false,demo:true});
+    profiles.push({nickname:'멍멍이',code:demoCode,pattern:['주간'],start:'2026-10-01',startIndex:0,selected:true,demo:true});
     save();
   }
+  // 데모 친구는 평일 주간, 주말 휴무. 기존 저장 데이터도 갱신합니다.
+  const demoProfile=profiles.find(p=>p.code===demoCode);
+  if(demoProfile){demoProfile.pattern=['주간'];demoProfile.selected=true;demoProfile.demo=true;save();}
   const messageKey='geunmeongFriendDemoMessagesV1';
   let chats={};
   try {const loaded=JSON.parse(localStorage.getItem(messageKey)||'{}');if(loaded&&typeof loaded==='object'&&!Array.isArray(loaded))chats=loaded;}catch(_){}
@@ -83,8 +98,18 @@
     history.forEach(msg=>{const bubble=document.createElement('div');bubble.className='friend-chat-bubble '+(msg.from==='me'?'mine':'theirs');bubble.textContent=msg.text;chatList.append(bubble);});
     chatList.scrollTop=chatList.scrollHeight;
   }
-  function openChat(profile){chatWith=profile.code;document.getElementById('friendChatName').textContent=profile.nickname+' 🐶';chatOverlay.hidden=false;document.body.classList.add('friend-chat-open');renderChat();document.getElementById('friendChatInput').focus();}
-  function appendChat(code,from,message){if(!Array.isArray(chats[code]))chats[code]=[];chats[code].push({from,text:message,time:Date.now()});chats[code]=chats[code].slice(-100);localStorage.setItem(messageKey,JSON.stringify(chats));if(chatWith===code)renderChat();}
+  function renderChatRooms(){
+    const root=$('gmChatRoomList');root.replaceChildren();
+    const rooms=profiles.filter(p=>Array.isArray(chats[p.code])&&chats[p.code].length).sort((a,b)=>chats[b.code].at(-1).time-chats[a.code].at(-1).time);
+    if(!rooms.length){const empty=document.createElement('p');empty.className='gm-chat-disclaimer';empty.textContent='아직 대화가 없어요. 친구 목록에서 메시지를 보내면 여기에 표시돼요.';root.append(empty);return;}
+    for(const profile of rooms){const last=chats[profile.code].at(-1),row=document.createElement('button');row.type='button';row.className='gm-chat-room';
+      const avatar=document.createElement('span');avatar.className='gm-chat-room-avatar';avatar.textContent='🐾';
+      const content=document.createElement('span');content.className='gm-chat-room-content';const name=document.createElement('strong');name.textContent=profile.alias||profile.nickname;const preview=document.createElement('small');preview.textContent=last.text;content.append(name,preview);
+      const time=document.createElement('small');time.textContent=new Date(last.time).toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'});row.append(avatar,content,time);row.addEventListener('click',()=>openChat(profile));root.append(row);
+    }
+  }
+  function openChat(profile){chatWith=profile.code;document.getElementById('friendChatName').textContent=(profile.alias||profile.nickname)+' 🐶';chatOverlay.hidden=false;document.body.classList.add('friend-chat-open');renderChat();document.getElementById('friendChatInput').focus();}
+  function appendChat(code,from,message){if(!Array.isArray(chats[code]))chats[code]=[];chats[code].push({from,text:message,time:Date.now()});chats[code]=chats[code].slice(-100);localStorage.setItem(messageKey,JSON.stringify(chats));if(chatWith===code)renderChat();renderChatRooms();}
   document.getElementById('friendChatForm').addEventListener('submit',e=>{
     e.preventDefault();const input=document.getElementById('friendChatInput');const message=input.value.trim();if(!message||!chatWith)return;
     const code=chatWith;appendChat(code,'me',message);input.value='';
@@ -103,15 +128,16 @@
       const row=document.createElement('div');row.className='friend-row friend-profile-row';
       const avatar=document.createElement('div');avatar.className='friend-avatar';avatar.textContent=['🐶','🐱','🦭','🐼','🐢'][index%5];
       const info=document.createElement('div');info.className='friend-info';
-      const name=document.createElement('strong');name.textContent=profile.nickname;
+      const name=document.createElement('strong');name.textContent=profile.alias||profile.nickname;
       const detail=document.createElement('small');detail.textContent=profile.demo?'테스트 친구 · 자동 답장':`코드 ${profile.code}`;
-      info.append(name,detail);
+      if(profile.alias){detail.textContent=profile.nickname+' · '+detail.textContent;}info.append(name,detail);
       const shift=document.createElement('span');shift.className='friend-shift-chip';shift.textContent=shiftFor(profile,todayStr);
       const checkbox=document.createElement('input');checkbox.type='checkbox';checkbox.checked=profile.selected!==false;checkbox.setAttribute('aria-label',`${profile.nickname} 쉬는 날 비교에 포함`);checkbox.addEventListener('change',()=>{profile.selected=checkbox.checked;save();renderComparison();});
       const remove=document.createElement('button');remove.type='button';remove.className='friend-remove';remove.textContent='삭제';remove.setAttribute('aria-label',`${profile.nickname} 삭제`);remove.addEventListener('click',()=>{if(confirm(`${profile.nickname}의 기기 내 기록을 삭제할까요?`)){profiles.splice(index,1);save();render();}});
       const messageButton=document.createElement('button');messageButton.type='button';messageButton.className='friend-message-button';messageButton.textContent='💬 메시지';messageButton.setAttribute('aria-label',profile.nickname+'에게 메시지');messageButton.addEventListener('click',()=>openChat(profile));
-      row.append(avatar,info,shift,messageButton,checkbox,remove);list.append(row);
-    });renderComparison();
+      const aliasButton=document.createElement('button');aliasButton.type='button';aliasButton.className='gm-alias-btn';aliasButton.textContent='별칭';aliasButton.addEventListener('click',()=>{const answer=prompt('이 친구에게 표시할 별칭 (비우면 원래 이름)',profile.alias||'');if(answer===null)return;profile.alias=answer.trim().slice(0,24);save();render();});
+      row.append(avatar,info,shift,messageButton,aliasButton,checkbox,remove);list.append(row);
+    });renderComparison();renderChatRooms();
   }
   function isRest(shift, includeLeave){return shift==='비번'||shift==='휴무'||(includeLeave&&shift==='연차');}
   function renderComparison(){

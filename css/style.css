@@ -1962,3 +1962,104 @@ body.dark[data-mascot-theme] #gmAuthForm input {background:var(--surface);color:
 .gm-online-list{display:grid;gap:7px}.gm-online-row{display:flex;gap:7px;align-items:center;padding:10px;border:1px solid #8883;border-radius:12px;flex-wrap:wrap}.gm-online-info{flex:1;min-width:100px;display:grid;gap:4px}.gm-online-info strong{font-size:13px}.gm-online-info small{font-size:11px;opacity:.7}
 .gm-online-empty{font-size:12px;opacity:.65;margin:6px 0 10px}#gmFriendStatus{font-size:12px;line-height:1.6;min-height:1em}#gmFriendStatus.error{color:#c44}
 @media(max-width:380px){.gm-online-friends{padding:11px}.gm-online-action{padding:8px}.gm-code-line code{font-size:12px}}
+
+/* v9: 읽기 쉬운 채팅 말풍선 */
+.friend-chat-bubble.mine{background:#f1e8ff!important;color:#30233c!important;border:1px solid #dac8ef;}
+body.dark .friend-chat-bubble.mine{background:#dcd1ef!important;color:#251b36!important;}
+.friend-chat-bubble.theirs{color:var(--text,#303030);}
+/* 친구 탭에서 메뉴 버튼은 온라인 친구 관리 서랍으로 동작 */
+.gm-online-friends[hidden]{display:none!important;}
+.gm-online-friends{position:fixed!important;z-index:11000;top:calc(env(safe-area-inset-top,0px) + 58px);left:12px;width:min(400px,calc(100vw - 24px));max-height:calc(100dvh - 135px);overflow:auto;overscroll-behavior:contain;box-sizing:border-box;border-radius:17px;box-shadow:0 14px 45px #0005;padding:16px;background:var(--card-bg,#fff);color:var(--text,#222);border:1px solid #8884;}
+.gm-online-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.gm-online-head h3{flex:1;}
+#gmOnlineClose{order:3;cursor:pointer;border:0;border-radius:9px;padding:7px 11px;background:var(--accent-soft,#eee);color:inherit;font-size:17px;}
+
+/* v10: Online friend requests live inside the existing Add Friend sheet. */
+#gmManualAddFields[hidden],#gmOnlineAddSlot .gm-online-friends[hidden]{display:none!important}
+.gm-add-methods{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.gm-method{border:1px solid #8885;border-radius:11px;background:var(--card-bg,#fff);color:inherit;padding:11px 6px;font-weight:700;font-size:13px;cursor:pointer}
+.gm-method.active{background:var(--accent-soft,#e9ecfa);border-color:var(--accent,#7d88a8)}
+#gmOnlineAddSlot .gm-online-friends{position:static!important;z-index:auto!important;top:auto!important;left:auto!important;width:100%!important;max-height:none!important;overflow:visible!important;box-shadow:none!important;margin:0!important;padding:10px!important;border:0!important;background:transparent!important}
+#gmOnlineAddSlot .gm-online-head h3{font-size:15px}
+#gmOnlineAddSlot .gm-online-head #gmOnlineClose{display:none}
+#gmOnlineAddSlot .gm-online-me{padding:10px}
+#gmOnlineAddSlot .gm-friend-send>div{display:flex;gap:6px}
+#gmOnlineAddSlot .gm-code-line{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+#gmOnlineAddSlot .gm-code-line code{overflow-wrap:anywhere}
+
+/* v11: 메신저형 친구/채팅 전환 */
+.gm-friend-subtabs{display:flex;gap:8px;margin:12px 0 18px;padding:5px;background:var(--surface,#f2f3f5);border-radius:15px}
+.gm-friend-subtabs button{flex:1;padding:12px 8px;border:0;border-radius:11px;background:transparent;color:inherit;font-weight:700;cursor:pointer}
+.gm-friend-subtabs button.active{background:var(--card-bg,#fff);box-shadow:0 2px 9px #00000012;color:var(--accent,#537bd1)}
+#gmChatsContent[hidden],#gmFriendsContent[hidden]{display:none!important}
+.gm-chats-heading{margin:12px 4px}.gm-chat-room{width:100%;display:flex;align-items:center;gap:13px;text-align:left;border:0;border-bottom:1px solid #8882;background:transparent;padding:15px 7px;color:inherit;cursor:pointer}
+.gm-chat-room-avatar{display:grid;place-items:center;width:48px;height:48px;border-radius:18px;background:#a8d9f04d;font-size:23px}.gm-chat-room-content{display:flex;flex:1;min-width:0;flex-direction:column;gap:5px}.gm-chat-room-content small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;opacity:.65}.gm-chat-room>small{opacity:.65}.gm-chat-disclaimer{padding:16px 5px;opacity:.7;font-size:13px}.gm-alias-btn{border:1px solid #8885;border-radius:9px;background:transparent;color:inherit;padding:7px;cursor:pointer}
+.friend-chat-bubble.mine{background:#dce8ff!important;color:#18263c!important}
+
+/* v12: 친구/채팅 전환을 근무기록 콘텐츠 정렬선에 맞춤 */
+#friendsPage.app-tab-page { display:block; padding:12px 14px 24px; }
+#friendsPage .friends-shell { width:100%; max-width:100%; box-sizing:border-box; margin:0; padding:0 0 28px; overflow:visible; }
+#friendsPage .friends-topbar { margin:5px 0 12px; }
+#friendsPage .gm-friend-subtabs {
+  display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  align-items:stretch; gap:8px; width:100%; box-sizing:border-box;
+  margin:0 0 18px; padding:5px; border-radius:15px;
+}
+#friendsPage .gm-friend-subtabs button {
+  display:flex; align-items:center; justify-content:center; gap:5px;
+  min-width:0; width:100%; height:46px; min-height:46px;
+  margin:0; padding:0 8px; box-sizing:border-box;
+  border:0; border-radius:11px; font-size:15px; line-height:1;
+  font-family:inherit; font-weight:700; white-space:nowrap;
+}
+
+/* v13: 근무기록·친구·소통 상단 기준선 통일 / 친구 추가 버튼 가시성 개선 */
+#communityPage.app-tab-page { display:block; padding:12px 14px 24px; box-sizing:border-box; }
+#communityPage[hidden],#friendsPage[hidden] { display:none!important; }
+#communityPage .community-shell { width:100%; max-width:100%; box-sizing:border-box; margin:0; padding:0 0 28px; }
+#communityPage .community-head { margin:5px 0 12px; min-height:50px; align-items:center; }
+#communityPage .community-head h2 { margin:2px 0!important; font-size:27px!important; line-height:1.2; }
+#friendsPage .friends-topbar { min-height:50px; }
+#friendsPage .friend-add-icon { display:inline-flex; align-items:center; justify-content:center; gap:5px; width:auto; min-width:104px; height:42px; padding:0 14px; border:0; border-radius:12px; background:var(--accent,#8ea); color:var(--accent-ink,#263238); font:700 14px/1 inherit; white-space:nowrap; cursor:pointer; }
+@media(max-width:360px){ #friendsPage .friend-add-icon { min-width:94px; padding:0 10px; font-size:13px; } }
+
+/* v14: 일관된 소형 헤더 액션과 제목 타이포그래피 */
+#friendsPage .friends-topbar, #communityPage .community-head {
+  display:flex; align-items:center; justify-content:space-between; gap:10px;
+  min-height:48px; margin:5px 0 12px;
+}
+#friendsPage .friends-topbar > div, #communityPage .community-head > div { min-width:0; }
+#friendsPage .friends-topbar h2, #communityPage .community-head h2 {
+  margin:2px 0!important; font-size:24px!important; line-height:1.25!important; font-weight:800;
+}
+#friendsPage .friends-eyebrow, #communityPage .community-head small {
+  display:block; font-size:10px; letter-spacing:1.4px; line-height:1.3; opacity:.55;
+}
+/* 원래 글쓰기 버튼은 변경하지 않고, 친구 추가만 원래 글쓰기 스타일과 일치시킴 */
+#friendsPage .friend-add-icon {
+  display:inline-flex; align-items:center; justify-content:center; flex:0 0 auto;
+  width:auto; min-width:0; height:auto; min-height:0;
+  margin:0; padding:11px 14px; box-sizing:border-box;
+  border:0; border-radius:12px;
+  background:var(--accent,#8ea); color:var(--accent-ink,#263238);
+  font-family:inherit; font-size:inherit; font-weight:700;
+  line-height:normal; white-space:nowrap; cursor:pointer;
+}
+
+/* v16: 글쓰기 원형 디자인 기준으로 친구 추가와 동일하게 적용 */
+#friendsPage .friend-add-icon,
+#communityPage .community-new {
+  display:inline-flex; align-items:center; justify-content:center;
+  flex:0 0 auto; width:auto; min-width:0; height:auto; min-height:0;
+  margin:0; padding:11px 14px; box-sizing:border-box;
+  border:0; border-radius:12px;
+  background:var(--accent,#8ea); color:var(--accent-ink,#263238);
+  font-family:inherit; font-size:14px; font-weight:700; line-height:normal;
+  white-space:nowrap; cursor:pointer;
+}
+
+/* v17: 두 헤더 버튼 모두 연한 테마 배경 */
+#friendsPage .friend-add-icon, #communityPage .community-new {
+ background:var(--surface,#f0f5f1)!important; color:var(--accent-ink,#344d3c)!important;
+ border:1px solid color-mix(in srgb, var(--accent,#8ea) 32%, transparent)!important;
+}

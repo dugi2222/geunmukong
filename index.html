@@ -13,7 +13,7 @@
     <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png?v=dogicon2">
     <link rel="apple-touch-icon" href="icon-180.png?v=dogicon2">
     <title>근무멍</title>
-    <link rel="stylesheet" href="css/style.css?v=header-align-v6">
+    <link rel="stylesheet" href="css/style.css?v=lightbuttons17">
 </head>
 <body>
     <button id="menuBtn">☰</button>
@@ -204,13 +204,13 @@
     </section>
     <section id="friendsPage" class="app-tab-page" hidden aria-label="친구">
       <div class="friends-shell friends-home">
-        <header class="friends-topbar"><div><small class="friends-eyebrow">GEUNMEONG · FRIENDS</small><h2>친구 <span id="friendCount">0</span></h2></div><button type="button" id="friendOpenAdd" class="friend-add-icon" aria-label="친구 추가">＋</button></header>
-        <section class="friend-my-profile"><div class="friend-avatar mine">🐶</div><div class="friend-profile-copy"><strong id="myFriendName">내 프로필</strong><small id="myFriendCode">내 친구 코드 준비 중</small></div><button type="button" id="friendEditMyProfile" class="friend-profile-edit">편집</button><span class="friend-preview-badge">미리보기</span></section>
+        <header class="friends-topbar"><div><small class="friends-eyebrow">GEUNMEONG · FRIENDS</small><h2>친구 <span id="friendCount">0</span></h2></div><button type="button" id="friendOpenAdd" class="friend-add-icon" aria-label="친구 추가">＋ 친구 추가</button></header>
+        <nav class="gm-friend-subtabs" aria-label="친구와 채팅"><button type="button" id="gmFriendsSubtab" class="active" aria-selected="true">👥 친구</button><button type="button" id="gmChatsSubtab" aria-selected="false">💬 채팅</button></nav><div id="gmFriendsContent"><section class="friend-my-profile"><div class="friend-avatar mine">🐶</div><div class="friend-profile-copy"><strong id="myFriendName">내 프로필</strong><small id="myFriendCode">내 친구 코드 준비 중</small></div><button type="button" id="friendEditMyProfile" class="friend-profile-edit">편집</button><span class="friend-preview-badge">미리보기</span></section>
         <div class="friend-list-heading"><h3>내 친구</h3><small>기기에 등록된 친구</small></div>
         <div id="friendList" class="friend-list-clean"></div>
         <button type="button" id="friendOpenCompare" class="friend-compare-cta"><span>📅</span><span><strong>같이 쉬는 날 찾기</strong><small>친구들과 겹치는 휴무일 확인</small></span><span aria-hidden="true">›</span></button>
         <p class="friends-disclaimer">현재 친구 정보는 이 기기에만 저장돼요. 실제 친구 요청과 실시간 근무표 공유는 추후 제공됩니다.</p>
-      </div>
+      </div><div id="gmChatsContent" hidden><h3 class="gm-chats-heading">채팅</h3><div id="gmChatRoomList"></div><p class="gm-chat-disclaimer">현재 채팅은 이 기기에서만 작동하는 테스트 기능이에요.</p></div></div>
       <div id="friendOverlay" class="friend-sheet-overlay" hidden>
         <section class="friend-sheet" role="dialog" aria-modal="true" aria-labelledby="friendSheetTitle">
           <header class="friend-sheet-head"><h3 id="friendSheetTitle">친구 추가</h3><button type="button" id="friendSheetClose" aria-label="닫기">✕</button></header>
@@ -221,6 +221,12 @@
               <button type="button" id="friendSaveMyProfile" class="friends-primary">프로필 저장</button>
             </section>
             <section id="friendAddPanel" class="friend-sheet-content">
+              <div class="gm-add-methods" role="group" aria-label="친구 추가 방법">
+                <button type="button" id="gmChooseOnline" class="gm-method active" aria-pressed="true">🌐 온라인 친구 추가</button>
+                <button type="button" id="gmChooseManual" class="gm-method" aria-pressed="false">✏️ 직접 등록</button>
+              </div>
+              <div id="gmOnlineAddSlot"></div>
+              <div id="gmManualAddFields" hidden>
               <p class="friends-note">닉네임과 코드를 모두 입력해 이 기기에 친구의 근무표를 등록할 수 있어요.</p>
               <label>닉네임 <input id="friendNickname" maxlength="24" autocomplete="off" placeholder="친구 닉네임"></label>
               <label>친구 코드 <input id="friendCode" maxlength="20" autocomplete="off" placeholder="상대에게 받은 코드"></label>
@@ -229,6 +235,7 @@
               <label>시작 날짜의 패턴 위치 <select id="friendStartIndex"><option value="0">첫 번째 근무부터</option></select></label>
               <button id="friendAdd" type="button" class="friends-primary">이 기기에 등록</button>
               <p id="friendFeedback" role="status" aria-live="polite"></p>
+              </div>
             </section>
             <section id="friendComparePanel" class="friend-sheet-content" hidden>
               <p class="friends-note">친구 목록에서 체크한 친구들과 함께 쉬는 날을 찾아요.</p>
@@ -241,9 +248,9 @@
         </section>
       </div>
     </section>
-    <section id="communityPage" class="app-tab-page" hidden aria-label="소통">
+    <section id="communityPage" class="app-tab-page" hidden aria-label="게시판">
       <div class="community-shell">
-        <header class="community-head"><div><small>GEUNMEONG · COMMUNITY</small><h2>💬 소통</h2></div><button id="communityComposeToggle" type="button" class="community-new">＋ 글쓰기</button></header>
+        <header class="community-head"><div><small>GEUNMEONG · COMMUNITY</small><h2>게시판</h2></div><button id="communityComposeToggle" type="button" class="community-new">＋ 글쓰기</button></header>
         <p class="community-local-notice">🔒 현재 글과 댓글은 이 기기에만 저장돼요. 다른 사용자에게는 보이지 않습니다.</p>
         <nav id="communityBoards" class="community-boards" aria-label="게시판 선택">
           <button type="button" data-board="자유"><span>☕</span><strong>자유게시판</strong><small>일상과 잡담</small><em id="boardCountFree">0</em></button>
@@ -294,7 +301,7 @@
       <button type="button" class="bottom-tab active" data-tab="calendar" aria-current="page"><span aria-hidden="true">📅</span><small>달력</small></button>
       <button type="button" class="bottom-tab" data-tab="stats"><span aria-hidden="true">📊</span><small>근무 기록</small></button>
       <button type="button" class="bottom-tab" data-tab="friends"><span aria-hidden="true">👥</span><small>친구</small></button>
-      <button type="button" class="bottom-tab" data-tab="community"><span aria-hidden="true">💬</span><small>소통</small></button>
+      <button type="button" class="bottom-tab" data-tab="community"><span aria-hidden="true">💬</span><small>게시판</small></button>
     </nav>
 
 
@@ -427,9 +434,9 @@
 <script src="js/notifications.js?v=step19"></script>
 <script src="js/work-settings-drawer.js?v=tabreset5"></script>
 <script src="js/dismiss-ui.js?v=step21"></script>
-<script src="js/friends.js?v=tabreset5"></script>
+<script src="js/friends.js?v=friend-chat-v11"></script>
 <script src="js/community.js?v=tabreset5"></script>
-<script src="js/online-friends.js?v=online23a"></script>
+<script src="js/online-friends.js?v=friend-alias-v11"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="js/auth.js?v=online23a" defer></script>
 <script>
