@@ -86,13 +86,15 @@
   function renderChatRooms(){
     const root=$('gmChatRoomList');root.replaceChildren();
     const rooms=profiles.filter(p=>p.demo&&Array.isArray(chats[p.code])&&chats[p.code].length).sort((a,b)=>chats[b.code].at(-1).time-chats[a.code].at(-1).time);
-    if(!rooms.length){const empty=document.createElement('p');empty.className='gm-chat-disclaimer';empty.textContent='아직 대화가 없어요. 친구 목록에서 메시지를 보내면 여기에 표시돼요.';root.append(empty);return;}
+    for(const friend of onlineFriends){const preview=window.gmOnlineChat?.preview(friend.code);const row=document.createElement('button');row.type='button';row.className='gm-chat-room';const avatar=document.createElement('span');avatar.className='gm-chat-room-avatar';avatar.textContent='🐾';const content=document.createElement('span');content.className='gm-chat-room-content';const name=document.createElement('strong');name.textContent=onlineAliases()[friend.code]||friend.nickname;const small=document.createElement('small');small.textContent=preview?.text||'온라인 친구 · 대화 시작하기';content.append(name,small);row.append(avatar,content);row.addEventListener('click',()=>window.gmOnlineChat?.open({...friend,alias:onlineAliases()[friend.code]}));root.append(row);}
+    if(!rooms.length&&!onlineFriends.length){const empty=document.createElement('p');empty.className='gm-chat-disclaimer';empty.textContent='아직 대화가 없어요. 친구 목록에서 메시지를 보내면 여기에 표시돼요.';root.append(empty);return;}
     for(const profile of rooms){const last=chats[profile.code].at(-1),row=document.createElement('button');row.type='button';row.className='gm-chat-room';
       const avatar=document.createElement('span');avatar.className='gm-chat-room-avatar';avatar.textContent='🐾';
       const content=document.createElement('span');content.className='gm-chat-room-content';const name=document.createElement('strong');name.textContent=profile.alias||profile.nickname;const preview=document.createElement('small');preview.textContent=last.text;content.append(name,preview);
       const time=document.createElement('small');time.textContent=new Date(last.time).toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'});row.append(avatar,content,time);row.addEventListener('click',()=>openChat(profile));root.append(row);
     }
   }
+  document.addEventListener('geunmeong:chat-updated',renderChatRooms);
   function openChat(profile){chatWith=profile.code;document.getElementById('friendChatName').textContent=(profile.alias||profile.nickname)+' 🐶';chatOverlay.hidden=false;document.body.classList.add('friend-chat-open');renderChat();document.getElementById('friendChatInput').focus();}
   function appendChat(code,from,message){if(!Array.isArray(chats[code]))chats[code]=[];chats[code].push({from,text:message,time:Date.now()});chats[code]=chats[code].slice(-100);localStorage.setItem(messageKey,JSON.stringify(chats));if(chatWith===code)renderChat();renderChatRooms();}
   document.getElementById('friendChatForm').addEventListener('submit',e=>{
@@ -119,7 +121,8 @@
       info.append(name,detail);
       const aliasButton=document.createElement('button');aliasButton.type='button';aliasButton.className='gm-alias-btn';aliasButton.textContent='별칭';
       aliasButton.addEventListener('click',()=>{const value=prompt('친구 별칭 (비우면 원래 닉네임)',aliases[friend.code]||'');if(value===null)return;const next=onlineAliases();if(value.trim())next[friend.code]=value.trim().slice(0,24);else delete next[friend.code];localStorage.setItem(onlineAliasKey,JSON.stringify(next));render();document.dispatchEvent(new CustomEvent('geunmeong:online-friend-alias-changed'));});
-      row.append(avatar,info,aliasButton);list.append(row);
+      const chatButton=document.createElement('button');chatButton.type='button';chatButton.className='friend-message-button';chatButton.textContent='💬 메시지';chatButton.addEventListener('click',()=>window.gmOnlineChat?.open({...friend,alias:onlineAliases()[friend.code]}));
+      row.append(avatar,info,chatButton,aliasButton);list.append(row);
     });
     const now=new Date(), todayStr=[now.getFullYear(),String(now.getMonth()+1).padStart(2,'0'),String(now.getDate()).padStart(2,'0')].join('-');
     profiles.filter(p=>p.demo).forEach((profile,index)=>{
