@@ -221,21 +221,8 @@
               <button type="button" id="friendSaveMyProfile" class="friends-primary">프로필 저장</button>
             </section>
             <section id="friendAddPanel" class="friend-sheet-content">
-              <div class="gm-add-methods" role="group" aria-label="친구 추가 방법">
-                <button type="button" id="gmChooseOnline" class="gm-method active" aria-pressed="true">🌐 온라인 친구 추가</button>
-                <button type="button" id="gmChooseManual" class="gm-method" aria-pressed="false">✏️ 직접 등록</button>
-              </div>
+              <p class="friends-note">친구가 근무멍에 가입하고 친구 화면을 열면 개인 친구 코드가 발급돼요. 닉네임은 입력하지 않아도 돼요.</p>
               <div id="gmOnlineAddSlot"></div>
-              <div id="gmManualAddFields" hidden>
-              <p class="friends-note">닉네임과 코드를 모두 입력해 이 기기에 친구의 근무표를 등록할 수 있어요.</p>
-              <label>닉네임 <input id="friendNickname" maxlength="24" autocomplete="off" placeholder="친구 닉네임"></label>
-              <label>친구 코드 <input id="friendCode" maxlength="20" autocomplete="off" placeholder="상대에게 받은 코드"></label>
-              <label>근무 패턴 (쉼표로 구분) <input id="friendPattern" placeholder="주간,주간,야간,야간,비번,비번"></label>
-              <label>패턴 시작 날짜 <input id="friendStart" type="date"></label>
-              <label>시작 날짜의 패턴 위치 <select id="friendStartIndex"><option value="0">첫 번째 근무부터</option></select></label>
-              <button id="friendAdd" type="button" class="friends-primary">이 기기에 등록</button>
-              <p id="friendFeedback" role="status" aria-live="polite"></p>
-              </div>
             </section>
             <section id="friendComparePanel" class="friend-sheet-content" hidden>
               <p class="friends-note">친구 목록에서 체크한 친구들과 함께 쉬는 날을 찾아요.</p>
@@ -434,9 +421,9 @@
 <script src="js/notifications.js?v=step19"></script>
 <script src="js/work-settings-drawer.js?v=tabreset5"></script>
 <script src="js/dismiss-ui.js?v=step21"></script>
-<script src="js/friends.js?v=friend-chat-v11"></script>
+<script src="js/friends.js?v=online-only-v18"></script>
 <script src="js/community.js?v=tabreset5"></script>
-<script src="js/online-friends.js?v=friend-alias-v11"></script>
+<script src="js/online-friends.js?v=friend-code-fix-v18"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="js/auth.js?v=online23a" defer></script>
 <script>

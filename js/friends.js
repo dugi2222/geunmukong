@@ -30,8 +30,6 @@
   }
   function renderMyProfile(){ $('myFriendName').textContent=myProfile.nickname||'나'; $('myFriendCode').textContent='내 기기 코드 · '+myProfile.code; }
   renderMyProfile();
-  $('friendEditMyProfile').addEventListener('click',()=>{$('myFriendNickname').value=myProfile.nickname;openSheet('profile');});
-  $('friendSaveMyProfile').addEventListener('click',()=>{const value=$('myFriendNickname').value.trim();if(!value){alert('닉네임을 입력해 주세요.');return;}myProfile.nickname=value;localStorage.setItem(myProfileKey,JSON.stringify(myProfile));renderMyProfile();closeSheet();});
   function closeSheet(){overlay.hidden=true;document.body.classList.remove('friend-sheet-open');}
   function openSheet(kind){
     $('friendAddPanel').hidden=kind!=='add';
@@ -49,24 +47,6 @@
   overlay.addEventListener('click',e=>{if(e.target===overlay)closeSheet();});
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!overlay.hidden)closeSheet();});
   const today = new Date();
-  $('friendStart').value = [today.getFullYear(),String(today.getMonth()+1).padStart(2,'0'),'01'].join('-');
-  $('friendCompareMonth').value = [today.getFullYear(),String(today.getMonth()+1).padStart(2,'0')].join('-');
-  function save(){ localStorage.setItem(storageKey, JSON.stringify(profiles)); }
-  function safeDate(value){ return /^\d{4}-\d{2}-\d{2}$/.test(value) && !Number.isNaN(Date.parse(value+'T00:00:00')); }
-  function parsePattern(){return $('friendPattern').value.split(/[,，\s]+/).map(x=>x.trim()).filter(Boolean);}
-  function updateIndexes(){ const pattern=parsePattern(), select=$('friendStartIndex'); select.replaceChildren(); (pattern.length ? pattern : ['주간']).forEach((shift,i)=>{const o=document.createElement('option');o.value=String(i);o.textContent=`${i+1}번째 (${shift})`;select.append(o);}); }
-  $('friendPattern').addEventListener('input',updateIndexes);updateIndexes();
-  $('friendAdd').addEventListener('click',()=>{
-    const nickname=$('friendNickname').value.trim(), code=$('friendCode').value.trim().toUpperCase(), pattern=parsePattern(), start=$('friendStart').value;
-    const feedback=$('friendFeedback');
-    if(!nickname || !code){feedback.textContent='닉네임과 친구 코드를 모두 입력해 주세요.';return;}
-    if(!pattern.length || pattern.length>60 || pattern.some(x=>!allowed.has(x))){feedback.textContent='근무 패턴은 주간, 야간, 비번, 휴무, 연차, 오후, 당직 중에서 1~60개 입력해 주세요.';return;}
-    if(!safeDate(start)){feedback.textContent='패턴 시작 날짜를 확인해 주세요.';return;}
-    if(profiles.some(x=>x.code===code)){feedback.textContent='이미 등록한 코드예요.';return;}
-    profiles.push({nickname,code,pattern,start,startIndex:Number($('friendStartIndex').value)||0, selected:true});save();render();
-    feedback.textContent='이 기기에 저장했어요. 상대방에게 친구 요청이 전송된 것은 아니에요.';closeSheet();
-    $('friendNickname').value='';$('friendCode').value='';
-  });
   function utcDay(date){const [y,m,d]=date.split('-').map(Number);return Date.UTC(y,m-1,d)/86400000;}
   function shiftFor(profile,date){if(profile.code===demoCode){const day=new Date(date+'T12:00:00Z').getUTCDay();return day===0||day===6?'휴무':'주간';}const n=profile.pattern.length, diff=utcDay(date)-utcDay(profile.start);return profile.pattern[((diff+profile.startIndex)%n+n)%n];}
   // Local demo messaging: never sends data to a server.
@@ -100,7 +80,7 @@
   }
   function renderChatRooms(){
     const root=$('gmChatRoomList');root.replaceChildren();
-    const rooms=profiles.filter(p=>Array.isArray(chats[p.code])&&chats[p.code].length).sort((a,b)=>chats[b.code].at(-1).time-chats[a.code].at(-1).time);
+    const rooms=profiles.filter(p=>p.demo&&Array.isArray(chats[p.code])&&chats[p.code].length).sort((a,b)=>chats[b.code].at(-1).time-chats[a.code].at(-1).time);
     if(!rooms.length){const empty=document.createElement('p');empty.className='gm-chat-disclaimer';empty.textContent='아직 대화가 없어요. 친구 목록에서 메시지를 보내면 여기에 표시돼요.';root.append(empty);return;}
     for(const profile of rooms){const last=chats[profile.code].at(-1),row=document.createElement('button');row.type='button';row.className='gm-chat-room';
       const avatar=document.createElement('span');avatar.className='gm-chat-room-avatar';avatar.textContent='🐾';
@@ -117,14 +97,14 @@
   });
   function render(){
     const list=$('friendList');list.replaceChildren();
-    $('friendCount').textContent=String(profiles.length);
+    $('friendCount').textContent=String(profiles.filter(p=>p.demo).length);
     if(!profiles.length){
       const empty=document.createElement('div');empty.className='friends-empty';
       empty.innerHTML='<div class="friends-empty-emoji">👥</div><strong>아직 등록된 친구가 없어요</strong><p>오른쪽 위 + 버튼으로 친구를 추가해 보세요.</p>';
       list.append(empty);
     }
     const now=new Date(), todayStr=[now.getFullYear(),String(now.getMonth()+1).padStart(2,'0'),String(now.getDate()).padStart(2,'0')].join('-');
-    profiles.forEach((profile,index)=>{
+    profiles.filter(p=>p.demo).forEach((profile,index)=>{
       const row=document.createElement('div');row.className='friend-row friend-profile-row';
       const avatar=document.createElement('div');avatar.className='friend-avatar';avatar.textContent=['🐶','🐱','🦭','🐼','🐢'][index%5];
       const info=document.createElement('div');info.className='friend-info';
@@ -136,12 +116,12 @@
       const remove=document.createElement('button');remove.type='button';remove.className='friend-remove';remove.textContent='삭제';remove.setAttribute('aria-label',`${profile.nickname} 삭제`);remove.addEventListener('click',()=>{if(confirm(`${profile.nickname}의 기기 내 기록을 삭제할까요?`)){profiles.splice(index,1);save();render();}});
       const messageButton=document.createElement('button');messageButton.type='button';messageButton.className='friend-message-button';messageButton.textContent='💬 메시지';messageButton.setAttribute('aria-label',profile.nickname+'에게 메시지');messageButton.addEventListener('click',()=>openChat(profile));
       const aliasButton=document.createElement('button');aliasButton.type='button';aliasButton.className='gm-alias-btn';aliasButton.textContent='별칭';aliasButton.addEventListener('click',()=>{const answer=prompt('이 친구에게 표시할 별칭 (비우면 원래 이름)',profile.alias||'');if(answer===null)return;profile.alias=answer.trim().slice(0,24);save();render();});
-      row.append(avatar,info,shift,messageButton,aliasButton,checkbox,remove);list.append(row);
+      row.append(avatar,info,shift,messageButton,checkbox);list.append(row);
     });renderComparison();renderChatRooms();
   }
   function isRest(shift, includeLeave){return shift==='비번'||shift==='휴무'||(includeLeave&&shift==='연차');}
   function renderComparison(){
-    const result=$('friendCompareResults');result.replaceChildren();const selected=profiles.filter(p=>p.selected!==false);
+    const result=$('friendCompareResults');result.replaceChildren();const selected=profiles.filter(p=>p.demo&&p.selected!==false);
     const month=$('friendCompareMonth').value;
     if(!selected.length){result.textContent='비교할 친구를 선택해 주세요.';return;}
     if(!/^\d{4}-\d{2}$/.test(month)){result.textContent='조회 월을 선택해 주세요.';return;}

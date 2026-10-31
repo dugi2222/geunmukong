@@ -2063,3 +2063,8 @@ body.dark .friend-chat-bubble.mine{background:#dcd1ef!important;color:#251b36!im
  background:var(--surface,#f0f5f1)!important; color:var(--accent-ink,#344d3c)!important;
  border:1px solid color-mix(in srgb, var(--accent,#8ea) 32%, transparent)!important;
 }
+
+/* v18: 온라인 친구 추가만 제공. 기존 수동 등록 데이터는 삭제하지 않습니다. */
+#gmOnlineAddSlot .gm-online-friends{display:block;}
+#gmOnlineAddSlot .gm-online-note{line-height:1.55;}
+#gmSendFriendForm input{text-transform:uppercase;letter-spacing:.035em;}
