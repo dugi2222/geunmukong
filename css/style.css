@@ -2070,3 +2070,46 @@ body.dark .friend-chat-bubble.mine{background:#dcd1ef!important;color:#251b36!im
 #gmSendFriendForm input{text-transform:uppercase;letter-spacing:.035em;}
 
 .gm-sync-box{margin-top:16px;padding:14px;border:1px solid var(--border-color,#ddd);border-radius:12px;background:rgba(127,127,127,.06)}.gm-sync-box h3{margin:0 0 8px;font-size:16px}.gm-sync-box p{font-size:13px;line-height:1.5}.gm-sync-actions{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}.gm-sync-actions button{flex:1 1 130px;padding:9px 7px;border-radius:9px;border:1px solid #aaa;background:transparent;color:inherit;font-size:12px;cursor:pointer}.gm-sync-box small{font-size:11px;line-height:1.5;display:block;opacity:.8}
+
+/* v23 friend profile and accessible dark-mode text */
+.gm-profile-overlay[hidden],.gm-profile-settings[hidden]{display:none!important}
+.gm-profile-overlay{position:fixed;inset:0;z-index:15000;background:#0009;display:flex;justify-content:center;align-items:center;padding:20px;box-sizing:border-box}
+.gm-profile-card{width:min(390px,100%);height:min(590px,85dvh);border-radius:35px;overflow:hidden;position:relative;background:var(--card-bg,var(--surface,#fff));color:var(--text,#262626);box-shadow:0 20px 65px #0005;border:1px solid #9995}
+.gm-profile-main{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px;box-sizing:border-box}
+.gm-profile-close{position:absolute;top:17px;right:20px;border:0;background:transparent;color:inherit;font-size:22px;cursor:pointer}
+.gm-profile-avatar{width:155px;height:155px;border-radius:32px;background:color-mix(in srgb,var(--accent,#e5c28b) 26%,var(--surface,#fff));display:grid;place-items:center;font-size:70px}
+.gm-profile-name{font-size:25px;margin:20px 0 5px;color:inherit}.gm-profile-subtitle{opacity:.72;margin:0}
+.gm-profile-actions{display:flex;gap:10px;width:100%;margin-top:34px}.gm-profile-actions button{flex:1;min-width:0;padding:14px 5px;border:1px solid #9995;border-radius:13px;background:var(--surface,#f8f4ed);color:inherit;font-size:14px;font-weight:700;cursor:pointer}
+.gm-profile-settings{position:absolute;inset:0;background:var(--card-bg,var(--surface,#fff));color:inherit;overflow:auto;padding:24px;box-sizing:border-box}
+.gm-profile-back{border:0;background:transparent;color:inherit;font-weight:700;padding:8px 0;cursor:pointer}.gm-profile-settings h2{font-size:23px;margin:16px 0 24px}.gm-profile-settings h3{font-size:14px;margin:23px 0 10px;color:inherit}
+.gm-profile-settings label{display:flex;justify-content:space-between;align-items:center;padding:15px 12px;border:1px solid #8884;border-radius:12px;margin:8px 0;background:var(--surface,#f9f7f2);font-weight:650;font-size:14px;color:inherit}
+.gm-profile-settings input{width:21px;height:21px;accent-color:var(--accent,#e9a04b)}.gm-profile-settings input:disabled{opacity:.4}.gm-profile-note{font-size:12px;line-height:1.6;opacity:.8}.gm-profile-alias{margin-top:18px;padding:13px;width:100%;border:1px solid #8885;border-radius:12px;background:var(--surface,#eee);color:inherit;font-weight:700}
+.friend-row[role="button"]{cursor:pointer}.friend-row[role="button"]:focus-visible{outline:2px solid var(--accent,#e9a04b);outline-offset:2px}
+body.dark #friendsPage,body.dark #communityPage{color:#f5f3ef!important}
+body.dark #friendsPage :is(h2,h3,h4,strong,p,small,span,label),body.dark #communityPage :is(h2,h3,h4,strong,p,small,span,label){color:inherit}
+body.dark #friendsPage :is(.friend-row,.friend-info,.gm-chat-room,.friends-shell,.gm-friend-subtabs),body.dark #communityPage :is(.community-post,.community-compose,.community-shell){color:#f5f3ef!important}
+body.dark #friendsPage :is(button,input,textarea,select),body.dark #communityPage :is(button,input,textarea,select){color:inherit}
+body.dark #friendsPage :is(input,textarea,select),body.dark #communityPage :is(input,textarea,select){background:var(--surface,#303030);color:#f5f3ef!important}
+body.dark .gm-profile-card{color:#f5f3ef!important}
+body.dark .gm-profile-settings label,body.dark .gm-profile-actions button{color:#f5f3ef!important}
+
+
+/* v24: make typed chat messages readable in dark mode */
+body.dark .friend-chat-form input,
+body.dark #friendChatInput,
+body.dark #gmRealChatInput {
+    background-color: #292b30 !important;
+    color: #f8f8f8 !important;
+    -webkit-text-fill-color: #f8f8f8 !important;
+    caret-color: #ffffff;
+    border-color: #85858b !important;
+}
+body.dark .friend-chat-form input::placeholder {
+    color: #b9b9bf !important;
+    -webkit-text-fill-color: #b9b9bf !important;
+    opacity: 1;
+}
+body:not(.dark) .friend-chat-form input {
+    color: #252525;
+    -webkit-text-fill-color: #252525;
+}

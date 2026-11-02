@@ -51,6 +51,44 @@
   $('friendSheetClose').addEventListener('click',closeSheet);
   overlay.addEventListener('click',e=>{if(e.target===overlay)closeSheet();});
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!overlay.hidden)closeSheet();});
+  // Friend profile and settings. Preferences are local until server-side sharing is implemented.
+  const prefKey='gmFriendPreferencesV1';
+  const friendPrefs=()=>{try{return JSON.parse(localStorage.getItem(prefKey)||'{}')||{};}catch(_){return {};}};
+  const friendPanel=document.createElement('div');friendPanel.className='gm-profile-overlay';friendPanel.hidden=true;
+  friendPanel.innerHTML=`<section class="gm-profile-card" role="dialog" aria-modal="true" aria-label="친구 프로필"><div class="gm-profile-main"><button class="gm-profile-close" type="button" aria-label="닫기">✕</button><div class="gm-profile-avatar">🐾</div><h2 class="gm-profile-name"></h2><p class="gm-profile-subtitle">친구</p><div class="gm-profile-actions"><button type="button" data-action="message">💬 메시지 보내기</button><button type="button" data-action="settings">⚙ 설정</button></div></div><div class="gm-profile-settings" hidden><button type="button" class="gm-profile-back">← 돌아가기</button><h2>친구 설정</h2><div class="gm-profile-settings-inner"><h3>🔔 알림 설정</h3><label>메시지 알림 <input type="checkbox" data-pref="messageNotify"></label><label>게시물 알림 <input type="checkbox" data-pref="postNotify"></label><h3>🔐 공유 설정</h3><label>달력 공유 <input type="checkbox" data-pref="calendarShare" disabled></label><label>게시물 공유 <input type="checkbox" data-pref="postShare" disabled></label><p class="gm-profile-note">공유 권한은 서버 연결 후 사용할 수 있어요. 현재는 친구에게 자동 공개되지 않습니다.</p><button type="button" class="gm-profile-alias">✏️ 별칭 변경</button></div></div></section>`;
+  document.body.append(friendPanel);
+  let selectedFriend=null, selectedDemo=false;
+  const profileClose=()=>{friendPanel.hidden=true;document.body.classList.remove('gm-profile-open');};
+  const profileSettings=friendPanel.querySelector('.gm-profile-settings');
+  friendPanel.querySelector('.gm-profile-close').onclick=profileClose;
+  friendPanel.querySelector('.gm-profile-back').onclick=()=>{profileSettings.hidden=true;};
+  friendPanel.addEventListener('click',e=>{if(e.target===friendPanel)profileClose();});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!friendPanel.hidden)profileClose();});
+  document.addEventListener('geunmeong:tab-leave',profileClose);
+  function openFriendProfile(friend,demo=false){
+    selectedFriend=friend;selectedDemo=demo;profileSettings.hidden=true;
+    friendPanel.querySelector('.gm-profile-name').textContent=demo?(friend.alias||friend.nickname):(onlineAliases()[friend.code]||friend.nickname);
+    friendPanel.querySelector('.gm-profile-subtitle').textContent=demo?'테스트 친구':'온라인 친구';
+    friendPanel.querySelector('.gm-profile-avatar').textContent=demo?'🐶':'🐾';
+    const prefs=friendPrefs()[friend.code]||{};
+    for(const input of friendPanel.querySelectorAll('[data-pref]'))input.checked=!!prefs[input.dataset.pref];
+    friendPanel.hidden=false;document.body.classList.add('gm-profile-open');
+  }
+  friendPanel.querySelector('[data-action="settings"]').onclick=()=>{profileSettings.hidden=false;};
+  friendPanel.querySelector('[data-action="message"]').onclick=()=>{const friend=selectedFriend,demo=selectedDemo;profileClose();if(demo)openChat(friend);else window.gmOnlineChat?.open({...friend,alias:onlineAliases()[friend.code]});};
+  friendPanel.querySelectorAll('[data-pref]').forEach(input=>input.addEventListener('change',()=>{
+    if(!selectedFriend||input.disabled)return;
+    const prefs=friendPrefs();prefs[selectedFriend.code]={...(prefs[selectedFriend.code]||{}),[input.dataset.pref]:input.checked};
+    localStorage.setItem(prefKey,JSON.stringify(prefs));
+  }));
+  friendPanel.querySelector('.gm-profile-alias').onclick=()=>{
+    if(!selectedFriend)return;
+    const current=selectedDemo?(selectedFriend.alias||''):(onlineAliases()[selectedFriend.code]||'');
+    const answer=prompt('친구 별칭 (비우면 원래 이름)',current);if(answer===null)return;
+    if(selectedDemo){selectedFriend.alias=answer.trim().slice(0,24);save();}
+    else{const aliases=onlineAliases();if(answer.trim())aliases[selectedFriend.code]=answer.trim().slice(0,24);else delete aliases[selectedFriend.code];localStorage.setItem(onlineAliasKey,JSON.stringify(aliases));document.dispatchEvent(new CustomEvent('geunmeong:online-friend-alias-changed'));}
+    render();friendPanel.querySelector('.gm-profile-name').textContent=answer.trim()||selectedFriend.nickname;
+  };
   const today = new Date();
   function utcDay(date){const [y,m,d]=date.split('-').map(Number);return Date.UTC(y,m-1,d)/86400000;}
   function shiftFor(profile,date){if(profile.code===demoCode){const day=new Date(date+'T12:00:00Z').getUTCDay();return day===0||day===6?'휴무':'주간';}const n=profile.pattern.length, diff=utcDay(date)-utcDay(profile.start);return profile.pattern[((diff+profile.startIndex)%n+n)%n];}
@@ -122,7 +160,7 @@
       const aliasButton=document.createElement('button');aliasButton.type='button';aliasButton.className='gm-alias-btn';aliasButton.textContent='별칭';
       aliasButton.addEventListener('click',()=>{const value=prompt('친구 별칭 (비우면 원래 닉네임)',aliases[friend.code]||'');if(value===null)return;const next=onlineAliases();if(value.trim())next[friend.code]=value.trim().slice(0,24);else delete next[friend.code];localStorage.setItem(onlineAliasKey,JSON.stringify(next));render();document.dispatchEvent(new CustomEvent('geunmeong:online-friend-alias-changed'));});
       const chatButton=document.createElement('button');chatButton.type='button';chatButton.className='friend-message-button';chatButton.textContent='💬 메시지';chatButton.addEventListener('click',()=>window.gmOnlineChat?.open({...friend,alias:onlineAliases()[friend.code]}));
-      row.append(avatar,info,chatButton,aliasButton);list.append(row);
+      row.append(avatar,info);row.tabIndex=0;row.setAttribute('role','button');row.setAttribute('aria-label',name.textContent+' 프로필 보기');row.addEventListener('click',()=>openFriendProfile(friend));row.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openFriendProfile(friend);}});list.append(row);
     });
     const now=new Date(), todayStr=[now.getFullYear(),String(now.getMonth()+1).padStart(2,'0'),String(now.getDate()).padStart(2,'0')].join('-');
     profiles.filter(p=>p.demo).forEach((profile,index)=>{
@@ -137,7 +175,7 @@
       const remove=document.createElement('button');remove.type='button';remove.className='friend-remove';remove.textContent='삭제';remove.setAttribute('aria-label',`${profile.nickname} 삭제`);remove.addEventListener('click',()=>{if(confirm(`${profile.nickname}의 기기 내 기록을 삭제할까요?`)){profiles.splice(index,1);save();render();}});
       const messageButton=document.createElement('button');messageButton.type='button';messageButton.className='friend-message-button';messageButton.textContent='💬 메시지';messageButton.setAttribute('aria-label',profile.nickname+'에게 메시지');messageButton.addEventListener('click',()=>openChat(profile));
       const aliasButton=document.createElement('button');aliasButton.type='button';aliasButton.className='gm-alias-btn';aliasButton.textContent='별칭';aliasButton.addEventListener('click',()=>{const answer=prompt('이 친구에게 표시할 별칭 (비우면 원래 이름)',profile.alias||'');if(answer===null)return;profile.alias=answer.trim().slice(0,24);save();render();});
-      row.append(avatar,info,shift,messageButton,checkbox);list.append(row);
+      row.append(avatar,info,shift);row.tabIndex=0;row.setAttribute('role','button');row.addEventListener('click',()=>openFriendProfile(profile,true));row.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openFriendProfile(profile,true);}});list.append(row);
     });renderComparison();renderChatRooms();
   }
   function isRest(shift, includeLeave){return shift==='비번'||shift==='휴무'||(includeLeave&&shift==='연차');}
