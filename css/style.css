@@ -2113,3 +2113,29 @@ body:not(.dark) .friend-chat-form input {
     color: #252525;
     -webkit-text-fill-color: #252525;
 }
+
+
+/* v26: opt-in shared calendars and comparison selection */
+.gm-share-friend-choices{display:grid;gap:7px;margin:10px 0 16px}
+.gm-share-friend-row{display:flex;align-items:center;gap:11px;padding:10px 12px;border:1px solid #8885;border-radius:12px;background:var(--surface,#f5f5f5);color:inherit;cursor:pointer}
+.gm-share-friend-row input{width:18px;height:18px;flex:0 0 18px;accent-color:var(--accent,#67a)}
+.gm-share-friend-row input:disabled{opacity:.5;cursor:not-allowed}
+.gm-share-friend-row span{min-width:0;display:flex;flex-direction:column;gap:3px}
+.gm-share-friend-row strong{font-size:13px;color:inherit}
+.gm-share-friend-row small{font-size:11px;opacity:.73;color:inherit;line-height:1.4}
+#gmCalendarShareStatus{margin:6px 0 10px;padding:0 3px;min-height:16px}
+#gmCalendarShareStatus.error{color:#c54444;opacity:1}
+body.dark .gm-share-friend-row{background:#303037;color:#f5f3ef;border-color:#7777}
+body.dark #gmCalendarShareStatus.error{color:#ff9e9e}
+
+.gm-share-preview-button{width:100%;padding:12px;border-radius:12px;margin:6px 0;border:1px solid #8885;background:var(--surface,#eee);color:inherit;font-weight:700}
+.gm-share-preview-button:disabled{opacity:.45}
+.gm-calendar-preview{margin:6px 0 16px;padding:10px;background:var(--surface,#f7f7f7);border-radius:12px;color:inherit;border:1px solid #9994}
+.gm-calendar-preview>label{display:flex;align-items:center;justify-content:space-between;gap:6px;padding:5px 0;font-size:12px;border:0;margin:0;background:transparent}
+.gm-calendar-preview input{max-width:155px;min-width:0;color:inherit;background:transparent;border:1px solid #9996;border-radius:9px;padding:7px;font-size:13px}
+.gm-calendar-preview-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;margin-top:12px}
+.gm-calendar-preview-day{min-width:0;min-height:47px;padding:5px 1px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;border-radius:8px;background:color-mix(in srgb,var(--accent,#8e9) 8%,transparent)}
+.gm-calendar-preview-day.off{background:color-mix(in srgb,var(--accent,#8e9) 27%,transparent)}
+.gm-calendar-preview-day strong{font-size:11px;color:inherit}
+.gm-calendar-preview-day small{font-size:9px;white-space:nowrap;color:inherit}
+body.dark .gm-calendar-preview{background:#292a30;color:#fafafa}

@@ -36,6 +36,13 @@ document.getElementById('bottomTabs').addEventListener('click', event => {
   const localDate = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
   hire.value = localDate;
   document.getElementById('baseDateInput').value = localDate;
+  // 첫 실행은 근무 방식 자동 선택 없이 시작. 기존 사용자 설정은 변경하지 않음.
+  const firstMode=document.getElementById('workMode');
+  firstMode.insertBefore(new Option('----------',''),firstMode.firstChild);
+  firstMode.value='';
+  document.getElementById('rotationSettings').hidden=true;
+  document.getElementById('weekdayHint').hidden=true;
+
   // 신규 사용자 기본값만 6일 패턴으로 적용 (기존 저장 설정은 그대로 유지)
   shifts = ["주간","주간","야간","야간","비번","비번"];
   refreshPresets(shifts, 0);
@@ -46,6 +53,7 @@ document.getElementById('bottomTabs').addEventListener('click', event => {
   // Save only after validating the hire date. The existing save handler persists
   // the cycle and anchor, preserving the same format as later settings edits.
   save.addEventListener('click', event => {
+    if (!firstMode.value) {event.stopImmediatePropagation();alert('근무 방식을 선택해 주세요.');firstMode.focus();return;}
     if (!hire.value || !/^\d{4}-\d{2}-\d{2}$/.test(hire.value)) {
       event.stopImmediatePropagation();
       alert('입사일을 선택해 주세요.');

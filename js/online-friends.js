@@ -7,14 +7,14 @@
  const panel=document.createElement('section');
  panel.className='gm-online-friends';panel.hidden=true;
  panel.innerHTML=`<div class="gm-online-head"><h3>🌐 온라인 친구 관리</h3><button type="button" id="gmOnlineClose" aria-label="닫기">✕</button><button type="button" id="gmFriendRefresh">↻ 새로고침</button></div>
- <p class="gm-online-note">친구 코드를 알려주면 상대방이 요청할 수 있어요. 아직 근무표·채팅은 공유되지 않아요.</p>
+ <p class="gm-online-note">친구 코드를 알려주면 상대방이 요청할 수 있어요. 채팅은 온라인으로 연결돼요. 근무표 공유는 친구 프로필 설정에서 허용할 수 있어요.</p>
  <div class="gm-online-me"><strong id="gmOnlineName">내 프로필</strong><div class="gm-code-line"><code id="gmOnlineCode">불러오는 중</code><button type="button" id="gmCopyCode">복사</button></div><div class="gm-nick-edit"><input id="gmOnlineNickname" maxlength="24" placeholder="닉네임 (2~24자)" aria-label="온라인 닉네임"><button type="button" id="gmSaveNickname">수정</button></div></div>
  <form id="gmSendFriendForm" class="gm-friend-send"><label for="gmTargetCode">친구 코드로 요청하기</label><div><input id="gmTargetCode" maxlength="20" placeholder="GM-XXXXXXXXXX" autocomplete="off" required><button type="submit">친구 요청</button></div></form>
  <p id="gmFriendStatus" role="status" aria-live="polite"></p>
  <h4>📨 받은 요청 <span id="gmIncomingCount">0</span></h4><div id="gmIncomingList" class="gm-online-list"></div>
  <h4>📤 보낸 요청 <span id="gmOutgoingCount">0</span></h4><div id="gmOutgoingList" class="gm-online-list"></div>
  <h4>🐾 온라인 친구 <span id="gmOnlineCount">0</span></h4><div id="gmOnlineList" class="gm-online-list"></div>
- <p class="gm-online-note">온라인 친구 별칭은 현재 이 기기에만 저장돼요. 근무표 공유와 실제 채팅은 아직 지원하지 않아요.</p>`;
+ <p class="gm-online-note">온라인 친구 별칭은 현재 이 기기에만 저장돼요. 근무표 공유는 친구 프로필에서 설정할 수 있어요.</p>`;
  slot.append(panel);
  const closeOnline=()=>{panel.hidden=true;};
  const openOnline=()=>{panel.hidden=false;if(user)refresh();};
@@ -66,8 +66,8 @@
   }catch(e){if(current===requestSerial)status('온라인 친구 오류: '+e.message+' (상대방도 로그인 후 친구 탭을 한 번 열었는지 확인해 주세요.)',true);}
  }
  function updateAuth(next){user=next;requestSerial++;loadAliases();page.querySelector('.friend-my-profile').hidden=!!user;
-  if(localHeading)localHeading.querySelector('small').textContent=user?'이 기기에 저장된 친구 (온라인과 별개)':'기기에 등록된 친구';
-  if(note)note.textContent=user?'아래 친구와 휴무 비교는 기기에 저장된 데이터로만 작동해요. 온라인 친구의 근무표는 아직 연결되지 않았어요.':'로그인하면 온라인 친구 요청·수락 기능을 이용할 수 있어요. 기기 내 친구는 그대로 이용할 수 있어요.';
+  if(localHeading)localHeading.querySelector('small').textContent=user?'온라인 친구':'친구';
+  if(note)note.textContent=user?'친구끼리 허용한 근무표만 서로 확인할 수 있어요.':'로그인하면 친구를 추가할 수 있어요.';
   if(user)refresh();else { $('gmOnlineCode').textContent='로그인 필요';status('로그인하면 온라인 친구 기능을 이용할 수 있어요.'); }
  }
  $('gmFriendRefresh').addEventListener('click',()=>refresh());

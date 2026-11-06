@@ -1,4 +1,4 @@
-/* 23단계: 서버 연결 전 로컬 친구 근무표 비교 미리보기. 실시간 친구 검색/요청 기능이 아닙니다. */
+/* v26: online friend list/profile/chat view. The calendar-sharing module handles friend schedules. */
 (() => {
   const $ = id => document.getElementById(id);
   const storageKey = 'friendPreviewProfilesV1';
@@ -7,9 +7,18 @@
   let onlineFriends = [];
   const onlineAliasKey='geunmeongOnlineFriendAliasesV1';
   function onlineAliases(){try{return JSON.parse(localStorage.getItem(onlineAliasKey)||'{}')||{};}catch(_){return {};}}
-  document.addEventListener('geunmeong:online-friends-updated', e=>{onlineFriends=Array.isArray(e.detail?.friends)?e.detail.friends:[];render();});
-  document.addEventListener('geunmeong:auth-changed',e=>{onlineFriends=[];render();});
-  try { const data = JSON.parse(localStorage.getItem(storageKey) || '[]'); if(Array.isArray(data)) profiles = data.filter(x => x && typeof x.nickname === 'string' && Array.isArray(x.pattern)); } catch(_) {}
+  document.addEventListener('geunmeong:online-friends-updated', e=>{onlineFriends=Array.isArray(e.detail?.friends)?e.detail.friends:[];render();if(activeFriendSubtab==='chats')renderChatRooms();});
+  document.addEventListener('geunmeong:auth-changed',e=>{onlineFriends=[];render();if(activeFriendSubtab==='chats')renderChatRooms();});
+  try { const data = JSON.parse(localStorage.getItem(storageKey) || '[]'); if(Array.isArray(data)) profiles = data.filter(x => x && typeof x.nickname === 'string' && Array.isArray(x.pattern) && x.code !== 'DEMO-MEONGMEONG' && !x.demo); } catch(_) {}
+  // Clean up the old demo friend saved on previous versions.
+  if (profiles.length === 0) {
+    try {
+      const old = JSON.parse(localStorage.getItem(storageKey) || '[]');
+      if (Array.isArray(old) && old.some(p => p?.code === 'DEMO-MEONGMEONG' || p?.demo)) {
+        localStorage.setItem(storageKey, JSON.stringify(old.filter(p => p && p.code !== 'DEMO-MEONGMEONG' && !p.demo)));
+      }
+    } catch (_) {}
+  }
   const overlay=$('friendOverlay');
   let activeFriendSubtab='friends';
   function showFriendSubtab(tab){
@@ -55,7 +64,7 @@
   const prefKey='gmFriendPreferencesV1';
   const friendPrefs=()=>{try{return JSON.parse(localStorage.getItem(prefKey)||'{}')||{};}catch(_){return {};}};
   const friendPanel=document.createElement('div');friendPanel.className='gm-profile-overlay';friendPanel.hidden=true;
-  friendPanel.innerHTML=`<section class="gm-profile-card" role="dialog" aria-modal="true" aria-label="친구 프로필"><div class="gm-profile-main"><button class="gm-profile-close" type="button" aria-label="닫기">✕</button><div class="gm-profile-avatar">🐾</div><h2 class="gm-profile-name"></h2><p class="gm-profile-subtitle">친구</p><div class="gm-profile-actions"><button type="button" data-action="message">💬 메시지 보내기</button><button type="button" data-action="settings">⚙ 설정</button></div></div><div class="gm-profile-settings" hidden><button type="button" class="gm-profile-back">← 돌아가기</button><h2>친구 설정</h2><div class="gm-profile-settings-inner"><h3>🔔 알림 설정</h3><label>메시지 알림 <input type="checkbox" data-pref="messageNotify"></label><label>게시물 알림 <input type="checkbox" data-pref="postNotify"></label><h3>🔐 공유 설정</h3><label>달력 공유 <input type="checkbox" data-pref="calendarShare" disabled></label><label>게시물 공유 <input type="checkbox" data-pref="postShare" disabled></label><p class="gm-profile-note">공유 권한은 서버 연결 후 사용할 수 있어요. 현재는 친구에게 자동 공개되지 않습니다.</p><button type="button" class="gm-profile-alias">✏️ 별칭 변경</button></div></div></section>`;
+  friendPanel.innerHTML=`<section class="gm-profile-card" role="dialog" aria-modal="true" aria-label="친구 프로필"><div class="gm-profile-main"><button class="gm-profile-close" type="button" aria-label="닫기">✕</button><div class="gm-profile-avatar">🐾</div><h2 class="gm-profile-name"></h2><p class="gm-profile-subtitle">친구</p><div class="gm-profile-actions"><button type="button" data-action="message">💬 메시지 보내기</button><button type="button" data-action="settings">⚙ 설정</button></div></div><div class="gm-profile-settings" hidden><button type="button" class="gm-profile-back">← 돌아가기</button><h2>친구 설정</h2><div class="gm-profile-settings-inner"><h3>🔔 알림 설정</h3><label>메시지 알림 <input type="checkbox" data-pref="messageNotify"></label><label>게시물 알림 <input type="checkbox" data-pref="postNotify"></label><h3>🔐 공유 설정</h3><label>달력 공유 <input type="checkbox" data-pref="calendarShare" disabled></label><p id="gmCalendarShareStatus" class="gm-profile-note" role="status" aria-live="polite">친구별 공유 설정을 확인해요.</p><button type="button" id="gmViewSharedCalendar" class="gm-share-preview-button" disabled>📅 친구 근무표 보기</button><div id="gmFriendCalendarPreview" class="gm-calendar-preview" hidden><label>조회 월 <input id="gmFriendCalendarMonth" type="month"></label><div id="gmFriendCalendarDays" aria-live="polite"></div></div><label>게시물 공유 <input type="checkbox" data-pref="postShare" disabled></label><p class="gm-profile-note">공유 권한은 서버 연결 후 사용할 수 있어요. 현재는 친구에게 자동 공개되지 않습니다.</p><button type="button" class="gm-profile-alias">✏️ 별칭 변경</button></div></div></section>`;
   document.body.append(friendPanel);
   let selectedFriend=null, selectedDemo=false;
   const profileClose=()=>{friendPanel.hidden=true;document.body.classList.remove('gm-profile-open');};
@@ -71,13 +80,17 @@
     friendPanel.querySelector('.gm-profile-subtitle').textContent=demo?'테스트 친구':'온라인 친구';
     friendPanel.querySelector('.gm-profile-avatar').textContent=demo?'🐶':'🐾';
     const prefs=friendPrefs()[friend.code]||{};
-    for(const input of friendPanel.querySelectorAll('[data-pref]'))input.checked=!!prefs[input.dataset.pref];
+    for(const input of friendPanel.querySelectorAll('[data-pref]'))if(input.dataset.pref!=='calendarShare')input.checked=!!prefs[input.dataset.pref];
+    const calendarSwitch=friendPanel.querySelector('[data-pref="calendarShare"]');calendarSwitch.checked=false;calendarSwitch.disabled=true;
     friendPanel.hidden=false;document.body.classList.add('gm-profile-open');
+    if(!demo)window.gmCalendarSharing?.profileOpened(friend);
+
   }
   friendPanel.querySelector('[data-action="settings"]').onclick=()=>{profileSettings.hidden=false;};
   friendPanel.querySelector('[data-action="message"]').onclick=()=>{const friend=selectedFriend,demo=selectedDemo;profileClose();if(demo)openChat(friend);else window.gmOnlineChat?.open({...friend,alias:onlineAliases()[friend.code]});};
   friendPanel.querySelectorAll('[data-pref]').forEach(input=>input.addEventListener('change',()=>{
     if(!selectedFriend||input.disabled)return;
+    if(input.dataset.pref==='calendarShare'){window.gmCalendarSharing?.toggleShare(selectedFriend,input.checked);return;}
     const prefs=friendPrefs();prefs[selectedFriend.code]={...(prefs[selectedFriend.code]||{}),[input.dataset.pref]:input.checked};
     localStorage.setItem(prefKey,JSON.stringify(prefs));
   }));
@@ -94,13 +107,7 @@
   function shiftFor(profile,date){if(profile.code===demoCode){const day=new Date(date+'T12:00:00Z').getUTCDay();return day===0||day===6?'휴무':'주간';}const n=profile.pattern.length, diff=utcDay(date)-utcDay(profile.start);return profile.pattern[((diff+profile.startIndex)%n+n)%n];}
   // Local demo messaging: never sends data to a server.
   const demoCode='DEMO-MEONGMEONG';
-  if(!profiles.some(p=>p.code===demoCode)){
-    profiles.push({nickname:'멍멍이',code:demoCode,pattern:['주간'],start:'2026-10-01',startIndex:0,selected:true,demo:true});
-    save();
-  }
-  // 데모 친구는 평일 주간, 주말 휴무. 기존 저장 데이터도 갱신합니다.
-  const demoProfile=profiles.find(p=>p.code===demoCode);
-  if(demoProfile){demoProfile.pattern=['주간'];demoProfile.selected=true;demoProfile.demo=true;save();}
+  // Demo friend retired in v25; online friends only.
   const messageKey='geunmeongFriendDemoMessagesV1';
   let chats={};
   try {const loaded=JSON.parse(localStorage.getItem(messageKey)||'{}');if(loaded&&typeof loaded==='object'&&!Array.isArray(loaded))chats=loaded;}catch(_){}
@@ -123,9 +130,9 @@
   }
   function renderChatRooms(){
     const root=$('gmChatRoomList');root.replaceChildren();
-    const rooms=profiles.filter(p=>p.demo&&Array.isArray(chats[p.code])&&chats[p.code].length).sort((a,b)=>chats[b.code].at(-1).time-chats[a.code].at(-1).time);
+    const rooms=[]; // demo chats removed
     for(const friend of onlineFriends){const preview=window.gmOnlineChat?.preview(friend.code);const row=document.createElement('button');row.type='button';row.className='gm-chat-room';const avatar=document.createElement('span');avatar.className='gm-chat-room-avatar';avatar.textContent='🐾';const content=document.createElement('span');content.className='gm-chat-room-content';const name=document.createElement('strong');name.textContent=onlineAliases()[friend.code]||friend.nickname;const small=document.createElement('small');small.textContent=preview?.text||'온라인 친구 · 대화 시작하기';content.append(name,small);row.append(avatar,content);row.addEventListener('click',()=>window.gmOnlineChat?.open({...friend,alias:onlineAliases()[friend.code]}));root.append(row);}
-    if(!rooms.length&&!onlineFriends.length){const empty=document.createElement('p');empty.className='gm-chat-disclaimer';empty.textContent='아직 대화가 없어요. 친구 목록에서 메시지를 보내면 여기에 표시돼요.';root.append(empty);return;}
+    if(!onlineFriends.length){const empty=document.createElement('p');empty.className='gm-chat-disclaimer';empty.textContent='아직 온라인 친구가 없어요. 친구를 추가하면 여기에서 대화할 수 있어요.';root.append(empty);return;}
     for(const profile of rooms){const last=chats[profile.code].at(-1),row=document.createElement('button');row.type='button';row.className='gm-chat-room';
       const avatar=document.createElement('span');avatar.className='gm-chat-room-avatar';avatar.textContent='🐾';
       const content=document.createElement('span');content.className='gm-chat-room-content';const name=document.createElement('strong');name.textContent=profile.alias||profile.nickname;const preview=document.createElement('small');preview.textContent=last.text;content.append(name,preview);
@@ -142,7 +149,7 @@
   });
   function render(){
     const list=$('friendList');list.replaceChildren();
-    $('friendCount').textContent=String(onlineFriends.length+profiles.filter(p=>p.demo).length);
+    $('friendCount').textContent=String(onlineFriends.length);
     if(!profiles.length && !onlineFriends.length){
       const empty=document.createElement('div');empty.className='friends-empty';
       empty.innerHTML='<div class="friends-empty-emoji">👥</div><strong>아직 등록된 친구가 없어요</strong><p>오른쪽 위 + 버튼으로 친구를 추가해 보세요.</p>';
@@ -155,7 +162,7 @@
       const avatar=document.createElement('div');avatar.className='friend-avatar';avatar.textContent=['🐶','🐱','🦭','🐼','🐢'][index%5];
       const info=document.createElement('div');info.className='friend-info';
       const name=document.createElement('strong');name.textContent=aliases[friend.code]||friend.nickname;
-      const detail=document.createElement('small');detail.textContent=(aliases[friend.code]?friend.nickname+' · ':'')+'온라인 친구 · 근무표 미공유';
+      const detail=document.createElement('small');detail.textContent=(aliases[friend.code]?friend.nickname+' · ':'')+'온라인 친구';
       info.append(name,detail);
       const aliasButton=document.createElement('button');aliasButton.type='button';aliasButton.className='gm-alias-btn';aliasButton.textContent='별칭';
       aliasButton.addEventListener('click',()=>{const value=prompt('친구 별칭 (비우면 원래 닉네임)',aliases[friend.code]||'');if(value===null)return;const next=onlineAliases();if(value.trim())next[friend.code]=value.trim().slice(0,24);else delete next[friend.code];localStorage.setItem(onlineAliasKey,JSON.stringify(next));render();document.dispatchEvent(new CustomEvent('geunmeong:online-friend-alias-changed'));});
@@ -163,7 +170,7 @@
       row.append(avatar,info);row.tabIndex=0;row.setAttribute('role','button');row.setAttribute('aria-label',name.textContent+' 프로필 보기');row.addEventListener('click',()=>openFriendProfile(friend));row.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openFriendProfile(friend);}});list.append(row);
     });
     const now=new Date(), todayStr=[now.getFullYear(),String(now.getMonth()+1).padStart(2,'0'),String(now.getDate()).padStart(2,'0')].join('-');
-    profiles.filter(p=>p.demo).forEach((profile,index)=>{
+    profiles.filter(p=>false).forEach((profile,index)=>{
       const row=document.createElement('div');row.className='friend-row friend-profile-row';
       const avatar=document.createElement('div');avatar.className='friend-avatar';avatar.textContent=['🐶','🐱','🦭','🐼','🐢'][index%5];
       const info=document.createElement('div');info.className='friend-info';
@@ -180,33 +187,8 @@
   }
   function isRest(shift, includeLeave){return shift==='비번'||shift==='휴무'||(includeLeave&&shift==='연차');}
   function renderComparison(){
-    const result=$('friendCompareResults');result.replaceChildren();const selected=profiles.filter(p=>p.demo&&p.selected!==false);
-    const month=$('friendCompareMonth').value;
-    if(!selected.length){result.textContent='비교할 친구를 선택해 주세요.';return;}
-    if(!/^\d{4}-\d{2}$/.test(month)){result.textContent='조회 월을 선택해 주세요.';return;}
-    const [year,m]=month.split('-').map(Number), days=new Date(year,m,0).getDate(), includeLeave=$('friendIncludeLeave').checked;
-    let count=0;
-    const excludeAfterNight=$('friendNightNext').checked;
-    const priorDate=date=>{const d=new Date(date+'T12:00:00Z');d.setUTCDate(d.getUTCDate()-1);return d.toISOString().slice(0,10);};
-    const grid=document.createElement('div');grid.className='friend-match-grid';
-    for(let day=1;day<=days;day++){
-      const date=`${month}-${String(day).padStart(2,'0')}`;
-      const own=customShifts[date] || getShift(year,m-1,day);
-      if(!isRest(own,includeLeave))continue;
-      if(excludeAfterNight){const prev=priorDate(date),[py,pm,pd]=prev.split('-').map(Number);if((customShifts[prev]||getShift(py,pm-1,pd))==='야간')continue;}
-      const other=selected.map(p=>shiftFor(p,date));if(!other.every(s=>isRest(s,includeLeave)))continue;
-      if(excludeAfterNight&&selected.some(p=>shiftFor(p,priorDate(date))==='야간'))continue;
-      count++;const item=document.createElement('div');item.className='friend-match-day';
-      const title=document.createElement('strong');title.textContent=`${m}/${day}`;
-      const detail=document.createElement('small');detail.textContent=`나 ${own} · ${selected.map((p,i)=>p.nickname+' '+other[i]).join(' · ')}`;
-      item.append(title,detail);grid.append(item);
-    }
-    const summary=document.createElement('p');summary.className='friend-match-summary';summary.textContent=count?`${month}에 함께 쉬는 날 ${count}일`:`${month}에는 모두 쉬는 날이 없어요.`;
-    result.append(summary,grid);
+    if(!$('friendComparePanel').hidden && window.gmCalendarSharing?.refreshCompare)window.gmCalendarSharing.refreshCompare();
   }
-  $('friendCompareMonth').addEventListener('change',renderComparison);
-  $('friendIncludeLeave').addEventListener('change',renderComparison);
-  $('friendNightNext').addEventListener('change',renderComparison);
   document.querySelector('[data-tab="friends"]').addEventListener('click',renderComparison);
   render();
 })();

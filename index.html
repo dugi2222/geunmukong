@@ -13,7 +13,7 @@
     <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png?v=dogicon2">
     <link rel="apple-touch-icon" href="icon-180.png?v=dogicon2">
     <title>근무멍</title>
-    <link rel="stylesheet" href="css/style.css?v=lightbuttons17">
+    <link rel="stylesheet" href="css/style.css?v=calendar26">
 </head>
 <body>
     <button id="menuBtn">☰</button>
@@ -210,7 +210,7 @@
         <div id="friendList" class="friend-list-clean"></div>
         <button type="button" id="friendOpenCompare" class="friend-compare-cta"><span>📅</span><span><strong>같이 쉬는 날 찾기</strong><small>친구들과 겹치는 휴무일 확인</small></span><span aria-hidden="true">›</span></button>
         <p class="friends-disclaimer">현재 친구 정보는 이 기기에만 저장돼요. 실제 친구 요청과 실시간 근무표 공유는 추후 제공됩니다.</p>
-      </div><div id="gmChatsContent" hidden><h3 class="gm-chats-heading">채팅</h3><div id="gmChatRoomList"></div><p class="gm-chat-disclaimer">현재 채팅은 이 기기에서만 작동하는 테스트 기능이에요.</p></div></div>
+      </div><div id="gmChatsContent" hidden><h3 class="gm-chats-heading">채팅</h3><div id="gmChatRoomList"></div></div></div>
       <div id="friendOverlay" class="friend-sheet-overlay" hidden>
         <section class="friend-sheet" role="dialog" aria-modal="true" aria-labelledby="friendSheetTitle">
           <header class="friend-sheet-head"><h3 id="friendSheetTitle">친구 추가</h3><button type="button" id="friendSheetClose" aria-label="닫기">✕</button></header>
@@ -225,7 +225,7 @@
               <div id="gmOnlineAddSlot"></div>
             </section>
             <section id="friendComparePanel" class="friend-sheet-content" hidden>
-              <p class="friends-note">친구 목록에서 체크한 친구들과 함께 쉬는 날을 찾아요.</p>
+              <p class="friends-note">나에게 근무표 공유를 허용한 친구만 비교해요.</p><div id="gmCalendarFriendChoices" class="gm-share-friend-choices"></div>
               <label>조회 월 <input id="friendCompareMonth" type="month"></label>
               <label class="friends-check"><input type="checkbox" id="friendIncludeLeave" checked> 연차도 쉬는 날로 포함</label>
               <label class="friends-check"><input type="checkbox" id="friendNightNext"> 야간근무 다음 날은 쉬는 날에서 제외</label>
@@ -415,19 +415,20 @@
 <script src="js/calendar.js?v=step19"></script>
 <script src="js/themes.js?v=step24bukoriginal1"></script>
 <script src="js/schedule-editing.js?v=step19"></script>
-<script src="js/navigation.js?v=tabreset5"></script>
+<script src="js/navigation.js?v=firstsetup26"></script>
 <script src="js/records.js?v=tabreset5"></script>
 <script src="js/backup.js?v=step19"></script>
 <script src="js/notifications.js?v=step19"></script>
 <script src="js/work-settings-drawer.js?v=tabreset5"></script>
 <script src="js/dismiss-ui.js?v=step21"></script>
-<script src="js/friends.js?v=profile23"></script>
+<script src="js/friends.js?v=calendar26"></script>
 <script src="js/community.js?v=onlineboard22"></script>
-<script src="js/online-friends.js?v=main-online-v19"></script>
+<script src="js/online-friends.js?v=calendar26"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="js/auth.js?v=online23a" defer></script>
-<script src="js/account-sync.js?v=cloud20" defer></script>
+<script src="js/account-sync.js?v=calendar26" defer></script>
 <script src="js/online-chat.js?v=chat21" defer></script>
+<script src="js/calendar-sharing.js?v=calendar26" defer></script>
 <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
